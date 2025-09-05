@@ -1,17 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import Books from './Books';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+root.render( <>
+      <table border={2}> 
+        <tr>
+            <td> Book Name </td>
+            <td> Author Name </td>
+            <td> Price </td>
+        </tr> 
+            <Books name="Harry Potter and the Philosopher’s Stone" author="JK Rowling" price="700"/>
+            <Books name="Harry Potter and the Chamber of Secrets" author="JK Rowling" price="750"/>
+            <Books name="Harry Potter and the Prisoner of Azkaban" author="JK Rowling" price="800"/>
+            <Books name="Harry Potter and the Goblet of Fire" author="JK Rowling" price="600"/>
+            <Books name="Harry Potter and the Order of the Phoenix" author="JK Rowling" price="850"/>
+            <Books name="ughhhhhh" author="JK Rowling" price="850"/>
+</table>
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  </>
+);
