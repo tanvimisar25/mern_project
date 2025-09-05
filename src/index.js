@@ -17,7 +17,6 @@ root.render( <>
             <Books name="Harry Potter and the Prisoner of Azkaban" author="JK Rowling" price="800"/>
             <Books name="Harry Potter and the Goblet of Fire" author="JK Rowling" price="600"/>
             <Books name="Harry Potter and the Order of the Phoenix" author="JK Rowling" price="850"/>
-            <Books name="ughhhhhh" author="JK Rowling" price="850"/>
 </table>
 
   </>
