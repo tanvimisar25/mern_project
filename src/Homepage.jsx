@@ -1,4 +1,28 @@
 import React from "react";
+import { motion } from "framer-motion";
+import cardLogo from "./card.png";
+
+// 🔹 Your Logo component
+// 🔹 Your Logo component
+function Logo() {
+  return (
+    <div className="flex items-center gap-2">
+      <motion.img
+        src={cardLogo}
+        alt="Prepdeck logo"
+        className="w-10 h-10 object-contain"
+        whileHover={{ rotateY: 180 }}
+      /> &nbsp;&nbsp;
+<span className="text-2xl font-bold inline-block align-middle">
+  Prepdeck
+</span>
+    </div>
+  );
+}
+
+
+
+
 
 class Homepage extends React.Component {
   constructor(props) {
@@ -24,10 +48,12 @@ class Homepage extends React.Component {
           {this.state.sidebarOpen && (
             <div className="sidebar-content">
               {/* Top Links */}
-              <ul className="sidebar-menu">
-                <li>Discover</li>
-                <li>My Deck</li>
-              </ul>
+              <div className="sidebar-section">
+                <p className="section-title">Discover</p>
+                <ul className="sidebar-menu">
+                  <li>My Decks</li>
+                </ul>
+              </div>
               <hr />
 
               {/* Deck Creator Section */}
@@ -58,9 +84,12 @@ class Homepage extends React.Component {
         <div className="main">
           {/* Topbar */}
           <div className="topbar">
-            <h2 className="topbar-title">Prepdeck</h2>
-            <div className="topbar-login">Login</div>
-          </div>
+  <div className="logo-wrapper">
+    <Logo />
+  </div>
+  <div className="topbar-login">Login</div>
+</div>
+
 
           {/* Study Section */}
           <div className="study-section">
@@ -76,28 +105,26 @@ class Homepage extends React.Component {
           <div className="interview-section">
             <h2>For your next interview</h2>
             <div className="grid-container">
-            {[
-            { title: "World Capitals", terms: "197 terms" },
-            { title: "27 Amendments", terms: "27 terms" },
-            { title: "Biology Practice Test", terms: "83 terms" },
-            { title: "Java Basics", terms: "54 terms" },
-            { title: "Data Structures", terms: "102 terms" },
-            { title: "Cyber Security", terms: "65 terms" },
-            { title: "Marketing 101", terms: "88 terms" },
-            { title: "UI/UX Principles", terms: "49 terms" },
-            { title: "SQL Queries", terms: "77 terms" }
-            ].map((card, index) => (
-          <div key={index} className="grid-item">
-          <h3 className="card-title">{card.title}</h3>
-          <span className="terms-badge">{card.terms}</span>
+              {[
+                { title: "World Capitals", terms: "197 terms" },
+                { title: "27 Amendments", terms: "27 terms" },
+                { title: "Biology Practice Test", terms: "83 terms" },
+                { title: "Java Basics", terms: "54 terms" },
+                { title: "Data Structures", terms: "102 terms" },
+                { title: "Cyber Security", terms: "65 terms" },
+                { title: "Marketing 101", terms: "88 terms" },
+                { title: "UI/UX Principles", terms: "49 terms" },
+                { title: "SQL Queries", terms: "77 terms" },
+              ].map((card, index) => (
+                <div key={index} className="grid-item">
+                  <h3 className="card-title">{card.title}</h3>
+                  <span className="terms-badge">{card.terms}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          ))}
-          </div>
-      </div>
-
         </div>
       </div>
-      
     );
   }
 }
