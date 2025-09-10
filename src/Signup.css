@@ -1,0 +1,121 @@
+/* Signup.css - Blue theme like Login page */
+
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f3f4f6; /* light gray */
+}
+
+.signup-box {
+  background: #ffffff;
+  padding: 1.5rem 2.5rem;   /* reduced top padding */
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  width: 380px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* keep form centered */
+}
+
+.signup-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 1rem;      /* reduced bottom spacing */
+  color: #111827;
+}
+
+.signup-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* ensures inputs stay centered */
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;   /* keep width consistent */
+}
+
+.signup-form input:focus {
+  border-color: #2563eb; /* blue highlight */
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+}
+
+.signup-btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 12px 28px;       /* height & width padding */
+  font-weight: 400;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+/* Optional: Hover effect to make it more interactive */
+.signup-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.signup-footer {
+  margin-top: 1rem;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.signup-footer a {
+  color: #2563eb; /* blue link */
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.signup-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Page wrapper */
+.login-page, .signup-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f3f4f6;
+}
+
+/* Back to Homepage link outside the box */
+.back-homepage {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 18px;  /* bigger font */
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* space for the eye icon */
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 10px;
+  top: 35%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+}

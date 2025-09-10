@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom"; // ✅ import Link
 import { motion } from "framer-motion";
-import cardLogo from "./card.png";
+import cardLogo from "./flash.png";
+import './index.css';
 
-// 🔹 Your Logo component
-// 🔹 Your Logo component
+
 function Logo() {
   return (
     <div className="flex items-center gap-2">
@@ -12,17 +13,14 @@ function Logo() {
         alt="Prepdeck logo"
         className="w-10 h-10 object-contain"
         whileHover={{ rotateY: 180 }}
-      /> &nbsp;&nbsp;
-<span className="text-2xl font-bold inline-block align-middle">
-  Prepdeck
-</span>
+      />{" "}
+      &nbsp;&nbsp;
+      <span className="text-2xl font-bold inline-block align-middle">
+        Prepdeck
+      </span>
     </div>
   );
 }
-
-
-
-
 
 class Homepage extends React.Component {
   constructor(props) {
@@ -40,7 +38,9 @@ class Homepage extends React.Component {
     return (
       <div className="layout">
         {/* Sidebar */}
-        <aside className={`sidebar ${this.state.sidebarOpen ? "open" : "closed"}`}>
+        <aside
+          className={`sidebar ${this.state.sidebarOpen ? "open" : "closed"}`}
+        >
           <button className="toggle-btn" onClick={this.toggleSidebar}>
             {this.state.sidebarOpen ? "☰" : "☰"}
           </button>
@@ -84,20 +84,29 @@ class Homepage extends React.Component {
         <div className="main">
           {/* Topbar */}
           <div className="topbar">
-  <div className="logo-wrapper">
-    <Logo />
-  </div>
-  <div className="topbar-login">Login</div>
-</div>
-
+            <div className="logo-wrapper">
+              <Logo />
+            </div>
+            {/* ✅ Login now navigates to /login */}
+            <div className="topbar-login">
+              <Link to="/Login">Login</Link>
+            </div>
+          </div>
 
           {/* Study Section */}
           <div className="study-section">
             <h1>Prepare for your next interview</h1>
             <p>
-              Master essential questions and create custom flashcards with <b>Prepdeck</b>
+              Master essential questions and create custom flashcards with{" "}
+              Prepdeck
             </p>
-            <button className="signup-btn">Sign up</button>
+            {/* ✅ Signup now navigates to /signup */}
+            <Link to="/signup">
+    <button className="signup-btn">
+  Sign up
+</button>
+
+  </Link>
           </div>
           <hr className="divider" />
 
