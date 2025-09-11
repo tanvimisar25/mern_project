@@ -1,9 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom"; // ✅ import Link
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import cardLogo from "./flash.png";
-import './index.css';
-
+import "./DeckOwn.css"; // Using a dedicated CSS file for this component
+import "./index.css";
 
 function Logo() {
   return (
@@ -13,7 +13,7 @@ function Logo() {
         alt="Prepdeck logo"
         className="w-10 h-10 object-contain"
         whileHover={{ rotateY: 180 }}
-      />{" "}
+      />
       &nbsp;&nbsp;
       <span className="text-2xl font-bold inline-block align-middle">
         Prepdeck
@@ -22,7 +22,7 @@ function Logo() {
   );
 }
 
-class Homepage extends React.Component {
+class DeckOwn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +35,9 @@ class Homepage extends React.Component {
   };
 
   render() {
+    // Get the current path to manually set the active tab
+    const currentPath = window.location.pathname;
+
     return (
       <div className="layout">
         {/* Sidebar */}
@@ -42,34 +45,30 @@ class Homepage extends React.Component {
           className={`sidebar ${this.state.sidebarOpen ? "open" : "closed"}`}
         >
           <button className="toggle-btn" onClick={this.toggleSidebar}>
-            {this.state.sidebarOpen ? "☰" : "☰"}
+            ☰
           </button>
 
           {this.state.sidebarOpen && (
             <div className="sidebar-content">
-              {/* Top Links */}
+              {/* Sidebar sections */}
               <div className="sidebar-section">
                 <p className="section-title">Discover</p>
-                <ul className="sidebar-menu">
+                <ul className="sidebar-menu no-bullets">
                   <li><Link to="/">Home</Link></li>
                   <li><Link to="/mydecks">My Decks</Link></li>
-                    </ul>
+                </ul>
               </div>
               <hr />
-
-              {/* Deck Creator Section */}
               <div className="sidebar-section">
                 <p className="section-title">Deck Creator</p>
-                <ul className="sidebar-menu">
+                <ul className="sidebar-menu no-bullets">
                   <li>New Deck</li>
                 </ul>
               </div>
               <hr />
-
-              {/* Category Section */}
               <div className="sidebar-section">
                 <p className="section-title">Category</p>
-                <ul className="sidebar-menu">
+                <ul className="sidebar-menu no-bullets">
                   <li>Software Development</li>
                   <li>Data Science</li>
                   <li>Cyber Security</li>
@@ -88,49 +87,37 @@ class Homepage extends React.Component {
             <div className="logo-wrapper">
               <Logo />
             </div>
-            {/* ✅ Login now navigates to /login */}
             <div className="topbar-login">
               <Link to="/Login">Login</Link>
             </div>
           </div>
+          
+          {/* Main content area */}
+          <div className="mydeck-main">
+            {/* Header */}
+            <h1 className="mydeck-title">Your Decks</h1>
 
-          {/* Study Section */}
-          <div className="study-section">
-            <h1>Prepare for your next interview</h1>
-            <p>
-              Master essential questions and create custom flashcards with{" "}
-              Prepdeck
-            </p>
-            {/* ✅ Signup now navigates to /signup */}
-            <Link to="/signup">
-    <button className="signup-btn">
-  Sign up
-</button>
+            {/* Tab bar with corrected logic */}
+            <div className="practice-test-tabs">
+              <Link to="/mydecks" className={currentPath === '/mydecks' ? 'active' : ''}>
+                Flashcard sets
+              </Link>
+              <Link to="/practicetests" className={currentPath === '/practicetests' ? 'active' : ''}>
+                Practice tests
+              </Link>
+              {/* ✅ CORRECTED a typo here. The path is now '/decks' */}
+              <Link to="/deckowns" className={currentPath === '/deckowns' ? 'active' : ''}>
+                Decks
+              </Link>
+            </div>
 
-  </Link>
-          </div>
-          <hr className="divider" />
-
-          {/* New Section */}
-          <div className="interview-section">
-            <h2>For your next interview</h2>
-            <div className="grid-container">
-              {[
-                { title: "World Capitals", terms: "197 terms" },
-                { title: "27 Amendments", terms: "27 terms" },
-                { title: "Biology Practice Test", terms: "83 terms" },
-                { title: "Java Basics", terms: "54 terms" },
-                { title: "Data Structures", terms: "102 terms" },
-                { title: "Cyber Security", terms: "65 terms" },
-                { title: "Marketing 101", terms: "88 terms" },
-                { title: "UI/UX Principles", terms: "49 terms" },
-                { title: "SQL Queries", terms: "77 terms" },
-              ].map((card, index) => (
-                <div key={index} className="grid-item">
-                  <h3 className="card-title">{card.title}</h3>
-                  <span className="terms-badge">{card.terms}</span>
-                </div>
-              ))}
+            {/* Centered content */}
+            <div className="practice-test-content">
+              <div className="practice-test-icon">📝</div>
+              <h2 className="practice-test-headline">
+                Generate your own decks and practice
+              </h2>
+              <button className="start-generating-btn">Start generating</button>
             </div>
           </div>
         </div>
@@ -139,4 +126,4 @@ class Homepage extends React.Component {
   }
 }
 
-export default Homepage;
+export default DeckOwn;
