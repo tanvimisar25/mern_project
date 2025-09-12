@@ -15,7 +15,7 @@ function Logo() {
         whileHover={{ rotateY: 180 }}
       />{" "}
       &nbsp;&nbsp;
-      <span className="text-2xl font-bold inline-block align-middle">
+      <span className="text-2xl font-bold inline-block align-middle" style={{ fontSize: "2.5rem" }}>
         Prepdeck
       </span>
     </div>

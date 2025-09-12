@@ -85,11 +85,6 @@ body {
   cursor: pointer;
 }
 
-.sidebar-menu li a{
-  text-decoration: none;  /* This removes the underline */
-  color: inherit;         /* This makes the link color match the other text */
-}
-
 .sidebar-menu li:hover {
   background: #e6e6e6;
   border-radius: 6px;
