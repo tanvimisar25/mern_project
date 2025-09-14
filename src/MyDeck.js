@@ -15,7 +15,7 @@ function Logo() {
         whileHover={{ rotateY: 180 }}
       />
       &nbsp;&nbsp;
-      <span className="text-2xl font-bold inline-block align-middle">
+      <span className="text-2xl font-bold inline-block align-middle" style={{ fontSize: "2.5rem" }}>
         Prepdeck
       </span>
     </div>
@@ -45,7 +45,7 @@ class MyDeck extends React.Component {
           <aside
             className={`sidebar ${this.state.sidebarOpen ? "open" : "closed"}`}
           >
-            <button className="toggle-btn" onClick={this.toggleSidebar}>
+            <button className="toggle-btn" title="Menu" onClick={this.toggleSidebar}>
               ☰
             </button>
 
@@ -54,12 +54,12 @@ class MyDeck extends React.Component {
                 {/* Top Links */}
                 <div className="sidebar-section">
                   <p className="section-title">Discover</p>
-                  <ul className="sidebar-menu no-bullets">
+                  <ul className="sidebar-menu">
                     <li>
-                      <Link to="/">Home</Link>
+                      <Link to="/" className="sidebar-link">Home</Link>
                     </li>
                     <li>
-                      <Link to="/mydecks">My Decks</Link>
+                      <Link to="/mydecks" className="sidebar-link">My Decks</Link>
                     </li>
                   </ul>
                 </div>

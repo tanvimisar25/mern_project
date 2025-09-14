@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import cardLogo from "./flash.png";
 import './index.css';
 
-
 function Logo() {
   return (
     <div className="flex items-center gap-2">
@@ -41,7 +40,7 @@ class Homepage extends React.Component {
         <aside
           className={`sidebar ${this.state.sidebarOpen ? "open" : "closed"}`}
         >
-          <button className="toggle-btn" onClick={this.toggleSidebar}>
+          <button className="toggle-btn" title="Menu" onClick={this.toggleSidebar}>
             {this.state.sidebarOpen ? "☰" : "☰"}
           </button>
 
@@ -51,9 +50,16 @@ class Homepage extends React.Component {
               <div className="sidebar-section">
                 <p className="section-title">Discover</p>
                 <ul className="sidebar-menu">
-                  <li><Link to="/">Home</Link></li>
-                  <li><Link to="/mydecks">My Decks</Link></li>
-                    </ul>
+  <li>
+    <Link to="/" className="sidebar-link">Home</Link>
+  </li>
+  <li>
+    <Link to="/mydecks" className="sidebar-link">My Decks</Link>
+  </li>
+</ul>
+
+
+
               </div>
               <hr />
 
@@ -103,11 +109,8 @@ class Homepage extends React.Component {
             </p>
             {/* ✅ Signup now navigates to /signup */}
             <Link to="/signup">
-    <button className="signup-btn">
-  Sign up
-</button>
-
-  </Link>
+              <button className="signup-btn">Sign up</button>
+            </Link>
           </div>
           <hr className="divider" />
 
@@ -116,20 +119,33 @@ class Homepage extends React.Component {
             <h2>For your next interview</h2>
             <div className="grid-container">
               {[
-                { title: "World Capitals", terms: "197 terms" },
-                { title: "27 Amendments", terms: "27 terms" },
-                { title: "Biology Practice Test", terms: "83 terms" },
-                { title: "Java Basics", terms: "54 terms" },
-                { title: "Data Structures", terms: "102 terms" },
-                { title: "Cyber Security", terms: "65 terms" },
-                { title: "Marketing 101", terms: "88 terms" },
-                { title: "UI/UX Principles", terms: "49 terms" },
-                { title: "SQL Queries", terms: "77 terms" },
+                { title: "General HR Questions", terms: "10 terms", link: "/generalquestions" },
+                { title: "Data Structures & Algorithms", terms: "120 terms" },
+                { title: "Database & SQL", terms: "90 terms" },
+                { title: "Object-Oriented Programming", terms: "70 terms" },
+                { title: "System Design Basics", terms: "60 terms" },
+                { title: "Cybersecurity Fundamentals", terms: "65 terms" },
+                { title: "Data Science & Machine Learning", terms: "110 terms" },
+                { title: "Frontend Development", terms: "80 terms" },
+                { title: "Backend & APIs", terms: "85 terms" },
               ].map((card, index) => (
-                <div key={index} className="grid-item">
-                  <h3 className="card-title">{card.title}</h3>
-                  <span className="terms-badge">{card.terms}</span>
-                </div>
+                card.link ? (
+                  <Link
+                    key={index}
+                    to={card.link}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <div className="grid-item">
+                      <h3 className="card-title">{card.title}</h3>
+                      <span className="terms-badge">{card.terms}</span>
+                    </div>
+                  </Link>
+                ) : (
+                  <div key={index} className="grid-item">
+                    <h3 className="card-title">{card.title}</h3>
+                    <span className="terms-badge">{card.terms}</span>
+                  </div>
+                )
               ))}
             </div>
           </div>

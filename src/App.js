@@ -6,22 +6,22 @@ import Signup from "./Signup";
 import MyDeck from "./MyDeck";
 import PracticeTest from "./PracticeTest";
 import DeckOwn from "./DeckOwn";
+import GeneralQuestions from "./GeneralQuestions"; // ✅ Import the new page
 
 class App extends React.Component {
   render() {
     return (
       <Router>
         <div style={{ minHeight: "100vh", backgroundColor: "white" }}>
-          
-
           {/* Routes */}
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/mydecks" element={<MyDeck/>}/>
+            <Route path="/mydecks" element={<MyDeck />} />
             <Route path="/practicetests" element={<PracticeTest />} />
             <Route path="/deckowns" element={<DeckOwn />} />
+            <Route path="/generalquestions" element={<GeneralQuestions />} /> {/* ✅ New route */}
           </Routes>
         </div>
       </Router>

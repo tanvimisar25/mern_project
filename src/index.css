@@ -99,6 +99,27 @@ body {
   letter-spacing: 0.5px;
 }
 
+/* Sidebar links should look like blocks */
+.sidebar-link {
+  text-decoration: none;   /* remove underline */
+  display: block;          /* make it clickable across full width */
+  color: inherit;          /* use parent li text color */
+}
+
+.sidebar-link li {
+  padding: 10px 15px;
+  text-decoration: none !important;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.sidebar-link li:hover {
+  background: #e6e6e6;
+}
+
+
 hr {
   border: none;
   border-top: 1px solid #ddd;
