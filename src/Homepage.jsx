@@ -15,7 +15,7 @@ function Logo() {
       />{" "}
       &nbsp;&nbsp;
       <span className="text-2xl font-bold inline-block align-middle" style={{ fontSize: "2.5rem" }}>
-        Prepdeck
+        PrepDeck
       </span>
     </div>
   );
