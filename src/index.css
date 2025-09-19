@@ -39,7 +39,7 @@ body {
 
 /* --- Sidebar --- */
 .sidebar {
-  background-color: var(--bg-dark);
+  background-color: #1a1a1a;
   color: var(--text-light);
   padding: var(--sidebar-padding) 0;
   display: flex;
@@ -207,9 +207,8 @@ body {
 /* Sidebar Footer */
 .sidebar-footer {
   margin-top: auto;
-  padding: var(--sidebar-padding) 0;
+  padding: 15px 0; /* Symmetrical padding */
   border-top: 1px solid #333333;
-  padding-top: 15px;
 }
 
 .sidebar-footer .login-link {
@@ -249,6 +248,12 @@ body {
 
 .sidebar-footer .login-link:hover {
   background-color: var(--sidebar-bg-item-hover);
+}
+
+/* This new rule specifically targets the user icon */
+.sidebar-footer .login-link svg {
+  width: 28px;
+  height: 28px;
 }
 
 /* --- Main Content --- */
@@ -357,3 +362,4 @@ body {
   background: var(--primary-accent-light);
   color: var(--primary-accent);
 }
+
