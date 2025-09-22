@@ -154,7 +154,6 @@ class MyDeck extends React.Component {
                                 <li><a className="sidebar-link"><AffairsIcon /><span className="link-text">Current Affairs</span></a></li>
                                 <li><a className="sidebar-link"><SkillIcon /><span className="link-text">Computer Science</span></a></li>
                                 <li><a className="sidebar-link"><AptitudeIcon /><span className="link-text">Engineering</span></a></li>
-                                <li><a className="sidebar-link"><DecksIcon /><span className="link-text">General Knowledge</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -167,7 +166,7 @@ class MyDeck extends React.Component {
 
                 {/* Main Content */}
                 <main className="main-content">
-                    <div className="main-header">
+                    <div className="mmain-header">
                         <h1>Your Decks</h1>
                         <p className="subtitle">Track your progress and organize your study materials.</p>
                     </div>

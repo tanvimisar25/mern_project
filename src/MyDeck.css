@@ -1,263 +1,55 @@
-/* --- Font & Global Variables --- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+/* Import shared styles */
+@import url('./index.css');
 
-:root {
-  --bg-dark: #0a1128;
-  --bg-light: #f4f7fa;
-  --primary-accent: #76A9FA;
-  --primary-accent-light: #dbeafe;
-  --text-light: #e0e0e0;
-  --text-dark: #2d3748;
-  --text-muted: #718096;
-  --card-bg: #ffffff;
-  --border-color: #e2e8f0;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  --sidebar-collapsed-width: 90px;
-  --sidebar-expanded-width: 260px;
-}
+/* === MY DECKS PAGE SPECIFIC STYLES === */
 
-/* --- Base Layout --- */
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--bg-light);
-  color: var(--text-dark);
-}
-
+/* --- Layout Wrapper --- */
 .my-decks-layout {
-  display: flex;
-  padding: 20px;
+  display: flex;                 /* enable sidebar + content side-by-side */
+  min-height: 100vh;
+  padding: 20px;                  /* match global padding so sidebar sits inside */
   box-sizing: border-box;
 }
 
-/* --- Sidebar --- */
-.sidebar {
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  padding: 20px 0;
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  height: calc(100vh - 40px);
-  border-radius: 30px;
-  box-sizing: border-box;
-  transition: width 0.3s ease-in-out;
-  overflow: hidden;
-  width: var(--sidebar-collapsed-width);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-}
-
-.my-decks-layout:hover .sidebar {
-  width: var(--sidebar-expanded-width);
-}
-
-.sidebar-header {
-  padding: 0 20px;
-}
-
-.sidebar-logo {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  height: 40px;
-}
-
-.logo-img {
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-}
-
-.logo-text {
-  font-size: 24px;
-  font-weight: 600;
-  color: white;
-  opacity: 0;
-  width: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.my-decks-layout:hover .sidebar .logo-text {
-  opacity: 1;
-  width: auto;
-}
-
-.sidebar-content {
+/* --- Override the generic .main-content from index.css only inside MyDeck --- */
+.my-decks-layout .main-content {
   flex-grow: 1;
-  padding-top: 20px;
-}
-
-.sidebar-section {
-  padding: 0 20px;
-}
-
-.section-title {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  margin-bottom: 0;
-}
-
-.my-decks-layout:hover .sidebar .section-title {
-  opacity: 1;
-}
-
-.sidebar-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.sidebar-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 10px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: var(--text-light);
-  font-weight: 500;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.sidebar-link svg {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  stroke-width: 1.5;
-}
-
-.my-decks-layout:hover .sidebar .sidebar-link {
-  justify-content: flex-start;
-  padding: 10px 15px;
-}
-
-.sidebar-link .link-text {
-  opacity: 0;
-  width: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.my-decks-layout:hover .sidebar .sidebar-link .link-text {
-  opacity: 1;
-  width: auto;
-}
-
-.sidebar-link:hover {
-  background-color: #2c2c2c;
-  color: white;
-}
-
-.sidebar-link.active {
-  background-color: var(--primary-accent);
-  color: white;
-  font-weight: 600;
-}
-
-.sidebar-link.active svg {
-  fill: white;
-}
-
-.sidebar-footer {
-  margin-top: auto;
-  padding: 20px 0;
-  border-top: 1px solid #333333;
-}
-
-.login-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 10px;
-  text-decoration: none;
-  color: var(--text-light);
-  white-space: nowrap;
-  overflow: hidden;
-  margin: 0 20px;
-}
-
-.login-link svg {
-  width: 28px;
-  height: 28px;
-}
-
-.my-decks-layout:hover .sidebar .login-link {
-  justify-content: flex-start;
-}
-
-.login-link .link-text {
-  opacity: 0;
-  width: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.my-decks-layout:hover .sidebar .login-link .link-text {
-  opacity: 1;
-  width: auto;
-}
-
-/* --- Main Content --- */
-.main-content {
-  flex-grow: 1;
-  padding: 20px 40px;
-  margin-left: calc(var(--sidebar-collapsed-width) + 20px);
+  padding-top: 20px;              /* keep your page-specific top padding */
+  padding-left: 40px;             /* maintain horizontal breathing space */
+  padding-right: 40px;
+  margin-left: calc(var(--sidebar-collapsed-width) + 40px);
   transition: margin-left 0.3s ease-in-out;
 }
 
-.my-decks-layout:hover .main-content {
-  margin-left: calc(var(--sidebar-expanded-width) + 20px );
-}
-
-.main-header {
-  margin-bottom: 24px;
-}
-
-.main-header h1 {
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0 0 8px 0;
-}
-
-.subtitle {
-  font-size: 18px;
-  color: var(--text-muted);
-  margin: 0;
+/* Expand when sidebar hovers */
+.my-decks-layout .sidebar:hover ~ .main-content {
+  margin-left: calc(var(--sidebar-expanded-width) + 40px);
 }
 
 /* --- Dashboard Grid --- */
-
 .dashboard-grid {
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: 24px;
   align-items: start;
-  margin-top: 20px; /* push grid lower below header */
 }
 
-
-.progress-overview-card,
-.todo-list-card {
-  background: var(--card-bg);
+.progress-overview-card {
   border-radius: 16px;
   padding: 24px;
   box-shadow: var(--shadow);
   border: 1px solid var(--border-color);
+  margin-top:200px;
+  margin-left:-250px;
+}
+.todo-list-card {
+  background: var(--bg-dark);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  margin-top:-40px;
+  height: 510px;
 }
 
 .progress-overview-card h3,
@@ -265,6 +57,7 @@ body {
   margin-top: 0;
   font-size: 20px;
   font-weight: 600;
+  color:white;
 }
 
 .progress-grid {
@@ -279,13 +72,11 @@ body {
   padding: 16px;
   border: 1px solid var(--border-color);
 }
-
 .progress-card h4 {
   margin: 0 0 8px 0;
   font-size: 16px;
   font-weight: 500;
 }
-
 .progress-card p {
   margin: 0;
   font-size: 24px;
@@ -299,7 +90,6 @@ body {
   gap: 10px;
   margin: 16px 0;
 }
-
 .todo-form input {
   flex-grow: 1;
   padding: 10px;
@@ -308,7 +98,6 @@ body {
   font-family: 'Poppins', sans-serif;
   font-size: 14px;
 }
-
 .todo-form button {
   background-color: var(--primary-accent);
   color: white;
@@ -320,18 +109,13 @@ body {
   align-items: center;
   justify-content: center;
 }
-
-.add-icon {
-  width: 20px;
-  height: 20px;
-}
+.add-icon { width: 20px; height: 20px; }
 
 .todo-items {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-
 .todo-items li {
   display: flex;
   align-items: center;
@@ -339,10 +123,7 @@ body {
   padding: 12px 4px;
   border-bottom: 1px solid var(--border-color);
 }
-
-.todo-items li:last-child {
-  border-bottom: none;
-}
+.todo-items li:last-child { border-bottom: none; }
 
 .todo-content {
   display: flex;
@@ -351,29 +132,33 @@ body {
   cursor: pointer;
   flex-grow: 1;
 }
-
-.todo-content input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-}
-
+.todo-content input[type="checkbox"] { width: 18px; height: 18px; }
 .todo-items li.completed span {
   text-decoration: line-through;
   color: var(--text-muted);
 }
-
 .delete-btn {
   background: none;
   border: none;
   cursor: pointer;
   color: var(--text-muted);
 }
+.delete-btn:hover { color: #EF4444; }
+.trash-icon { width: 18px; height: 18px; }
 
-.delete-btn:hover {
-  color: #EF4444;
+.mmain-header {
+  text-align: center;
+  
 }
-
-.trash-icon {
-  width: 18px;
-  height: 18px;
+.mmain-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--bg-dark);
+  margin-top: -250px;
+  margin-left: 100px;
+}
+.mmain-header .subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-top: 8px;
 }
