@@ -33,8 +33,8 @@ body {
   min-height: 100vh;
   padding: 20px;
   box-sizing: border-box;
+  background-image: url("trans.png");
 }
-
 /* === SHARED COMPONENT STYLES === */
 
 .layout {

@@ -52,7 +52,13 @@
   height: 510px;
 }
 
-.progress-overview-card h3,
+.progress-overview-card h3{
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color:var(--bg-dark);
+}
+
 .todo-list-card h3 {
   margin-top: 0;
   font-size: 20px;
@@ -122,6 +128,7 @@
   justify-content: space-between;
   padding: 12px 4px;
   border-bottom: 1px solid var(--border-color);
+  color: white;
 }
 .todo-items li:last-child { border-bottom: none; }
 
@@ -147,15 +154,14 @@
 .trash-icon { width: 18px; height: 18px; }
 
 .mmain-header {
-  text-align: center;
-  
+width: 100%;
+  margin-bottom: 32px;
+  text-align: center; /* change to center if you want Option 1 */
 }
 .mmain-header h1 {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
-  color: var(--bg-dark);
-  margin-top: -250px;
-  margin-left: 100px;
+  margin: 0 0 8px 0;
 }
 .mmain-header .subtitle {
   font-size: 18px;
