@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import cardLogo from "./flash.png";
 import './index.css';
-import Squares from './Squares';
+import RipleGrid from './RipleGrid';
 
 // --- SVG Icon Components (No changes) ---
 const HomeIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.5 1.5 0 012.122 0l8.954 8.955M2.25 12V21a.75.75 0 00.75.75H21a.75.75 0 00.75-.75V12M9 21V15a2.25 2.25 0 012.25-2.25h1.5A2.25 2.25 0 0115 15v6" /></svg> );
@@ -71,13 +71,16 @@ function Homepage() {
   return (
     <div className="homepage-container">
       <div className="particles-background">
-        <Squares 
-          speed={0.5} 
-          squareSize={40}
-          direction='diagonal'
-          borderColor='#fff'
-          hoverFillColor='#222'
-        />
+        <RipleGrid
+    enableRainbow={false}
+    gridColor="#000"
+    rippleIntensity={0.05}
+    gridSize={10}
+    gridThickness={15}
+    mouseInteraction={true}
+    mouseInteractionRadius={1.2}
+    opacity={0.8}
+  />
       </div>
 
       <div className="layout">
