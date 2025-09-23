@@ -234,11 +234,18 @@ body {
   z-index: 1; /* keep content above background but below sidebar */
 }
 
+/* === ADDED: This is the only change needed === */
+/* When the sidebar is hovered, push the main content to the right */
+.sidebar:hover ~ .main-content {
+  margin-left: calc(var(--sidebar-expanded-width) + 40px);
+}
+
 /* --- Shared Main Header --- */
 .main-header {
   text-align: center;
   margin-top: -450px;
-  margin-left: -400px;
+  /* MODIFIED: Pulled the header to the left to prevent collision */
+  margin-left: -350px;
 }
 .main-header h1 {
   font-size: 36px;
@@ -257,7 +264,6 @@ body {
 .topbar { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 32px; padding-top: 0px; }
 
 /* --- Decks Section & Grid --- */
- 
 .decks-section { position: absolute; top: 10px; right: 40px; }
 .decks-section h2 { font-size: 26px; font-weight: 600; color: var(--bg-light); margin-bottom: 20px; text-align: center; top:1px;}
 .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;  gap: 20px;}
@@ -307,7 +313,8 @@ body {
   /* This container positions the card in the center */
   position: absolute;
   top: 55%;
-  left: 400px;;
+  /* MODIFIED: Pulled the flip card to the left to prevent collision */
+  left: 350px;
   transform: translate(-50%, -50%);
   z-index: 10;
   perspective: 1200px; /* Adds depth for the 3D flip */
@@ -404,3 +411,4 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
 }
+

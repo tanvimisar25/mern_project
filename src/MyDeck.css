@@ -4,11 +4,13 @@
 /* === MY DECKS PAGE SPECIFIC STYLES === */
 
 /* --- Layout Wrapper --- */
+
 .my-decks-layout {
   display: flex;                 /* enable sidebar + content side-by-side */
   min-height: 100vh;
   padding: 20px;                  /* match global padding so sidebar sits inside */
   box-sizing: border-box;
+  background-image: url("trans.png");
 }
 
 /* --- Override the generic .main-content from index.css only inside MyDeck --- */
