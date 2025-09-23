@@ -3,152 +3,137 @@
 
 /* --- CSS Variables for easy theme management --- */
 :root {
-  --bg-dark: #100a27;
-  --bg-light: #f8f9fc;
-  --primary-accent: #62b6cbb2; 
-  --primary-accent-light: #dbeafe;
-  --text-light: #e0e0e0;
-  --text-dark: #2d3748;
-  --text-muted: #718096;
-  --card-bg: #ffffff;
-  --border-color: #e2e8f0;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  --sidebar-collapsed-width: 90px;
-  --sidebar-expanded-width: 260px;
-  --sidebar-padding: 20px;
-  --sidebar-bg-item-hover: #080222fb;
-  --sidebar-bg-item-inactive: transparent;
+--bg-dark: #100a27;
+--bg-light: #f8f9fc;
+--primary-accent: #62b6cbb2; 
+--primary-accent-light: #dbeafe;
+--text-light: #e0e0e0;
+--text-dark: #2d3748;
+--text-muted: #718096;
+--card-bg: #ffffff;
+--border-color: #e2e8f0;
+--shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+--sidebar-collapsed-width: 90px;
+--sidebar-expanded-width: 260px;
+--decks-expanded-width: 300px;
+--decks-collapsed-width: 90px;
+--sidebar-padding: 20px;
+--sidebar-bg-item-hover: #080222fb;
+--sidebar-bg-item-inactive: transparent;
 }
 
 /* --- Base & Layout --- */
 body {
-  margin: 0;
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  /* ✅ MOVED BACKGROUND TO THE PARTICLE CONTAINER, NOT THE BODY */
-  background-color: var(--bg-dark); 
-  color: var(--text-dark);
+margin: 0;
+font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+background-color: var(--bg-dark); 
+color: var(--text-dark);
 }
 
-/* ✅ NEW: A wrapper for the homepage to position content correctly */
 .homepage-container {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  overflow: hidden; /* Prevents scrollbars from the particle canvas */
+position: relative;
+width: 100%;
+min-height: 100vh;
+overflow: hidden; 
 }
 
-/* ✅ NEW: Style for the fixed particle background */
-.particles-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0; /* Ensures it's behind everything else */
-}
 
 .layout {
-  display: flex;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  /* ✅ CHANGED: Make the layout transparent so particles show through */
-  background-color: transparent; 
-  /* ✅ ADDED: Ensure the layout sits on top of the particle background */
-  position: relative;
-  z-index: 1;
+display: flex;
+min-height: 100vh;
+padding: 20px;
+box-sizing: border-box;
+  background-image: url("trans.png");
+position: relative;
+z-index: 1;
 }
 
-/* ... THE REST OF YOUR CSS REMAINS EXACTLY THE SAME ... */
 /* --- Sidebar --- */
 .sidebar {
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  padding: var(--sidebar-padding) 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: fixed;
-  height: calc(100vh - 40px);
-  border-radius: 40px;
-  box-sizing: border-box;
-  transition: width 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  overflow: hidden;
-  width: var(--sidebar-collapsed-width);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  top: 20px;
-  left: 20px;
-  z-index: 2000;
+background-color: var(--bg-dark);
+color: var(--text-light);
+padding: var(--sidebar-padding) 0;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+position: fixed;
+height: calc(100vh - 40px);
+border-radius: 40px;
+box-sizing: border-box;
+transition: width 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+overflow: hidden;
+width: var(--sidebar-collapsed-width);
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+top: 20px;
+left: 20px;
+z-index: 2000;
 }
 .sidebar:hover { 
-  width: var(--sidebar-expanded-width); 
-  box-shadow: 0 12px 40px rgba(118, 169, 250, 0.3);
+width: var(--sidebar-expanded-width); 
+box-shadow: 0 12px 40px rgba(118, 169, 250, 0.3);
 }
 
 .sidebar-header { padding: 0 var(--sidebar-padding); }
 
 .sidebar-logo { 
-  display: flex; 
-  align-items: center; 
-  justify-content: flex-start; 
-  gap: 12px; 
-  cursor: default; 
-  white-space: nowrap; 
-  overflow: hidden; 
-  height: 40px; 
-  padding-left: 6px;
+display: flex; 
+align-items: center; 
+justify-content: flex-start; 
+gap: 12px; 
+cursor: default; 
+white-space: nowrap; 
+overflow: hidden; 
+height: 40px; 
+padding-left: 6px;
 }
 .logo-img { 
-  width: 40px; 
-  height: 40px; 
-  flex-shrink: 0; 
-  animation: flipLogo 4s infinite linear; /* your flip animation */
+width: 40px; 
+height: 40px; 
+flex-shrink: 0; 
+animation: flipLogo 4s infinite linear;
 }
 .logo-img:hover {
-  transform: scale(1.05);
+transform: scale(1.05);
 }
 .logo-text { 
-  font-size: 30px; 
-  font-weight: 600; 
-  color: white; 
-  opacity: 0; 
-  width: 0; 
-  transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out, background-position 1s ease-in-out; 
-  font-family: 'Poppins', sans-serif; 
-
-  /* gradient shine effect */
-  background: linear-gradient(90deg, #fff, var(--primary-accent), #fff);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+font-size: 30px; 
+font-weight: 600; 
+color: white; 
+opacity: 0; 
+width: 0; 
+transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out, background-position 1s ease-in-out; 
+font-family: 'Poppins', sans-serif; 
+background: linear-gradient(90deg, #fff, var(--primary-accent), #fff);
+background-size: 200% auto;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
 }
 .sidebar:hover .logo-text { 
-  opacity: 1; 
-  width: auto; 
-  animation: shine 3s linear infinite; 
+opacity: 1; 
+width: auto; 
+animation: shine 3s linear infinite; 
 }
 
-/* Shine animation for Prepdeck text */
 @keyframes shine {
-  0% { background-position: 100% center; }
-  100% { background-position: -100% center; }
+0% { background-position: 100% center; }
+100% { background-position: -100% center; }
 }
 
-.sidebar-content { flex-grow: 1; display: flex; flex-direction: column;  padding-top: 15px; overflow-y: auto; -ms-overflow-style: none; scrollbar-width: none; }
+.sidebar-content { flex-grow: 1; display: flex; flex-direction: column;   padding-top: 15px; overflow-y: auto; -ms-overflow-style: none; scrollbar-width: none; }
 .sidebar-content::-webkit-scrollbar { display: none; }
 .sidebar-section { display: flex; flex-direction: column; gap: 8px; padding: 0 var(--sidebar-padding); padding-top:5px; }
 .section-title { 
-  font-size: 11px; 
-  font-weight: 600; 
-  color: var(--text-muted); 
-  text-transform: uppercase; 
-  letter-spacing: 0.5px; 
-  white-space: nowrap; 
-  overflow: hidden; 
-  opacity: 0; 
-  transform: translateX(-10px);
-  transition: all 0.3s ease-in-out; 
-  margin-bottom: 0; 
+font-size: 11px; 
+font-weight: 600; 
+color: var(--text-muted); 
+text-transform: uppercase; 
+letter-spacing: 0.5px; 
+white-space: nowrap; 
+overflow: hidden; 
+opacity: 0; 
+transform: translateX(-10px);
+transition: all 0.3s ease-in-out; 
+margin-bottom: 0; 
 }
 .sidebar:hover .section-title { opacity: 1; transform: translateX(0); }
 
@@ -156,145 +141,160 @@ body {
 
 /* --- Sidebar Links --- */
 .sidebar-link {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; /* Always left aligned */
-  gap: 12px;
-  padding: 10px 14px; /* Same for both states */
-  border-radius: 12px;
-  text-decoration: none;
-  background-color: var(--sidebar-bg-item-inactive);
-  color: var(--text-light);
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  transition: background-color 0.2s ease, color 0.2s ease;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+gap: 12px;
+padding: 10px 14px;
+border-radius: 12px;
+text-decoration: none;
+background-color: var(--sidebar-bg-item-inactive);
+color: var(--text-light);
+font-weight: 500;
+font-size: 14px;
+cursor: pointer;
+white-space: nowrap;
+overflow: hidden;
+transition: background-color 0.2s ease, color 0.2s ease;
 }
 .sidebar-link svg {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  stroke-width: 1.5;
-  transition: transform 0.2s ease;
+width: 22px;
+height: 22px;
+flex-shrink: 0;
+stroke-width: 1.5;
+transition: transform 0.2s ease;
 }
 .sidebar-link:hover svg {
-  transform: translateY(-2px);
+transform: translateY(-2px);
 }
 .sidebar-link .link-text { 
-  opacity: 0; 
-  width: 0; 
-  margin-left: 0;
-  transition: none; /* instant hide */
+opacity: 0; 
+width: 0; 
+margin-left: 0;
+transition: none;
 }
 .sidebar:hover .sidebar-link .link-text { 
-  opacity: 1; 
-  width: auto; 
-  margin-left: 8px; 
+opacity: 1; 
+width: auto; 
+margin-left: 8px; 
 }
 .sidebar-link:hover { background-color: var(--sidebar-bg-item-hover); color: white; }
 
-/* Active state */
 .sidebar-menu li.active .sidebar-link,
 .sidebar-link.active {
-  background: linear-gradient(135deg, var(--primary-accent), #62b6cb);
-  color: white;
-  font-weight: 600;
-  border-radius: 20px; /* pill look */
-  box-shadow: 0 2px 8px rgba(118, 169, 250, 0.4);
+background: linear-gradient(135deg, var(--primary-accent), #62b6cb);
+color: white;
+font-weight: 600;
+border-radius: 20px;
+box-shadow: 0 2px 8px rgba(118, 169, 250, 0.4);
 }
 
 
 /* --- Sidebar Footer --- */
 .sidebar-footer { margin-top: auto; padding: 8px 0 5px 0; border-top: 1px solid #333333; }
 .sidebar-footer .login-link {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; /* always left aligned */
-  gap: 12px;
-  padding: 10px 15px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: var(--text-light);
-  font-weight: 500;
-  font-size: 14px;
-  transition: background-color 0.2s ease, color 0.2s ease;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  margin: 0 var(--sidebar-padding);
+display: flex;
+align-items: center;
+justify-content: flex-start;
+gap: 12px;
+padding: 10px 15px;
+border-radius: 12px;
+text-decoration: none;
+color: var(--text-light);
+font-weight: 500;
+font-size: 14px;
+transition: background-color 0.2s ease, color 0.2s ease;
+cursor: pointer;
+white-space: nowrap;
+overflow: hidden;
+margin: 0 var(--sidebar-padding);
 }
 .sidebar-footer .login-link svg {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  stroke-width: 1.5;
+width: 22px;
+height: 22px;
+flex-shrink: 0;
+stroke-width: 1.5;
 }
 .sidebar-footer .login-link .link-text {
-  opacity: 0;
-  width: 0;
-  margin-left: 0;
-  transition: none;
+opacity: 0;
+width: 0;
+margin-left: 0;
+transition: none;
 }
 .sidebar:hover .sidebar-footer .login-link .link-text {
-  opacity: 1;
-  width: auto;
-  margin-left: 8px;
+opacity: 1;
+width: auto;
+margin-left: 8px;
 }
 .sidebar-footer .login-link:hover { background-color: var(--sidebar-bg-item-hover); }
 
 /* --- Main Content Area --- */
 .main-content {
-  flex-grow: 1;
-  padding: 0 40px;
-  margin-left: calc(var(--sidebar-collapsed-width) + 40px);
-  transition: margin-left 0.3s ease-in-out;
-  position: relative;
-  z-index: 1; /* keep content above background but below sidebar */
+flex-grow: 1;
+padding: 0 40px;
+margin-left: calc(var(--sidebar-collapsed-width) + -20px);
+/* ✅ ADDED: Right margin to create space for the decks card */
+margin-right: calc(var(--decks-expanded-width) + 30px);
+/* ✅ ADDED: margin-right to the transition for smooth animation */
+transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
+position: relative;
+z-index: 1;
 }
 
-/* === ADDED: This is the only change needed === */
-/* When the sidebar is hovered, push the main content to the right */
+/* ✅ MODIFIED: This rule now also updates the margin-right */
 .sidebar:hover ~ .main-content {
-  margin-left: calc(var(--sidebar-expanded-width) + 40px);
+margin-left: calc(var(--sidebar-expanded-width) + -20px);
+margin-right: calc(var(--decks-collapsed-width) + 30px);
 }
 
 /* --- Shared Main Header --- */
 .main-header {
-  text-align: center;
-  margin-top: -450px;
-  /* MODIFIED: Pulled the header to the left to prevent collision */
-  margin-left: -350px;
+text-align: center;
+margin-top: -450px;
+/* ✅ REMOVED: No longer need fixed margin-left */
+/* margin-left: -350px; */
 }
 .main-header h1 {
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--bg-dark);
+font-size: 36px;
+font-weight: 700;
+color: var(--bg-dark);
 }
 .main-header .subtitle {
-  font-size: 18px;
-  color: var(--text-muted);
-  margin-top: 8px;
+font-size: 18px;
+color: var(--text-muted);
+margin-top: 8px;
 }
 
 /* === HOMEPAGE SPECIFIC STYLES === */
-
-/* --- Topbar --- */
-.topbar { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 32px; padding-top: 0px; }
-
-/* --- Decks Section & Grid --- */
-.decks-section { position: absolute; top: 10px; right: 40px; }
-.decks-section h2 { font-size: 26px; font-weight: 600; color: var(--bg-light); margin-bottom: 20px; text-align: center; top:1px;}
-.grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;  gap: 20px;}
+.decks-section { 
+position: absolute; 
+top: 10px; 
+right: -300px; 
+  transition: transform 0.3s ease-in-out;
+}
+.decks-section h2 { 
+font-size: 26px; 
+font-weight: 600; 
+color: var(--bg-light); 
+margin-bottom: 20px; 
+text-align: center; 
+top:1px;
+white-space: nowrap;
+}
+.grid-container { 
+display: grid; 
+grid-template-columns: 1fr;
+gap: 20px;
+transition: opacity 0.2s ease;
+opacity: 1;
+}
 .grid-item { 
-  background: var(--bg-light); 
-  width: 250px;
-  border: 1px solid var(--border-color); 
-  border-radius: 40px; 
-  padding: 20px 20px; 
-  box-shadow: var(--shadow); 
-  transition: transform 0.2s ease, box-shadow 0.2s ease; 
+background: var(--bg-light); 
+border: 1px solid var(--border-color); 
+border-radius: 40px; 
+padding: 20px 20px; 
+box-shadow: var(--shadow); 
+transition: transform 0.2s ease, box-shadow 0.2s ease; 
 }
 .grid-item:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); }
 .card-title { font-size: 18px; font-weight: 600; color: var(--text-dark); margin: 0 0 12px 0; }
@@ -302,133 +302,195 @@ body {
 
 /* Explore Decks Card */
 .explore-decks-card {
-  background: var(--bg-dark);
-  border: 1px solid var(--border-color);
-  border-radius: 50px;
-  padding: 20px;
-  padding-top: 10px;
-  padding-left: 25px;
-  box-shadow: var(--shadow);
-  max-height: 565px;       /* fixed height */
-  overflow-y: auto;        /* scroll only inside the card */
-  margin-top: -7px;
-  margin-right: -30px;
-  width: 300px;
+background: var(--bg-dark);
+border: 1px solid var(--border-color);
+border-radius: 50px;
+padding: 20px;
+padding-top: 10px;
+padding-left: 25px;
+box-shadow: var(--shadow);
+height: 565px;
+overflow-y: auto;
+margin-top: -7px;
+margin-right: -30px;
+width: var(--decks-expanded-width);
+transition: width 0.3s ease-in-out;
+overflow-x: hidden; 
+display: flex;
+flex-direction: column;
 }
 
-/* Hide ugly scrollbars for a clean look */
-.explore-decks-card::-webkit-scrollbar {
-  width: 6px;
-}
-.explore-decks-card::-webkit-scrollbar-thumb {
-  border-radius: 3px;
-}
-.explore-decks-card::-webkit-scrollbar-track {
-  background: transparent;
+.explore-decks-card::-webkit-scrollbar { display: none; }
+.explore-decks-card::-webkit-scrollbar-thumb { border-radius: 3px; }
+.explore-decks-card::-webkit-scrollbar-track { background: transparent; }
+
+/* === INTERACTION STYLES === */
+/* ✅ ADD THIS ENTIRE NEW RULE */
+.sidebar:hover ~ .main-content .decks-section {
+  transform: translateX(calc(var(--decks-collapsed-width) - var(--decks-expanded-width)));
 }
 
-/* === ✨ NEW Flip Card for Homepage === */
+.sidebar:hover ~ .main-content .explore-decks-card {
+width: var(--decks-collapsed-width);
+}
+.sidebar:hover ~ .main-content .explore-decks-card h2 .title-expanded {
+opacity: 0;
+width: 0;
+}
+.explore-decks-card h2 .title-expanded {
+display: inline-block;
+transition: opacity 0.1s ease, width 0.3s ease-in-out;
+}
+.sidebar:hover ~ .main-content .grid-container {
+opacity: 0;
+height: 0;
+pointer-events: none;
+overflow: hidden;
+}
 
+.decks-collapsed-view {
+opacity: 0;
+height: 0;
+overflow: hidden;
+transition: opacity 0.3s ease 0.1s;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 12px;
+padding-top: 10px;
+justify-content: space-evenly;
+}
+
+.sidebar:hover ~ .main-content .decks-collapsed-view {
+opacity: 1;
+flex-grow: 1;
+}
+
+.deck-bubble-link {
+text-decoration: none;
+}
+
+.deck-bubble {
+background-color: var(--primary-accent-light);
+color: var(--text-dark);
+font-size: 16px;
+font-weight: 600;
+border-radius: 15px; /* rounded square */
+width: 60px; /* adjusted size */
+height: 60px; /* adjusted size */
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.deck-bubble:hover {
+transform: scale(1.1);
+background-color: #c7e8ff;
+}
+
+/* === Flip Card for Homepage === */
 .info-card-container {
-  /* This container positions the card in the center */
-  position: absolute;
-  top: 55%;
-  /* MODIFIED: Pulled the flip card to the left to prevent collision */
-  left: 350px;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  perspective: 1200px; /* Adds depth for the 3D flip */
+position: absolute;
+top: 55%;
+/* ✅ CHANGED: This now centers the card in the available space */
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 10;
+perspective: 1200px;
 }
+
+/* (The rest of your flip card CSS remains unchanged) */
 
 .info-card {
-  width: 570px;
-  height: 350px;
-  position: relative;
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-  cursor: pointer;
+width: 570px;
+height: 350px;
+position: relative;
+transition: transform 0.8s;
+transform-style: preserve-3d;
+cursor: pointer;
 }
 
 .info-card.is-flipped {
-  transform: rotateY(180deg);
+transform: rotateY(180deg);
 }
 
 .info-card-face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden; /* For Safari */
-  backface-visibility: hidden;
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2), 0 8px 10px -6px rgba(0,0,0,0.2);
-  box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+position: absolute;
+width: 100%;
+height: 100%;
+-webkit-backface-visibility: hidden;
+backface-visibility: hidden;
+border-radius: 1rem;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 1.5rem;
+text-align: center;
+box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2), 0 8px 10px -6px rgba(0,0,0,0.2);
+box-sizing: border-box;
+border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .info-card-front {
-  background-color: var(--bg-dark); /* Dark blue from reference */
-  font-size: 2rem;
-  font-weight: 600;
-  color: #ffffff; /* White text from reference */
+background-color: var(--bg-dark);
+font-size: 2rem;
+font-weight: 600;
+color: #ffffff;
 }
 
 .info-card-back {
-  background-color: #1b4965; /* Dark blue from reference */
-  transform: rotateY(180deg);
-  font-size: 2rem;
-  font-weight: 500;
-  color: #ffffff; /* White text from reference */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+background-color: #1b4965;
+transform: rotateY(180deg);
+font-size: 2rem;
+font-weight: 500;
+color: #ffffff;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
 }
 
 .info-card-content {
-    text-align: left;
+text-align: left;
 }
 
 .info-card-content h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 1rem;
-    text-align: center;
+font-size: 1.5rem;
+font-weight: 600;
+margin-top: 0;
+margin-bottom: 1rem;
+text-align: center;
 }
 
 .info-card-content ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1.5rem 0;
+list-style: none;
+padding: 0;
+margin: 0 0 1.5rem 0;
 }
 
 .info-card-content li {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.5;
+font-size: 1rem;
+margin-bottom: 0.75rem;
+line-height: 1.5;
 }
 
 .signup-button {
-  background-color: var(--primary-accent); /* Blue from reference */
-  color: #FFFFFF;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
+background-color: var(--primary-accent);
+color: #FFFFFF;
+border: none;
+padding: 0.75rem 1.5rem;
+font-size: 1rem;
+font-weight: 700;
+border-radius: 0.5rem;
+cursor: pointer;
+transition: all 0.2s ease;
+width: 100%;
 }
 
 .signup-button:hover {
-  background-color: #2563EB;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+background-color: #2563EB;
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
 }
-

@@ -4,11 +4,10 @@
 /* === MY DECKS PAGE SPECIFIC STYLES === */
 
 /* --- Layout Wrapper --- */
-
 .my-decks-layout {
-  display: flex;                 /* enable sidebar + content side-by-side */
+  display: flex; 
   min-height: 100vh;
-  padding: 20px;                  /* match global padding so sidebar sits inside */
+  padding: 20px; 
   box-sizing: border-box;
   background-image: url("trans.png");
 }
@@ -16,8 +15,8 @@
 /* --- Override the generic .main-content from index.css only inside MyDeck --- */
 .my-decks-layout .main-content {
   flex-grow: 1;
-  padding-top: 20px;              /* keep your page-specific top padding */
-  padding-left: 40px;             /* maintain horizontal breathing space */
+  padding-top: 20px; 
+  padding-left: 40px; 
   padding-right: 40px;
   margin-left: calc(var(--sidebar-collapsed-width) + 40px);
   transition: margin-left 0.3s ease-in-out;
@@ -41,8 +40,8 @@
   padding: 24px;
   box-shadow: var(--shadow);
   border: 1px solid var(--border-color);
-  margin-top:200px;
-  margin-left:-250px;
+  margin-top: 200px;
+  margin-left: -250px;
 }
 .todo-list-card {
   background: var(--bg-dark);
@@ -50,22 +49,24 @@
   padding: 24px;
   box-shadow: var(--shadow);
   border: 1px solid var(--border-color);
-  margin-top:-40px;
+  margin-top: -40px;
   height: 510px;
+  display: flex;
+  flex-direction: column;
 }
 
-.progress-overview-card h3{
+.progress-overview-card h3 {
   margin-top: 0;
   font-size: 20px;
   font-weight: 600;
-  color:var(--bg-dark);
+  color: var(--bg-dark);
 }
 
 .todo-list-card h3 {
   margin-top: 0;
   font-size: 20px;
   font-weight: 600;
-  color:white;
+  color: white;
 }
 
 .progress-grid {
@@ -117,13 +118,29 @@
   align-items: center;
   justify-content: center;
 }
-.add-icon { width: 20px; height: 20px; }
+.add-icon {
+  width: 20px;
+  height: 20px;
+}
 
 .todo-items {
   list-style: none;
   padding: 0;
   margin: 0;
+  flex-grow: 1; 
+  overflow-y: auto; 
+  min-height: 0; 
+  
+  /* ✅ ADDED: Hides the scrollbar for different browsers */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
 }
+
+/* ✅ ADDED: Hides the scrollbar for Chrome, Safari, and Opera */
+.todo-items::-webkit-scrollbar {
+  display: none;
+}
+
 .todo-items li {
   display: flex;
   align-items: center;
@@ -132,7 +149,9 @@
   border-bottom: 1px solid var(--border-color);
   color: white;
 }
-.todo-items li:last-child { border-bottom: none; }
+.todo-items li:last-child {
+  border-bottom: none;
+}
 
 .todo-content {
   display: flex;
@@ -141,7 +160,10 @@
   cursor: pointer;
   flex-grow: 1;
 }
-.todo-content input[type="checkbox"] { width: 18px; height: 18px; }
+.todo-content input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
 .todo-items li.completed span {
   text-decoration: line-through;
   color: var(--text-muted);
@@ -152,13 +174,18 @@
   cursor: pointer;
   color: var(--text-muted);
 }
-.delete-btn:hover { color: #EF4444; }
-.trash-icon { width: 18px; height: 18px; }
+.delete-btn:hover {
+  color: #ef4444;
+}
+.trash-icon {
+  width: 18px;
+  height: 18px;
+}
 
 .mmain-header {
-width: 100%;
+  width: 100%;
   margin-bottom: 32px;
-  text-align: center; /* change to center if you want Option 1 */
+  text-align: center;
 }
 .mmain-header h1 {
   font-size: 32px;

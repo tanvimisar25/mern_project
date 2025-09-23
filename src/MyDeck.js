@@ -3,6 +3,8 @@ import { Link, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import cardLogo from "./flash.png";
 import './MyDeck.css';
+import AnimatedList from './animations/LiquidEther'; 
+
 
 // --- SVG Icon Components ---
 const HomeIcon = () => (

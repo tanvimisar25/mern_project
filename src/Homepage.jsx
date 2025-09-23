@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import cardLogo from "./flash.png";
 import './index.css';
-import RipleGrid from './RipleGrid';
+
+
 
 // --- SVG Icon Components (No changes) ---
 const HomeIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.5 1.5 0 012.122 0l8.954 8.955M2.25 12V21a.75.75 0 00.75.75H21a.75.75 0 00.75-.75V12M9 21V15a2.25 2.25 0 012.25-2.25h1.5A2.25 2.25 0 0115 15v6" /></svg> );
@@ -39,15 +40,17 @@ const InfoFlipCard = () => {
     };
 
     return (
+      
         <div className="info-card-container">
             <div 
                 className={`info-card ${isFlipped ? 'is-flipped' : ''}`} 
                 onClick={() => setIsFlipped(!isFlipped)}
             >
                 {/* Front of the Card */}
-                <div className="info-card-face info-card-front">
+                <div className="info-card-face info-card-front ">
                     <h2>Flip me!</h2>
                 </div>
+
                 {/* Back of the Card */}
                 <div className="info-card-face info-card-back">
                     <div className="info-card-content">
@@ -70,19 +73,6 @@ const InfoFlipCard = () => {
 function Homepage() {
   return (
     <div className="homepage-container">
-      <div className="particles-background">
-        <RipleGrid
-    enableRainbow={false}
-    gridColor="#000"
-    rippleIntensity={0.05}
-    gridSize={10}
-    gridThickness={15}
-    mouseInteraction={true}
-    mouseInteractionRadius={1.2}
-    opacity={0.8}
-  />
-      </div>
-
       <div className="layout">
         <aside className="sidebar">
           <div className="sidebar-header">
@@ -135,7 +125,10 @@ function Homepage() {
 
           <div className="decks-section">
             <div className="explore-decks-card">
-              <h2>Featured Decks</h2>
+              {/* ✅ MODIFIED: Title is split into spans to control visibility */}
+              <h2><span className="title-expanded">Featured </span>Decks</h2>
+              
+              {/* --- Expanded View --- */}
               <div className="grid-container">
                 {[
                   { title: "General HR Questions", terms: "10 terms", link: "/generalquestions" },
@@ -162,6 +155,25 @@ function Homepage() {
                   )
                 ))}
               </div>
+
+              {/* ✅ ADDED: This is the new collapsed view with bubbles */}
+              <div className="decks-collapsed-view">
+                {[
+                    { short: "HR", link: "/generalquestions" },
+                    { short: "DSA", link: "/dsa" },
+                    { short: "SQL", link: "/sql" },
+                    { short: "HR", link: "/generalquestions" }
+                ].map((deck, index) => (
+                    deck.link ? (
+                        <Link key={index} to={deck.link} className="deck-bubble-link">
+                            <div className="deck-bubble">{deck.short}</div>
+                        </Link>
+                    ) : (
+                        <div key={index} className="deck-bubble">{deck.short}</div>
+                    )
+                ))}
+              </div>
+
             </div>
           </div>
         </div>
@@ -171,4 +183,3 @@ function Homepage() {
 }
 
 export default Homepage;
-
