@@ -24,8 +24,27 @@
 body {
   margin: 0;
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--bg-light);
+  /* ✅ MOVED BACKGROUND TO THE PARTICLE CONTAINER, NOT THE BODY */
+  background-color: var(--bg-dark); 
   color: var(--text-dark);
+}
+
+/* ✅ NEW: A wrapper for the homepage to position content correctly */
+.homepage-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden; /* Prevents scrollbars from the particle canvas */
+}
+
+/* ✅ NEW: Style for the fixed particle background */
+.particles-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Ensures it's behind everything else */
 }
 
 .layout {
@@ -33,13 +52,14 @@ body {
   min-height: 100vh;
   padding: 20px;
   box-sizing: border-box;
-  background-image: url("trans.png");
+  /* ✅ CHANGED: Make the layout transparent so particles show through */
+  background-color: transparent; 
+  /* ✅ ADDED: Ensure the layout sits on top of the particle background */
+  position: relative;
+  z-index: 1;
 }
-/* === SHARED COMPONENT STYLES === */
 
-.layout {
-  background-color: var( --bg-light);
-}
+/* ... THE REST OF YOUR CSS REMAINS EXACTLY THE SAME ... */
 /* --- Sidebar --- */
 .sidebar {
   background-color: var(--bg-dark);

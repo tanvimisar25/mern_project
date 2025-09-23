@@ -1,37 +1,50 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons"; 
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import "./Signup.css";
+
+// ✅ 1. IMPORT THE REALM APP OBJECT
+import { app } from "./App";
 
 function Signup() {
   const navigate = useNavigate();
 
-  // State for showing/hiding passwords
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  // ✅ 2. REPLACE YOUR HANDLESUBMIT FUNCTION WITH THIS ASYNC VERSION
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    const email = formData.get("email");
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
 
-    // Confirm password check
+    // Keep your password match check
     if (password !== confirmPassword) {
-      e.target.confirmPassword.setCustomValidity("Passwords do not match.");
-      e.target.confirmPassword.reportValidity(); // Show browser-style popup
+      alert("Passwords do not match.");
       return;
-    } else {
-      e.target.confirmPassword.setCustomValidity(""); // Reset validity
     }
 
-    navigate("/"); // Redirect to homepage
+    // Use a try...catch block to handle Realm registration
+    try {
+      // Register the user with their email and password
+      await app.emailPasswordAuth.registerUser({ email, password });
+      
+      // If successful, alert the user and navigate to the login page
+      alert("Success! You can now log in.");
+      navigate("/login");
+
+    } catch (error) {
+      // Handle errors, such as if the email is already in use
+      console.error("Error signing up:", error);
+      alert("Something went wrong! " + error.message);
+    }
   };
 
   return (
     <div className="signup-page">
-      {/* Back to Homepage outside the box */}
       <div className="back-homepage">
         <Link to="/">&larr; Back to Homepage</Link>
       </div>
@@ -42,45 +55,43 @@ function Signup() {
           <input type="text" placeholder="Username" name="username" required />
           <input type="email" placeholder="Email" name="email" required />
 
-          
-          {/* Password with FontAwesome eye icon */}
-<div className="password-wrapper">
-  <input
-    type={showPassword ? "text" : "password"}
-    placeholder="Password"
-    name="password"
-    required
-    pattern="^(?=.*\d).{8,}$"
-    title="Password must be at least 8 characters long and contain at least one number."
-  />
-  <span
-    className="toggle-eye"
-    onClick={() => setShowPassword(!showPassword)}
-  >
-    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-  </span>
-</div>
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              name="password"
+              required
+              pattern="^(?=.*\d).{8,}$"
+              title="Password must be at least 8 characters long and contain at least one number."
+            />
+            <span
+              className="toggle-eye"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+            </span>
+          </div>
 
-{/* Confirm Password with FontAwesome eye icon */}
-<div className="password-wrapper">
-  <input
-    type={showConfirmPassword ? "text" : "password"}
-    placeholder="Confirm Password"
-    name="confirmPassword"
-    required
-    onInput={(e) => e.target.setCustomValidity("")} // Reset validity on typing
-  />
-  <span
-    className="toggle-eye"
-    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-  >
-    <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
-  </span>
-</div>
+          <div className="password-wrapper">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              required
+            />
+            <span
+              className="toggle-eye"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              <FontAwesomeIcon
+                icon={showConfirmPassword ? faEyeSlash : faEye}
+              />
+            </span>
+          </div>
 
-
-
-          <button type="submit" className="signup-btn">Sign Up</button>
+          <button type="submit" className="signup-btn">
+            Sign Up
+          </button>
         </form>
         <p className="signup-footer">
           Already have an account? <Link to="/login">Login</Link>

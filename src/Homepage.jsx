@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import cardLogo from "./flash.png";
 import './index.css';
+import Squares from './Squares';
 
 // --- SVG Icon Components (No changes) ---
 const HomeIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.5 1.5 0 012.122 0l8.954 8.955M2.25 12V21a.75.75 0 00.75.75H21a.75.75 0 00.75-.75V12M9 21V15a2.25 2.25 0 012.25-2.25h1.5A2.25 2.25 0 0115 15v6" /></svg> );
@@ -28,14 +29,13 @@ function Logo() {
   );
 }
 
-// ✨ NEW Info Flip Card Component
 const InfoFlipCard = () => {
     const [isFlipped, setIsFlipped] = useState(false);
-    const navigate = useNavigate(); // Hook for navigation
+    const navigate = useNavigate();
 
     const handleSignUpClick = (e) => {
-        e.stopPropagation(); // Prevents the card from flipping when the button is clicked
-        navigate('/SignUp'); // Navigate to the SignUp page
+        e.stopPropagation();
+        navigate('/SignUp');
     };
 
     return (
@@ -57,7 +57,6 @@ const InfoFlipCard = () => {
                             <li>&#10004; Test your knowledge with targeted MCQs.</li>
                             <li>&#10004; Build the confidence to ace your next interview.</li>
                         </ul>
-                        {/* ✨ Updated button with new text and onClick handler */}
                         <button className="signup-button" onClick={handleSignUpClick}>
                             Unlock Your Potential by Signing up
                         </button>
@@ -68,87 +67,98 @@ const InfoFlipCard = () => {
     );
 };
 
-
 function Homepage() {
   return (
-    <div className="layout">
-      <aside className="sidebar">
-        <div className="sidebar-header">
-          <Logo />
-        </div>
-        <div className="sidebar-content">
-          <div className="sidebar-section">
-            <p className="section-title">DISCOVER</p>
-            <ul className="sidebar-menu">
-              <li className="active">
-                <Link to="/" className="sidebar-link">
-                  <HomeIcon /> <span className="link-text">Home</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/mydecks" className="sidebar-link">
-                  <DecksIcon /> <span className="link-text">My Decks</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="sidebar-section">
-            <p className="section-title">CATEGORY</p>
-            <ul className="sidebar-menu">
-                <li><a className="sidebar-link"><SkillIcon /><span className="link-text">Technical & Professional</span></a></li>
-                <li><a className="sidebar-link"><AptitudeIcon /><span className="link-text">General Aptitude</span></a></li>
-                <li><a className="sidebar-link"><VerbalIcon /><span className="link-text">Verbal and Reasoning</span></a></li>
-                <li><a className="sidebar-link"><AffairsIcon /><span className="link-text">Current Affairs</span></a></li>
-                <li><a className="sidebar-link"><ComputerIcon /><span className="link-text">Computer Science</span></a></li>
-                <li><a className="sidebar-link"><AptitudeIcon /><span className="link-text">Engineering</span></a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="sidebar-footer">
-          <Link to="/Login" className="login-link">
-            <ProfileIcon /> <span className="link-text">Login</span>
-          </Link>
-        </div>
-      </aside>
+    <div className="homepage-container">
+      <div className="particles-background">
+        <Squares 
+          speed={0.5} 
+          squareSize={40}
+          direction='diagonal'
+          borderColor='#fff'
+          hoverFillColor='#222'
+        />
+      </div>
 
-      <div className="main-content">
-        <div className="main-header">
-          <h1>Let's get you ready for your next interview!!</h1>
-          <p className="subtitle">
-            Master essential questions with targeted flashcards and multiple-choice questions.
-          </p>
-        </div>
-        
-        <InfoFlipCard />
+      <div className="layout">
+        <aside className="sidebar">
+          <div className="sidebar-header">
+            <Logo />
+          </div>
+          <div className="sidebar-content">
+            <div className="sidebar-section">
+              <p className="section-title">DISCOVER</p>
+              <ul className="sidebar-menu">
+                <li className="active">
+                  <Link to="/" className="sidebar-link">
+                    <HomeIcon /> <span className="link-text">Home</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/mydecks" className="sidebar-link">
+                    <DecksIcon /> <span className="link-text">My Decks</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="sidebar-section">
+              <p className="section-title">CATEGORY</p>
+              <ul className="sidebar-menu">
+                  <li><a className="sidebar-link"><SkillIcon /><span className="link-text">Technical & Professional</span></a></li>
+                  <li><a className="sidebar-link"><AptitudeIcon /><span className="link-text">General Aptitude</span></a></li>
+                  <li><a className="sidebar-link"><VerbalIcon /><span className="link-text">Verbal and Reasoning</span></a></li>
+                  <li><a className="sidebar-link"><AffairsIcon /><span className="link-text">Current Affairs</span></a></li>
+                  <li><a className="sidebar-link"><ComputerIcon /><span className="link-text">Computer Science</span></a></li>
+                  <li><a className="sidebar-link"><AptitudeIcon /><span className="link-text">Engineering</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="sidebar-footer">
+            <Link to="/Login" className="login-link">
+              <ProfileIcon /> <span className="link-text">Login</span>
+            </Link>
+          </div>
+        </aside>
 
-        <div className="decks-section">
-          <div className="explore-decks-card">
-            <h2>Featured Decks</h2>
-            <div className="grid-container">
-              {[
-                { title: "General HR Questions", terms: "10 terms", link: "/generalquestions" },
-                { title: "Data Structures & Algorithms", terms: "120 terms" },
-                { title: "Database & SQL", terms: "90 terms" },
-                { title: "General HR Questions", terms: "10 terms", link: "/generalquestions" },
-              ].map((card, index) => (
-                card.link ? (
-                  <Link
-                    key={index}
-                    to={card.link}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    <div className="grid-item">
+        <div className="main-content">
+          <div className="main-header">
+            <h1>Let's get you ready for your next interview!!</h1>
+            <p className="subtitle">
+              Master essential questions with targeted flashcards and multiple-choice questions.
+            </p>
+          </div>
+          
+          <InfoFlipCard />
+
+          <div className="decks-section">
+            <div className="explore-decks-card">
+              <h2>Featured Decks</h2>
+              <div className="grid-container">
+                {[
+                  { title: "General HR Questions", terms: "10 terms", link: "/generalquestions" },
+                  { title: "Data Structures & Algorithms", terms: "120 terms" },
+                  { title: "Database & SQL", terms: "90 terms" },
+                  { title: "General HR Questions", terms: "10 terms", link: "/generalquestions" },
+                ].map((card, index) => (
+                  card.link ? (
+                    <Link
+                      key={index}
+                      to={card.link}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <div className="grid-item">
+                        <h3 className="card-title">{card.title}</h3>
+                        <span className="terms-badge">{card.terms}</span>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div key={index} className="grid-item">
                       <h3 className="card-title">{card.title}</h3>
                       <span className="terms-badge">{card.terms}</span>
                     </div>
-                  </Link>
-                ) : (
-                  <div key={index} className="grid-item">
-                    <h3 className="card-title">{card.title}</h3>
-                    <span className="terms-badge">{card.terms}</span>
-                  </div>
-                )
-              ))}
+                  )
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -158,3 +168,4 @@ function Homepage() {
 }
 
 export default Homepage;
+

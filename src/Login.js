@@ -4,17 +4,37 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import "./Login.css";
 
+// --- REQUIRED IMPORTS ---
+import { app } from "./App";
+import * as Realm from "realm-web";
+// ------------------------
+
 function Login() {
   const navigate = useNavigate();
 
   // State for showing/hiding password
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  // --- REPLACED FUNCTION ---
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you can add your login validation logic
-    navigate("/"); // Redirect to homepage
+    const formData = new FormData(e.target);
+    const email = formData.get("username"); // Using the 'username' field for email
+    const password = formData.get("password");
+
+    try {
+      const credentials = Realm.Credentials.emailPassword(email, password);
+      const user = await app.logIn(credentials);
+      // The user is logged in!
+      alert("Welcome! You are logged in.");
+      // Go to your main website page now
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Wrong email or password. Try again!");
+    }
   };
+  // -------------------------
 
   return (
     <div className="login-page">
