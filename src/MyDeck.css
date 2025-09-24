@@ -3,56 +3,52 @@
 
 /* === MY DECKS PAGE SPECIFIC STYLES === */
 
-/* --- Layout Wrapper --- */
 .my-decks-layout {
-  display: flex; 
+  display: flex;
   min-height: 100vh;
-  padding: 20px; 
-  box-sizing: border-box;
-  background-image: url("trans.png");
+  background-image: url("trans.png"); /* Make sure path is correct */
+  align-items: stretch; /* Make columns full height */
 }
 
-/* --- Override the generic .main-content from index.css only inside MyDeck --- */
-.my-decks-layout .main-content {
+/* --- Center Content Column --- */
+.center-content {
   flex-grow: 1;
-  padding-top: 20px; 
-  padding-left: 40px; 
-  padding-right: 40px;
-  margin-left: calc(var(--sidebar-collapsed-width) + 40px);
-  transition: margin-left 0.3s ease-in-out;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontally center the content */
+  justify-content: center; /* Vertically center the content */
+  left: 50%;
+  top:55%;
 }
 
-/* Expand when sidebar hovers */
-.my-decks-layout .sidebar:hover ~ .main-content {
-  margin-left: calc(var(--sidebar-expanded-width) + 40px);
+.mmain-header {
+  width: 100%;
+  text-align: center; /* Center the heading and subtext */
+  margin-bottom: 32px;
 }
 
-/* --- Dashboard Grid --- */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 24px;
-  align-items: start;
+.mmain-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.mmain-header .subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-top: 8px;
 }
 
 .progress-overview-card {
+  width: 100%;
+  max-width: 700px; /* Control the max width of the card */
   border-radius: 16px;
   padding: 24px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-color);
-  margin-top: 200px;
-  margin-left: -250px;
-}
-.todo-list-card {
-  background: var(--bg-dark);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-color);
-  margin-top: -40px;
-  height: 510px;
-  display: flex;
-  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.156);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(7, 0, 0, 0.082);
+  
 }
 
 .progress-overview-card h3 {
@@ -60,13 +56,6 @@
   font-size: 20px;
   font-weight: 600;
   color: var(--bg-dark);
-}
-
-.todo-list-card h3 {
-  margin-top: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: white;
 }
 
 .progress-grid {
@@ -81,11 +70,13 @@
   padding: 16px;
   border: 1px solid var(--border-color);
 }
+
 .progress-card h4 {
   margin: 0 0 8px 0;
   font-size: 16px;
   font-weight: 500;
 }
+
 .progress-card p {
   margin: 0;
   font-size: 24px;
@@ -93,20 +84,52 @@
   color: var(--primary-accent);
 }
 
-/* --- To-Do List --- */
+/* --- Right Sidebar (To-Do List) --- */
+.right-sidebar {
+  width: 350px; /* Fixed width for the right column */
+  flex-shrink: 0;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.todo-list-card {
+  width: 100%;
+  background: var(--bg-dark);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 510px; /* Or adjust as needed */
+}
+
+.todo-list-card h3 {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+}
+
+/* --- To-Do List Inner Styles --- */
 .todo-form {
   display: flex;
   gap: 10px;
   margin: 16px 0;
 }
+
 .todo-form input {
   flex-grow: 1;
   padding: 10px;
-  border: 1px solid var(--border-color);
+  border: 1px solid #4a5568;
   border-radius: 8px;
   font-family: 'Poppins', sans-serif;
   font-size: 14px;
+  background-color: #2d3748;
+  color: white;
 }
+
 .todo-form button {
   background-color: var(--primary-accent);
   color: white;
@@ -118,6 +141,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .add-icon {
   width: 20px;
   height: 20px;
@@ -127,16 +151,12 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1; 
-  overflow-y: auto; 
-  min-height: 0; 
-  
-  /* ✅ ADDED: Hides the scrollbar for different browsers */
-  scrollbar-width: none; /* For Firefox */
-  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  flex-grow: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* ✅ ADDED: Hides the scrollbar for Chrome, Safari, and Opera */
 .todo-items::-webkit-scrollbar {
   display: none;
 }
@@ -146,9 +166,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 4px;
-  border-bottom: 1px solid var(--border-color);
-  color: white;
+  border-bottom: 1px solid #4a5568;
 }
+
 .todo-items li:last-child {
   border-bottom: none;
 }
@@ -160,40 +180,29 @@
   cursor: pointer;
   flex-grow: 1;
 }
+
 .todo-content input[type="checkbox"] {
   width: 18px;
   height: 18px;
 }
+
 .todo-items li.completed span {
   text-decoration: line-through;
   color: var(--text-muted);
 }
+
 .delete-btn {
   background: none;
   border: none;
   cursor: pointer;
   color: var(--text-muted);
 }
+
 .delete-btn:hover {
   color: #ef4444;
 }
+
 .trash-icon {
   width: 18px;
   height: 18px;
-}
-
-.mmain-header {
-  width: 100%;
-  margin-bottom: 32px;
-  text-align: center;
-}
-.mmain-header h1 {
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0 0 8px 0;
-}
-.mmain-header .subtitle {
-  font-size: 18px;
-  color: var(--text-muted);
-  margin-top: 8px;
 }
