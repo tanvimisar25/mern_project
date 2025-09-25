@@ -7,7 +7,7 @@
   display: flex;
   min-height: 100vh;
   background-image: url("trans.png"); /* Make sure path is correct */
-  align-items: stretch; /* Make columns full height */
+  align-items: flex-start; /* Sidebar stays pinned at the top */
 }
 
 /* --- Center Content Column --- */
@@ -16,15 +16,13 @@
   padding: 40px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Horizontally center the content */
-  justify-content: center; /* Vertically center the content */
-  left: 50%;
-  top:55%;
+  align-items: center;  
+  justify-content: flex-start; /* Start from top, not center */
 }
 
 .mmain-header {
   width: 100%;
-  text-align: center; /* Center the heading and subtext */
+  text-align: center;  
   margin-bottom: 32px;
   margin-left: 100px;
 }
@@ -43,7 +41,7 @@
 
 .progress-overview-card {
   width: 100%;
-  max-width: 700px; /* Control the max width of the card */
+  max-width: 700px;  
   border-radius: 16px;
   padding: 24px;
   background-color: rgba(255, 255, 255, 0.156);
@@ -59,44 +57,106 @@
   color: var(--bg-dark);
 }
 
+/* --- Grid & Card Layout --- */
+
 .progress-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
 
-.progress-grid .progress-card:first-child {
-  grid-column: 1 / -1; /* This makes the first card span the full width */
-}
-
+/* Base style for all cards in the grid */
 .progress-card {
   background-color: #f8f9fc;
   border-radius: 12px;
   padding: 16px;
   border: 1px solid var(--border-color);
-  text-align: center;
 }
 
-.progress-card h4 {
-  margin: 0 0 8px 0;
+/* This makes the FIRST card (Favourites) always span the full width */
+.progress-grid .progress-card:first-child {
+  grid-column: 1 / -1; 
+}
+
+/* THIS IS THE KEY CLASS: It is conditionally applied via React to make an
+   expanded card span the full width of the grid */
+.progress-card.full-width {
+  grid-column: 1 / -1;
+}
+
+/* --- Expandable "Favorites Card" Styles --- */
+
+/* This style is applied to all three clickable/expandable cards */
+.progress-card.favorites-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 26px;
+  text-align: left; /* Aligns the header content to the left */
+}
+
+.favorites-header-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px; /* Initial space when card is closed */
+}
+
+.favorites-header-inline h4 {
+  margin: 0;
   font-size: 16px;
   font-weight: 500;
 }
 
-.progress-card p {
+/* This styles the number (e.g., "5 decks") consistently */
+.favorites-header-inline p {
   margin: 0;
   font-size: 24px;
   font-weight: 700;
   color: var(--primary-accent);
 }
 
+/* Container for the animated list that appears on expand */
+.favorites-list {
+  overflow: hidden;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color, #e2e8f0);
+}
+
+/* Grid layout for the items INSIDE an expanded card */
+.favorite-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Styling for an individual deck item inside the list */
+.favorite-item {
+  background: var(--primary-accent);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 42px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  color: white; /* Ensure text is readable on the colored background */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.favorite-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
 /* --- Right Sidebar (To-Do List) --- */
 .right-sidebar {
-  width: 350px; /* Fixed width for the right column */
+  width: 350px;  
   flex-shrink: 0;
+  flex-grow: 0;  
   padding: 24px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .todo-list-card {
@@ -108,7 +168,7 @@
   color: white;
   display: flex;
   flex-direction: column;
-  height: 510px; /* Or adjust as needed */
+  height: 510px;  
 }
 
 .todo-list-card h3 {
@@ -118,7 +178,7 @@
   color: white;
 }
 
-/* --- To-Do List Inner Styles --- */
+/* To-Do List Inner Styles */
 .todo-form {
   display: flex;
   gap: 10px;
