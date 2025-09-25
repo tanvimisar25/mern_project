@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import "./Signup.css";
 
-// ✅ 1. IMPORT THE REALM APP OBJECT
+// Import the Realm App object
 import { app } from "./App";
 
 function Signup() {
@@ -12,39 +12,66 @@ function Signup() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  // State for handling form errors
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // ✅ 2. REPLACE YOUR HANDLESUBMIT FUNCTION WITH THIS ASYNC VERSION
+  // ✅ 1. State to control the success popup
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage(""); // Clear previous errors
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
 
-    // Keep your password match check
+    // --- Validation Logic ---
+    if (!email.endsWith("@gmail.com") && !email.endsWith("@somaiya.edu")) {
+      setErrorMessage("Please use a valid Gmail or Somaiya address.");
+      return;
+    }
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+    if (!passwordRegex.test(password)) {
+      setErrorMessage("Password must include uppercase, lowercase, a number, and be at least 6 characters.");
+      return;
+    }
     if (password !== confirmPassword) {
-      alert("Passwords do not match.");
+      setErrorMessage("Passwords do not match.");
       return;
     }
 
-    // Use a try...catch block to handle Realm registration
+    // --- If Validation Passes, Register the User ---
     try {
-      // Register the user with their email and password
       await app.emailPasswordAuth.registerUser({ email, password });
       
-      // If successful, alert the user and navigate to the login page
-      alert("Success! You can now log in.");
-      navigate("/login");
+      // ✅ 2. Show the success popup
+      setShowSuccessPopup(true);
+
+      // ✅ 3. Wait for 3 seconds, then navigate to the login page
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000); // 3000 milliseconds = 3 seconds
 
     } catch (error) {
-      // Handle errors, such as if the email is already in use
       console.error("Error signing up:", error);
-      alert("Something went wrong! " + error.message);
+      setErrorMessage(error.error || "Failed to sign up. The email might already be in use.");
     }
   };
 
   return (
     <div className="signup-page">
+      {/* ✅ 4. Add the popup JSX */}
+      {showSuccessPopup && (
+        <div className="popup-overlay">
+          <div className="popup-box">
+            <h2>Account Created!</h2>
+            <p>You can now log in. Redirecting...</p>
+          </div>
+        </div>
+      )}
+
       <div className="back-homepage">
         <Link to="/">&larr; Back to Homepage</Link>
       </div>
@@ -61,8 +88,8 @@ function Signup() {
               placeholder="Password"
               name="password"
               required
-              pattern="^(?=.*\d).{8,}$"
-              title="Password must be at least 8 characters long and contain at least one number."
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$"
+              title="Must include uppercase, lowercase, a number, and be at least 6 characters."
             />
             <span
               className="toggle-eye"
@@ -83,12 +110,11 @@ function Signup() {
               className="toggle-eye"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
-              <FontAwesomeIcon
-                icon={showConfirmPassword ? faEyeSlash : faEye}
-              />
+              <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
             </span>
           </div>
 
+          {errorMessage && <p className="signup-error-message">{errorMessage}</p>}
           <button type="submit" className="signup-btn">
             Sign Up
           </button>

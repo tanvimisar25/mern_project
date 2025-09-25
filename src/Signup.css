@@ -9,7 +9,9 @@
 }
 
 .signup-box {
-  background: #ffffff;
+  background-color: rgba(255, 255, 255, 0.156);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(7, 0, 0, 0.082);
   padding: 1.5rem 2.5rem;   /* reduced top padding */
   border-radius: 12px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
@@ -90,7 +92,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f3f4f6;
+  background-image: url("trans.png");
+
 }
 
 /* Back to Homepage link outside the box */
@@ -99,6 +102,7 @@
   top: 20px;
   left: 20px;
   font-size: 18px;  /* bigger font */
+  color: #111827;
 }
 
 .password-wrapper {
@@ -118,4 +122,62 @@
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 18px;
+}
+
+/* --- POPUP STYLES --- */
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-box {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.popup-box h2 {
+  margin-top: 0;
+  color: #28a745; /* Green color for success */
+}
+
+.popup-box p {
+  margin-bottom: 0;
+  color: #333;
+}
+
+/* --- ERROR MESSAGE STYLE --- */
+.signup-error-message {
+  color: #dc3545; /* A standard red color for errors */
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
