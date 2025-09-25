@@ -165,10 +165,10 @@ class MyDeck extends React.Component {
                                 <h4>Your Favourites</h4>
                                 <p>5 decks</p>
                             </div>
-                            <div className="progress-card">
+                            {/* <div className="progress-card">
                                 <h4>In Progress</h4>
                                 <p>3 decks</p>
-                            </div>
+                            </div> */}
                             <div className="progress-card">
                                 <h4>Completed</h4>
                                 <p>12 decks</p>
@@ -180,7 +180,7 @@ class MyDeck extends React.Component {
                         </div>
                     </div>
                 </main>
-
+                                
                 {/* --- Column 3: Right Column (To-Do List) --- */}
                 <aside className="right-sidebar">
                     <TodoList />

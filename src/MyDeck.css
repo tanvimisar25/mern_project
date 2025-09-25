@@ -26,6 +26,7 @@
   width: 100%;
   text-align: center; /* Center the heading and subtext */
   margin-bottom: 32px;
+  margin-left: 100px;
 }
 
 .mmain-header h1 {
@@ -48,7 +49,7 @@
   background-color: rgba(255, 255, 255, 0.156);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(7, 0, 0, 0.082);
-  
+  margin-left: 100px;
 }
 
 .progress-overview-card h3 {
@@ -64,11 +65,16 @@
   gap: 16px;
 }
 
+.progress-grid .progress-card:first-child {
+  grid-column: 1 / -1; /* This makes the first card span the full width */
+}
+
 .progress-card {
   background-color: #f8f9fc;
   border-radius: 12px;
   padding: 16px;
   border: 1px solid var(--border-color);
+  text-align: center;
 }
 
 .progress-card h4 {
