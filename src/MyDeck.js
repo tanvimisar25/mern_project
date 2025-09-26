@@ -112,40 +112,7 @@ const MyDeck = () => {
 
     return (
         <div className="my-decks-layout">
-            {/* --- Column 1: Sidebar (No changes) --- */}
-            <aside className="sidebar">
-                <div className="sidebar-header">
-                    <div className="sidebar-logo">
-                        <motion.img src={cardLogo} alt="Prepdeck logo" className="logo-img" whileHover={{ rotateY: 180 }}/>
-                        <span className="logo-text">PrepDeck</span>
-                    </div>
-                </div>
-                <div className="sidebar-content">
-                    <div className="sidebar-section">
-                        <p className="section-title">DISCOVER</p>
-                        <ul className="sidebar-menu">
-                            <li><NavLink to="/" className={({isActive}) => isActive ? "sidebar-link active" : "sidebar-link"}><HomeIcon /> <span className="link-text">Home</span></NavLink></li>
-                            <li><NavLink to="/mydecks" className={({isActive}) => isActive ? "sidebar-link active" : "sidebar-link"}><DecksIcon /> <span className="link-text">My Decks</span></NavLink></li>
-                        </ul>
-                    </div>
-                    <div className="sidebar-section">
-                        <p className="section-title">CATEGORY</p>
-                        <ul className="sidebar-menu">
-                            <li><a className="sidebar-link"><SkillIcon /><span className="link-text">Technical & Professional</span></a></li>
-                            <li><a className="sidebar-link"><AptitudeIcon /><span className="link-text">General Aptitude</span></a></li>
-                            <li><a className="sidebar-link"><VerbalIcon /><span className="link-text">Verbal and Reasoning</span></a></li>
-                            <li><a className="sidebar-link"><AffairsIcon /><span className="link-text">Current Affairs</span></a></li>
-                            <li><a className="sidebar-link"><SkillIcon /><span className="link-text">Computer Science</span></a></li>
-                            <li><a className="sidebar-link"><AptitudeIcon /><span className="link-text">Engineering</span></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="sidebar-footer">
-                    <a href="/login" className="login-link">
-                        <ProfileIcon /> <span className="link-text">Login</span>
-                    </a>
-                </div>
-            </aside>
+            
 
             {/* --- Column 2: Center Content (UPDATED) --- */}
             <main className="center-content">

@@ -1,12 +1,10 @@
-/* Import shared styles */
-@import url('./index.css');
+
 
 /* === MY DECKS PAGE SPECIFIC STYLES === */
 
 .my-decks-layout {
   display: flex;
   min-height: 100vh;
-  background-image: url("trans.png"); /* Make sure path is correct */
   align-items: flex-start; /* Sidebar stays pinned at the top */
 }
 
