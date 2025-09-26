@@ -5,7 +5,6 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #f3f4f6; /* light gray */
 }
 
 .signup-box {
@@ -92,18 +91,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("trans.png");
 
 }
 
-/* Back to Homepage link outside the box */
-.back-homepage {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 18px;  /* bigger font */
-  color: #111827;
-}
+
 
 .password-wrapper {
   position: relative;
@@ -168,6 +159,8 @@
   margin-bottom: 15px;
   text-align: center;
   font-size: 0.9em;
+  margin-top: 5px;
+
 }
 
 

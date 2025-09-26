@@ -2,43 +2,42 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const InfoFlipCard = () => {
-    const [isFlipped, setIsFlipped] = useState(false);
-    const navigate = useNavigate();
+  const [isFlipped, setIsFlipped] = useState(false);
+  const navigate = useNavigate();
 
-    const handleSignUpClick = (e) => {
-        e.stopPropagation();
-        navigate('/SignUp');
-    };
+  const handleSignUpClick = (e) => {
+    e.stopPropagation();
+    navigate('/SignUp');
+  };
 
-    return (
-        <div className="info-card-container">
-            <div
-    className={`info-card ${isFlipped ? 'is-flipped' : ''}`}
-    // This line tells the card to flip when you click it
-    onClick={() => setIsFlipped(!isFlipped)}
->
-                {/* Front of the Card */}
-                <div className="info-card-face info-card-front ">
-                    <h2>Flip me!</h2>
-                </div>
-
-                {/* Back of the Card */}
-                <div className="info-card-face info-card-back">
-                    <div className="info-card-content">
-                        <h3>Why PrepDeck?</h3>
-                        <ul>
-                            <li>&#10004; Master key concepts with curated flashcards.</li>
-                            <li>&#10004; Test your knowledge with targeted MCQs.</li>
-                            <li>&#10004; Build the confidence to ace your next interview.</li>
-                        </ul>
-                        <button className="signup-button" onClick={handleSignUpClick}>
-                            Unlock Your Potential by Signing up
-                        </button>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div className="info-card-container">
+      <div
+        className={`info-card ${isFlipped ? 'is-flipped' : ''}`}
+        onClick={() => setIsFlipped(!isFlipped)}
+      >
+        {/* Front of the Card */}
+        <div className="info-card-face info-card-front">
+          <h2>Flip me!</h2>
         </div>
-    );
+
+        {/* Back of the Card */}
+        <div className="info-card-face info-card-back">
+          <div className="info-card-content">
+            <h3>Why PrepDeck?</h3>
+            <ul>
+              <li>&#10004; Master key concepts with curated flashcards.</li>
+              <li>&#10004; Test your knowledge with targeted MCQs.</li>
+              <li>&#10004; Build the confidence to ace your next interview.</li>
+            </ul>
+            <button className="signup-button" onClick={handleSignUpClick}>
+              Unlock Your Potential by Signing up
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 function Homepage() {
@@ -52,14 +51,14 @@ function Homepage() {
               Master essential questions with targeted flashcards and multiple-choice questions.
             </p>
           </div>
-          
+
           <InfoFlipCard />
 
           <div className="decks-section">
             <div className="explore-decks-card">
               {/* ✅ MODIFIED: Title is split into spans to control visibility */}
               <h2><span className="title-expanded">Featured </span>Decks</h2>
-              
+
               {/* --- Expanded View --- */}
               <div className="grid-container">
                 {[
@@ -91,21 +90,20 @@ function Homepage() {
               {/* ✅ ADDED: This is the new collapsed view with bubbles */}
               <div className="decks-collapsed-view">
                 {[
-                    { short: "HR", link: "/generalquestions" },
-                    { short: "DSA", link: "/dsa" },
-                    { short: "SQL", link: "/sql" },
-                    { short: "HR", link: "/generalquestions" }
+                  { short: "HR", link: "/generalquestions" },
+                  { short: "DSA", link: "/dsa" },
+                  { short: "SQL", link: "/sql" },
+                  { short: "HR", link: "/generalquestions" }
                 ].map((deck, index) => (
-                    deck.link ? (
-                        <Link key={index} to={deck.link} className="deck-bubble-link">
-                            <div className="deck-bubble">{deck.short}</div>
-                        </Link>
-                    ) : (
-                        <div key={index} className="deck-bubble">{deck.short}</div>
-                    )
+                  deck.link ? (
+                    <Link key={index} to={deck.link} className="deck-bubble-link">
+                      <div className="deck-bubble">{deck.short}</div>
+                    </Link>
+                  ) : (
+                    <div key={index} className="deck-bubble">{deck.short}</div>
+                  )
                 ))}
               </div>
-
             </div>
           </div>
         </div>

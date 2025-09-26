@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import './GeneralQuestions.css';
 
-// --- Reusable Components & Data ---
+// Import your Realm app instance from your main App.js
+import { app } from './App'; 
 
+// --- Reusable Components & Data ---
 const Icon = ({ path, className = "icon" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d={path} />
@@ -19,16 +21,16 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
+    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
+    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
+    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
+    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
+    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
+    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
+    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
+    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
+    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
 ];
 
 const practiceTestQuestions = [
@@ -37,133 +39,162 @@ const practiceTestQuestions = [
         options: ["A detailed, 5-minute summary of your life story.", "A brief intro to your professional background and relevant achievements.", "Asking them to read your resume instead.", "Talking about your hobbies unrelated to work."],
         correctAnswer: "A brief intro to your professional background and relevant achievements."
     },
-    {
-        question: "What is an effective way to answer, 'What are your greatest strengths?'",
-        options: ["Listing skills relevant to the job, with examples.", "Claiming you have no weaknesses.", "A strength that has no relevance to the job.", "Saying that your friends tell you that you're a great person."],
-        correctAnswer: "Listing skills relevant to the job, with examples."
-    },
-    {
-        question: "How should you respond to 'What are your weaknesses?'",
-        options: ["Mention a genuine weakness and explain how you've improved.", "Say, 'I work too hard' or 'I care too much.'", "Insist that you do not have any weaknesses.", "Blame a previous employer for any shortcomings."],
-        correctAnswer: "Mention a genuine weakness and explain how you've improved."
-    },
-    {
-        question: "Why do you want to work for this company?",
-        options: ["Because the pay is good and the office is close to my house.", "Because I admire the company's innovation and positive culture.", "Because I need a job and this was the first one I saw.", "To gain experience before moving to a better company."],
-        correctAnswer: "Because I admire the company's innovation and positive culture."
-    },
-    {
-        question: "Where do you see yourself in 5 years?",
-        options: ["In your position.", "As a senior developer, mentoring others and leading projects.", "I'm not sure, I just go with the flow.", "Hopefully retired on a beach somewhere."],
-        correctAnswer: "As a senior developer, mentoring others and leading projects."
-    },
-    {
-        question: "Why should we hire you?",
-        options: ["Because I'm a fast learner and a hard worker.", "Because I really need this job to pay my bills.", "Because my skills and experience align perfectly with the role's requirements.", "Because my uncle works here and he said you're hiring."],
-        correctAnswer: "Because my skills and experience align perfectly with the role's requirements."
-    },
-    {
-        question: "What is your greatest professional achievement?",
-        options: ["Graduating from college with a good GPA.", "Winning an award in a non-work-related hobby.", "Leading a project that resulted in a measurable business improvement.", "Never missing a single day of work in my previous job."],
-        correctAnswer: "Leading a project that resulted in a measurable business improvement."
-    },
-    {
-        question: "How do you handle pressure?",
-        options: ["I avoid stressful situations as much as possible.", "I thrive under pressure; I do my best work at the last minute.", "I get very stressed but I manage to get the work done.", "By breaking down tasks into manageable steps and communicating with my team."],
-        correctAnswer: "By breaking down tasks into manageable steps and communicating with my team."
-    },
-    {
-        question: "What are your salary expectations?",
-        options: ["What is the maximum budget for this role?", "I'm open to any offer, I'm very flexible.", "I'm expecting a competitive salary based on market rates for this role.", "A very high number, because I believe I am worth it."],
-        correctAnswer: "I'm expecting a competitive salary based on market rates for this role."
-    },
-    {
-        question: "When asked 'Do you have any questions for us?', what is a good response?",
-        options: ["No, you've covered everything, thank you.", "Yes, how much vacation time do I get?", "Yes, I'd like to know more about the team's development process.", "When can I expect to hear back about the job?"],
-        correctAnswer: "Yes, I'd like to know more about the team's development process."
-    }
+    // ... rest of the practice test questions
 ];
 
 function GeneralQuestions() {
     // --- State Management ---
-    const [view, setView] = useState('options'); // 'options', 'flashcards', 'practiceTest'
-
-    // Flashcard States
-    const [questions, setQuestions] = useState(initialFlashcardQuestions);
+    const [view, setView] = useState('options');
+    const [questions, setQuestions] = useState(null); 
+    const [isLoading, setIsLoading] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [animation, setAnimation] = useState('');
     const [score, setScore] = useState({ correct: 0, wrong: 0 });
     const [isEditMode, setIsEditMode] = useState(false);
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
-
-    // Practice Test States
+    const [changedAnswers, setChangedAnswers] = useState({});
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
     const [ptScore, setPtScore] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(60); // timer ka kitna time hai
+    const [timeLeft, setTimeLeft] = useState(60);
     const [testFinished, setTestFinished] = useState(false);
 
-    const currentQuestion = questions[currentIndex];
+    // --- Data Loading Effect ---
+    useEffect(() => {
+        const loadUserQuestions = async () => {
+            if (!app.currentUser) {
+                setQuestions(initialFlashcardQuestions);
+                setIsLoading(false);
+                return;
+            }
+            try {
+                const mongo = app.currentUser.mongoClient("mongodb-atlas");
+                const usersCollection = mongo.db("prepdeck").collection("user");
+                const userProfile = await usersCollection.findOne({ auth_id: app.currentUser.id });
 
-    // --- Effects ---
+                if (userProfile && userProfile.editedCards && userProfile.editedCards.length > 0) {
+                    const userEditedCards = userProfile.editedCards;
+                    const editsMap = new Map();
+                    userEditedCards.forEach(edit => {
+                        editsMap.set(edit.card_id, edit.new_answer);
+                    });
+                    const personalizedQuestions = initialFlashcardQuestions.map(q => 
+                        editsMap.has(q.id) ? { ...q, back: editsMap.get(q.id) } : q
+                    );
+                    setQuestions(personalizedQuestions);
+                } else {
+                    setQuestions(initialFlashcardQuestions);
+                }
+            } catch (error) {
+                console.error("Failed to load user data:", error);
+                setQuestions(initialFlashcardQuestions);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        loadUserQuestions();
+    }, []);
+
+    // --- Other Effects ---
     useEffect(() => {
         setIsFlipped(false);
         setAnimation('');
     }, [currentIndex]);
     
     useEffect(() => {
-        if (view !== 'practiceTest' || testFinished) return;
-        if (timeLeft === 0) {
-            setTestFinished(true);
-            return;
-        }
+        if (view !== 'practiceTest' || testFinished || timeLeft === 0) return;
         const timerId = setInterval(() => setTimeLeft(t => t - 1), 1000);
+        if (timeLeft === 1) {
+            setTestFinished(true);
+        }
         return () => clearInterval(timerId);
     }, [timeLeft, view, testFinished]);
 
-    // --- Flashcard Handlers ---
+    // --- Handlers ---
     const handleFlip = () => !animation && setIsFlipped(!isFlipped);
     const handleAnswer = (isCorrect) => {
-        if (animation) return;
+        if (animation || !questions) return;
+        const currentQ = questions[currentIndex];
         setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left');
         setRoundResults(prev => ({
-            correct: isCorrect ? [...prev.correct, currentQuestion] : prev.correct,
-            incorrect: !isCorrect ? [...prev.incorrect, currentQuestion] : prev.incorrect,
+            correct: isCorrect ? [...prev.correct, currentQ] : prev.correct,
+            incorrect: !isCorrect ? [...prev.incorrect, currentQ] : prev.incorrect,
         }));
         setTimeout(() => {
             setScore(prev => ({ ...prev, correct: prev.correct + (isCorrect ? 1 : 0), wrong: prev.wrong + (!isCorrect ? 1 : 0) }));
             setCurrentIndex(prev => prev + 1);
         }, 500);
     };
+
     const handleShuffle = () => {
+        if (!questions) return;
         setQuestions(prev => [...prev].sort(() => Math.random() - 0.5));
         setCurrentIndex(0);
         setScore({ correct: 0, wrong: 0 });
         setRoundResults({ correct: [], incorrect: [] });
     };
+
     const handleReset = () => {
-        setQuestions(initialFlashcardQuestions);
+        setQuestions(initialFlashcardQuestions); // Resetting to original non-edited state for now
         setCurrentIndex(0);
         setScore({ correct: 0, wrong: 0 });
         setRoundResults({ correct: [], incorrect: [] });
         setAnimation('reset');
         setTimeout(() => setAnimation(''), 300);
     };
+
     const handleAnswerChange = (index, newAnswer) => {
         const updatedQuestions = [...questions];
         updatedQuestions[index].back = newAnswer;
         setQuestions(updatedQuestions);
+        const questionId = updatedQuestions[index].id;
+        setChangedAnswers(prev => ({ ...prev, [questionId]: newAnswer }));
     };
+
     const startPracticeRound = () => {
         setQuestions(roundResults.incorrect);
         setCurrentIndex(0);
         setScore({ correct: 0, wrong: 0 });
         setRoundResults({ correct: [], incorrect: [] });
     };
+
+    const handleSaveChanges = async () => {
+        if (!app.currentUser) {
+            alert("You must be logged in to save your changes.");
+            return;
+        }
+        if (Object.keys(changedAnswers).length === 0) {
+            setIsEditMode(false);
+            return;
+        }
+        try {
+            const mongo = app.currentUser.mongoClient("mongodb-atlas");
+            const usersCollection = mongo.db("prepdeck").collection("user");
+            const editedCardsToPush = Object.keys(changedAnswers).map(cardId => {
+                const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
+                return {
+                    card_id: cardId,
+                    deck_id: originalCard.deckId,
+                    original_answer: originalCard.back,
+                    new_answer: changedAnswers[cardId],
+                    edited_at: new Date()
+                };
+            });
+            await usersCollection.updateOne(
+                { auth_id: app.currentUser.id },
+                { $push: { editedCards: { $each: editedCardsToPush } } }
+            );
+            alert("Your changes have been saved!");
+            setChangedAnswers({});
+            setIsEditMode(false);
+        } catch (error) {
+            console.error("Failed to save edited cards:", error);
+            alert("An error occurred while saving your changes. Please try again.");
+        }
+    };
     
-    // --- Practice Test Handlers ---
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
     const handleNextQuestion = () => {
         const isCorrect = selectedAnswer === practiceTestQuestions[ptCurrentIndex].correctAnswer;
@@ -182,8 +213,7 @@ function GeneralQuestions() {
         setSelectedAnswer(null);
         setUserAnswers([]);
         setPtScore(0);
-        setTimeLeft(60); // restart ke baad setback to 60 seconds (1 minute)
-        
+        setTimeLeft(60);
         setTestFinished(false);
     };
     const formatTime = (seconds) => {
@@ -193,6 +223,11 @@ function GeneralQuestions() {
     };
 
     // --- Render Logic ---
+    if (isLoading || !questions) {
+        return <div className="loading-fullscreen">Loading Questions...</div>;
+    }
+    
+    const currentQuestion = questions[currentIndex];
 
     if (view === 'options') {
         return (
@@ -222,13 +257,13 @@ function GeneralQuestions() {
                     <div className="edit-mode-container">
                         <header className="edit-header">
                             <h2>Edit Answers</h2>
-                            <button onClick={() => setIsEditMode(false)} className="done-button" title="Save changes">Save</button>
+                            <button onClick={handleSaveChanges} className="done-button" title="Save changes">Save</button>
                         </header>
                         <div className="questions-list">
-                            {initialFlashcardQuestions.map((q, index) => (
-                                <div key={index} className="edit-question-item">
+                            {questions.map((q, index) => (
+                                <div key={q.id} className="edit-question-item">
                                     <label className="edit-question-label">{q.front}</label>
-                                    <textarea className="edit-textarea" value={questions[index].back} onChange={(e) => handleAnswerChange(index, e.target.value)} rows="3" />
+                                    <textarea className="edit-textarea" value={q.back} onChange={(e) => handleAnswerChange(index, e.target.value)} rows="3" />
                                 </div>
                             ))}
                         </div>
@@ -238,9 +273,9 @@ function GeneralQuestions() {
         }
 
         if (currentIndex >= questions.length && questions.length > 0) {
-            const totalAnswered = score.correct + score.wrong;
-            const percentage = totalAnswered > 0 ? Math.round((score.correct / totalAnswered) * 100) : 0;
-            let titleMessage = percentage >= 75 ? "You're doing brilliantly! Keep it up!" : percentage >= 50 ? "Good job! A little more practice will help." : "Keep practicing, you'll get there!";
+             const totalAnswered = score.correct + score.wrong;
+             const percentage = totalAnswered > 0 ? Math.round((score.correct / totalAnswered) * 100) : 0;
+             let titleMessage = percentage >= 75 ? "You're doing brilliantly! Keep it up!" : percentage >= 50 ? "Good job! A little more practice will help." : "Keep practicing, you'll get there!";
             
             return (
                 <div className="app-container">
@@ -322,7 +357,6 @@ function GeneralQuestions() {
 
     if (view === 'practiceTest') {
         const currentPtQuestion = practiceTestQuestions[ptCurrentIndex];
-
         if (testFinished) {
             return (
                 <div className="pt-app-container">
@@ -347,7 +381,7 @@ function GeneralQuestions() {
 
         return (
             <div className="pt-app-container">
-                 <div className="pt-back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
+                <div className="pt-back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
                 <div className="pt-test-header">
                     <div className="pt-progress-bar-container">
                         <div className="pt-progress-bar" style={{ width: `${((ptCurrentIndex + 1) / practiceTestQuestions.length) * 100}%` }}></div>

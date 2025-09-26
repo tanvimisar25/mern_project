@@ -87,16 +87,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f3f4f6;
 }
 
-/* Back to Homepage link outside the box */
-.back-homepage {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 18px;  /* bigger font */
+.login-error-message {
+  color: #dc3545; /* A standard red color for errors */
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 0.9em;
+  margin-top: 5px;
 }
+
 
 .password-wrapper {
   position: relative;
