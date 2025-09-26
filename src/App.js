@@ -1,11 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// ✅ 1. IMPORT REALM
-import * as Realm from "realm-web";
+// ✅ 1. IMPORT THE AUTH PROVIDER
+import { AuthProvider } from "./AuthContext";
 
-import SidebarLayout from "./SidebarLayout"; // NEW
-import Homepage from "./Homepage";
+// Import all your page and layout components
+import SidebarLayout from "./SidebarLayout";
+import Homepage from "./Homepage"; // Your public homepage
+// Homepage2 is no longer needed here for routing
 import Login from "./Login";
 import Signup from "./Signup";
 import MyDeck from "./MyDeck";
@@ -13,19 +15,21 @@ import PracticeTest from "./PracticeTest";
 import DeckOwn from "./DeckOwn";
 import GeneralQuestions from "./GeneralQuestions";
 
-// ✅ 2. INITIALIZE THE REALM APP AND EXPORT IT
-const APP_ID = "realmwebsite-hyrdqzm"; 
-export const app = new Realm.App({ id: APP_ID });
-
-class App extends React.Component {
-  render() {
-    return (
+// The main App component's ONLY job is to provide the context and router
+function App() {
+  return (
+    // The AuthProvider is still essential for your login system to work correctly
+    <AuthProvider>
       <Router>
         <div style={{ minHeight: "100vh", backgroundColor: "white" }}>
           <Routes>
-            {/* All pages with Sidebar */}
             <Route element={<SidebarLayout />}>
-              <Route path="/" element={<Homepage />} />
+              
+              {/* --- THIS IS THE KEY CHANGE --- */}
+              {/* The index route now ALWAYS points to your main homepage */}
+              <Route index element={<Homepage />} />
+
+              {/* The rest of your routes */}
               <Route path="/mydecks" element={<MyDeck />} />
               <Route path="/practicetests" element={<PracticeTest />} />
               <Route path="/deckowns" element={<DeckOwn />} />
@@ -36,8 +40,9 @@ class App extends React.Component {
           </Routes>
         </div>
       </Router>
-    );
-  }
+    </AuthProvider>
+  );
 }
 
 export default App;
+

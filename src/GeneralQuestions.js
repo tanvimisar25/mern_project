@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import './GeneralQuestions.css';
 
-// Import your Realm app instance from your main App.js
-import { app } from './App'; 
+// ✅ 1. IMPORT THE USEAUTH HOOK - This is the correct way to get user info.
+import { useAuth } from './AuthContext'; 
 
 // --- Reusable Components & Data ---
 const Icon = ({ path, className = "icon" }) => (
@@ -43,6 +44,9 @@ const practiceTestQuestions = [
 ];
 
 function GeneralQuestions() {
+    // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
+    const { currentUser } = useAuth();
+
     // --- State Management ---
     const [view, setView] = useState('options');
     const [questions, setQuestions] = useState(null); 
@@ -54,6 +58,8 @@ function GeneralQuestions() {
     const [isEditMode, setIsEditMode] = useState(false);
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
     const [changedAnswers, setChangedAnswers] = useState({});
+    
+    // (Practice test states are unchanged)
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
@@ -64,20 +70,22 @@ function GeneralQuestions() {
     // --- Data Loading Effect ---
     useEffect(() => {
         const loadUserQuestions = async () => {
-            if (!app.currentUser) {
+            setIsLoading(true);
+            if (!currentUser) {
+                // If no user is logged in, show the default questions
                 setQuestions(initialFlashcardQuestions);
                 setIsLoading(false);
                 return;
             }
             try {
-                const mongo = app.currentUser.mongoClient("mongodb-atlas");
+                // Get the user's data from their profile
+                const mongo = currentUser.mongoClient("mongodb-atlas");
                 const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ auth_id: app.currentUser.id });
+                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
 
                 if (userProfile && userProfile.editedCards && userProfile.editedCards.length > 0) {
-                    const userEditedCards = userProfile.editedCards;
                     const editsMap = new Map();
-                    userEditedCards.forEach(edit => {
+                    userProfile.editedCards.forEach(edit => {
                         editsMap.set(edit.card_id, edit.new_answer);
                     });
                     const personalizedQuestions = initialFlashcardQuestions.map(q => 
@@ -85,35 +93,40 @@ function GeneralQuestions() {
                     );
                     setQuestions(personalizedQuestions);
                 } else {
+                    // If the user has no edits, show the default questions
                     setQuestions(initialFlashcardQuestions);
                 }
             } catch (error) {
                 console.error("Failed to load user data:", error);
-                setQuestions(initialFlashcardQuestions);
+                setQuestions(initialFlashcardQuestions); // Fallback on error
             } finally {
                 setIsLoading(false);
             }
         };
         loadUserQuestions();
-    }, []);
+    // ✅ 3. THE FIX: This dependency array tells React to re-run this function
+    // whenever the currentUser changes (i.e., on login or logout).
+    }, [currentUser]); 
 
-    // --- Other Effects ---
+    // --- Other Effects (No changes) ---
     useEffect(() => {
-        setIsFlipped(false);
-        setAnimation('');
-    }, [currentIndex]);
+        if (!isLoading) { // Prevent resetting index while loading new questions
+            setCurrentIndex(0);
+            setIsFlipped(false);
+            setAnimation('');
+        }
+    }, [questions, isLoading]);
     
     useEffect(() => {
-        if (view !== 'practiceTest' || testFinished || timeLeft === 0) return;
+        if (view !== 'practiceTest' || testFinished) return;
+        if (timeLeft === 0) { setTestFinished(true); return; }
         const timerId = setInterval(() => setTimeLeft(t => t - 1), 1000);
-        if (timeLeft === 1) {
-            setTestFinished(true);
-        }
         return () => clearInterval(timerId);
     }, [timeLeft, view, testFinished]);
 
     // --- Handlers ---
     const handleFlip = () => !animation && setIsFlipped(!isFlipped);
+    
     const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
         const currentQ = questions[currentIndex];
@@ -137,7 +150,26 @@ function GeneralQuestions() {
     };
 
     const handleReset = () => {
-        setQuestions(initialFlashcardQuestions); // Resetting to original non-edited state for now
+        setIsLoading(true); // Show loading feedback
+        // Re-use the loading logic to get fresh data for the current user
+        const loadData = async () => {
+            if(currentUser) {
+                 const mongo = currentUser.mongoClient("mongodb-atlas");
+                 const usersCollection = mongo.db("prepdeck").collection("user");
+                 const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
+                 if(userProfile && userProfile.editedCards && userProfile.editedCards.length > 0){
+                    const editsMap = new Map();
+                    userProfile.editedCards.forEach(edit => editsMap.set(edit.card_id, edit.new_answer));
+                    setQuestions(initialFlashcardQuestions.map(q => editsMap.has(q.id) ? { ...q, back: editsMap.get(q.id) } : q));
+                 } else {
+                    setQuestions(initialFlashcardQuestions);
+                 }
+            } else {
+                setQuestions(initialFlashcardQuestions);
+            }
+            setIsLoading(false);
+        };
+        loadData();
         setCurrentIndex(0);
         setScore({ correct: 0, wrong: 0 });
         setRoundResults({ correct: [], incorrect: [] });
@@ -161,7 +193,7 @@ function GeneralQuestions() {
     };
 
     const handleSaveChanges = async () => {
-        if (!app.currentUser) {
+        if (!currentUser) {
             alert("You must be logged in to save your changes.");
             return;
         }
@@ -170,7 +202,7 @@ function GeneralQuestions() {
             return;
         }
         try {
-            const mongo = app.currentUser.mongoClient("mongodb-atlas");
+            const mongo = currentUser.mongoClient("mongodb-atlas");
             const usersCollection = mongo.db("prepdeck").collection("user");
             const editedCardsToPush = Object.keys(changedAnswers).map(cardId => {
                 const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
@@ -183,7 +215,7 @@ function GeneralQuestions() {
                 };
             });
             await usersCollection.updateOne(
-                { auth_id: app.currentUser.id },
+                { "auth_id": currentUser.id },
                 { $push: { editedCards: { $each: editedCardsToPush } } }
             );
             alert("Your changes have been saved!");
@@ -195,6 +227,7 @@ function GeneralQuestions() {
         }
     };
     
+    // Practice Test handlers are unchanged
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
     const handleNextQuestion = () => {
         const isCorrect = selectedAnswer === practiceTestQuestions[ptCurrentIndex].correctAnswer;
@@ -236,12 +269,12 @@ function GeneralQuestions() {
                 <div className="start-options-container">
                     <div className="start-screen">
                         <h1>Interview Prep Flashcards</h1>
-                        <p>Use these cards to practice your responses to common interview questions.</p>
+                        <p>Use these cards to practice your responses.</p>
                         <button onClick={() => setView('flashcards')} className="start-button">Start Flashcards</button>
                     </div>
                     <div className="start-screen">
                         <h1>Practice Test</h1>
-                        <p>Test your knowledge with a set of multiple-choice questions and a timer.</p>
+                        <p>Test your knowledge with multiple-choice questions.</p>
                         <button onClick={handleTestRestart} className="start-button">Start Practice Test</button>
                     </div>
                 </div>
@@ -273,10 +306,12 @@ function GeneralQuestions() {
         }
 
         if (currentIndex >= questions.length && questions.length > 0) {
-             const totalAnswered = score.correct + score.wrong;
-             const percentage = totalAnswered > 0 ? Math.round((score.correct / totalAnswered) * 100) : 0;
-             let titleMessage = percentage >= 75 ? "You're doing brilliantly! Keep it up!" : percentage >= 50 ? "Good job! A little more practice will help." : "Keep practicing, you'll get there!";
-            
+            const totalAnswered = score.correct + score.wrong;
+            const percentage = totalAnswered > 0 ? Math.round((score.correct / totalAnswered) * 100) : 0;
+            let titleMessage = "Round Complete!";
+            if (totalAnswered > 0) {
+                titleMessage = percentage >= 75 ? "You're doing brilliantly!" : percentage >= 50 ? "Good job! Keep practicing." : "Keep practicing, you'll get there!";
+            }
             return (
                 <div className="app-container">
                     <div className="back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
@@ -324,33 +359,33 @@ function GeneralQuestions() {
 
         return (
             <div className="app-container">
-                <div className="back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
-                <div className="flashcard-container">
-                    <header className="header">
-                        <button className="header-button" onClick={handleReset} title="Restart"><Icon path={ICONS.undo} /></button>
-                        <button className="header-button" onClick={() => setIsEditMode(true)} title="Edit"><Icon path={ICONS.edit} /></button>
-                    </header>
-                    <main className="main-content">
-                        <div className={`card ${isFlipped ? 'is-flipped' : ''} ${animation}`} onClick={handleFlip}>
-                            <div className="card-face card-front"><p>{currentQuestion?.front}</p></div>
-                            <div className="card-face card-back"><p>{currentQuestion?.back}</p></div>
-                        </div>
-                    </main>
-                    <div className="controls">
-                        <button className="control-button wrong-button" onClick={() => handleAnswer(false)}><Icon path={ICONS.x} className="icon large-icon" /></button>
-                        <div className="progress-text">
-                            <span>{currentIndex + 1} / {questions.length}</span>
-                            <div className="score-tracker">
-                                <span className="score-item score-wrong"><Icon path={ICONS.x} className="icon score-icon" /> {score.wrong}</span>
-                                <span className="score-item score-correct"><Icon path={ICONS.check} className="icon score-icon" /> {score.correct}</span>
-                            </div>
-                        </div>
-                        <button className="control-button correct-button" onClick={() => handleAnswer(true)}><Icon path={ICONS.check} className="icon large-icon" /></button>
-                    </div>
-                    <footer className="footer">
-                        <div className="footer-buttons"><button onClick={handleShuffle} title="Shuffle"><Icon path={ICONS.shuffle}/></button></div>
-                    </footer>
-                </div>
+                 <div className="back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
+                 <div className="flashcard-container">
+                     <header className="header">
+                         <button className="header-button" onClick={handleReset} title="Restart"><Icon path={ICONS.undo} /></button>
+                         <button className="header-button" onClick={() => setIsEditMode(true)} title="Edit"><Icon path={ICONS.edit} /></button>
+                     </header>
+                     <main className="main-content">
+                         <div className={`card ${isFlipped ? 'is-flipped' : ''} ${animation}`} onClick={handleFlip}>
+                             <div className="card-face card-front"><p>{currentQuestion?.front}</p></div>
+                             <div className="card-face card-back"><p>{currentQuestion?.back}</p></div>
+                         </div>
+                     </main>
+                     <div className="controls">
+                         <button className="control-button wrong-button" onClick={() => handleAnswer(false)}><Icon path={ICONS.x} className="icon large-icon" /></button>
+                         <div className="progress-text">
+                             <span>{currentIndex + 1} / {questions.length}</span>
+                             <div className="score-tracker">
+                                 <span className="score-item score-wrong"><Icon path={ICONS.x} className="icon score-icon" /> {score.wrong}</span>
+                                 <span className="score-item score-correct"><Icon path={ICONS.check} className="icon score-icon" /> {score.correct}</span>
+                             </div>
+                         </div>
+                         <button className="control-button correct-button" onClick={() => handleAnswer(true)}><Icon path={ICONS.check} className="icon large-icon" /></button>
+                     </div>
+                     <footer className="footer">
+                         <div className="footer-buttons"><button onClick={handleShuffle} title="Shuffle"><Icon path={ICONS.shuffle}/></button></div>
+                     </footer>
+                 </div>
             </div>
         );
     }

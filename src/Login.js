@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import * as Realm from "realm-web";
 import "./Login.css";
 
-// Required imports for Realm
-import { app } from "./App"; // Make sure the path to App.js is correct
-import * as Realm from "realm-web";
+// ✅ 1. IMPORT THE USEAUTH HOOK
+import { useAuth } from './AuthContext'; 
 
 function Login() {
   const navigate = useNavigate();
+  // ✅ 2. GET THE 'login' FUNCTION FROM THE AUTH CONTEXT
+  const { login } = useAuth();
 
   // State for form inputs
   const [email, setEmail] = useState("");
@@ -18,7 +20,7 @@ function Login() {
   // State for showing/hiding password
   const [showPassword, setShowPassword] = useState(false);
 
-  // State for handling login errors to display on the page
+  // State for handling login errors
   const [error, setError] = useState(null);
 
   // State to control the success popup
@@ -26,26 +28,26 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null);
 
     try {
-      // Create credentials using the email and password state
       const credentials = Realm.Credentials.emailPassword(email, password);
-      const user = await app.logIn(credentials);
       
-      // If login is successful, user object will be returned
-      if (user) {
-        // Show the success popup
-        setShowSuccessPopup(true);
+      // ✅ 3. USE THE 'login' FUNCTION FROM THE CONTEXT
+      // This will log the user in AND update the global state for the whole app.
+      await login(credentials);
+      
+      // If login is successful, show the popup
+      setShowSuccessPopup(true);
 
-        // Wait for 2 seconds, then navigate to the homepage
-        setTimeout(() => {
-          navigate("/");
-        }, 2000); // 2000 milliseconds = 2 seconds
-      }
+      // Wait 2 seconds, then navigate to the homepage. The router in App.js
+      // will see the user is logged in and show the correct page.
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+
     } catch (err) {
       console.error("Login failed:", err);
-      // Set the error message to display it to the user
       setError(err.error || "Wrong email or password. Try again!");
     }
   };
@@ -93,7 +95,6 @@ function Login() {
             </span>
           </div>
           
-          {/* Display error message directly in the form */}
           {error && <p className="login-error-message">{error}</p>}
 
           <button type="submit" className="login-btn">Login</button>
@@ -107,3 +108,4 @@ function Login() {
 }
 
 export default Login;
+

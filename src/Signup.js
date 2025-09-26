@@ -1,34 +1,32 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import "./Signup.css";
+import * as Realm from "realm-web"; // Keep this for Realm.Credentials
 
-// Import the Realm App object
-import { app } from "./App";
+// ✅ 1. IMPORT THE USEAUTH HOOK
+import { useAuth } from "./AuthContext";
 
 function Signup() {
   const navigate = useNavigate();
+  // ✅ 2. GET 'app' and 'login' FROM THE AUTH CONTEXT
+  const { app, login } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
-  // State for handling form errors
   const [errorMessage, setErrorMessage] = useState("");
-
-  // ✅ 1. State to control the success popup
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Clear previous errors
+    setErrorMessage(""); 
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
 
-    // --- Validation Logic ---
+    // --- Validation Logic (No changes here) ---
     if (!email.endsWith("@gmail.com") && !email.endsWith("@somaiya.edu")) {
       setErrorMessage("Please use a valid Gmail or Somaiya address.");
       return;
@@ -43,17 +41,21 @@ function Signup() {
       return;
     }
 
-    // --- If Validation Passes, Register the User ---
+    // --- Register and then Login the User ---
     try {
+      // Step 1: Register the new user
       await app.emailPasswordAuth.registerUser({ email, password });
       
-      // ✅ 2. Show the success popup
+      // ✅ 3. NEW: Automatically log the user in immediately after they sign up
+      const credentials = Realm.Credentials.emailPassword(email, password);
+      await login(credentials); // This updates the global login state
+      
       setShowSuccessPopup(true);
 
-      // ✅ 3. Wait for 3 seconds, then navigate to the login page
+      // ✅ 4. Navigate to the main homepage. The router will show the correct page.
       setTimeout(() => {
-        navigate("/login");
-      }, 3000); // 3000 milliseconds = 3 seconds
+        navigate("/");
+      }, 3000); 
 
     } catch (error) {
       console.error("Error signing up:", error);
@@ -63,12 +65,12 @@ function Signup() {
 
   return (
     <div className="signup-page">
-      {/* ✅ 4. Add the popup JSX */}
       {showSuccessPopup && (
         <div className="popup-overlay">
           <div className="popup-box">
             <h2>Account Created!</h2>
-            <p>You can now log in. Redirecting...</p>
+            {/* ✅ 5. Updated success message */}
+            <p>Logging you in and preparing your dashboard...</p>
           </div>
         </div>
       )}
@@ -129,3 +131,4 @@ function Signup() {
 }
 
 export default Signup;
+
