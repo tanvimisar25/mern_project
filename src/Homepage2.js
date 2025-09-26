@@ -45,7 +45,11 @@ function Homepage() {
     <div className="homepage-container">
       <div className="layout">
         <div className="main-content">
-          <InfoFlipCard />
+          <div className="main-header">
+            <h1>WELCOME BACK!!!</h1>
+            
+          </div>
+
 
           <div className="decks-section">
             <div className="explore-decks-card">

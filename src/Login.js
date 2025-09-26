@@ -43,7 +43,7 @@ function Login() {
       // Wait 2 seconds, then navigate to the homepage. The router in App.js
       // will see the user is logged in and show the correct page.
       setTimeout(() => {
-        navigate("/");
+        navigate("/dashboard");
       }, 2000);
 
     } catch (err) {
@@ -59,15 +59,12 @@ function Login() {
         <div className="popup-overlay">
           <div className="popup-box">
             <h2>Success!</h2>
-            <p>You have successfully signed in.</p>
+            <p>You have successfully logged in.</p>
           </div>
         </div>
       )}
 
-      <div className="back-homepage">
-        <Link to="/">&larr; Back to Homepage</Link>
-      </div>
-
+     
       <div className="login-box">
         <h2 className="login-title">Login</h2>
         <form className="login-form" onSubmit={handleSubmit}>

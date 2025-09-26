@@ -187,6 +187,12 @@ body {
     gap: 4px;
 }
 
+.sidebar:hover ~ .main-content {
+margin-left: var(--sidebar-expanded-width); /* This line should already exist */
+ padding-left: 30px; /* ✅ Add or verify this line is here */
+}
+
+
 /* --- Sidebar Links --- */
 .sidebar-link {
     display: flex;
@@ -297,7 +303,7 @@ body {
 /* --- Main Content Area --- */
 .main-content {
     flex-grow: 1;
-    margin-left: calc(var(--sidebar-collapsed-width));
+  margin-left: var(--sidebar-collapsed-width);
     transition: margin-left 0.3s ease-in-out;
     position: relative;
     z-index: 1;
@@ -308,15 +314,16 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh; /* This is needed for vertical centering */
+    
 }
 
-.sidebar:hover~.main-content {
-    margin-left: calc(var(--sidebar-expanded-width));
-}
+
 
 /* --- Shared Main Header --- */
 .main-header {
-    text-align: center;
+    text-align: center;         /* instead of center if you like */
+    margin-left: -450px;         /* ⬅️ push slightly left */
+    margin-top: -140px;         /* ⬆️ lift upward */
 }
 
 .main-header h1 {
@@ -498,9 +505,8 @@ body {
 
 /* === Flip Card for Homepage === */
 .info-card-container {
-    /* ✅ REMOVED: All absolute positioning properties */
-    perspective: 1200px;
-    margin-top: 40px; /* ✅ ADDED: Creates space below the header */
+    margin-left: -440px;         /* match header left shift */
+    margin-top: 30px;          /* space under header */
 }
 
 /* (The rest of your flip card CSS remains unchanged) */

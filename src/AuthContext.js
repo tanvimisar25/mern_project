@@ -1,24 +1,26 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as Realm from "realm-web";
 
-// 1. INITIALIZE THE REALM APP HERE. This is the only place.
 const APP_ID = "realmwebsite-hyrdqzm"; 
 const app = new Realm.App({ id: APP_ID });
 
-// 2. Create the context
 const AuthContext = createContext(null);
 
-// 3. Create the Provider component (the "intercom system")
 export const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState(app.currentUser);
+    const [currentUser, setCurrentUser] = useState(null);
+    // ✅ 1. ADD A NEW 'LOADING' STATE, STARTING AS TRUE
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // This runs once when the app starts and checks for a stored session.
         setCurrentUser(app.currentUser);
+        // ✅ 2. AFTER THE CHECK, SET LOADING TO FALSE
+        setLoading(false);
     }, []);
 
     const login = async (credentials) => {
         const user = await app.logIn(credentials);
-        setCurrentUser(user); // Announce the new user to the app
+        setCurrentUser(user);
         return user;
     };
 
@@ -26,25 +28,19 @@ export const AuthProvider = ({ children }) => {
         if (app.currentUser) {
             await app.currentUser.logOut();
         }
-        setCurrentUser(null); // Announce that the user has left
+        setCurrentUser(null);
     };
 
-    const contextValue = {
-        currentUser,
-        login,
-        logout,
-        app 
-    };
+    const contextValue = { currentUser, login, logout, app };
 
     return (
         <AuthContext.Provider value={contextValue}>
-            {children}
+            {/* ✅ 3. ONLY RENDER THE APP WHEN NOT LOADING */}
+            {!loading && children}
         </AuthContext.Provider>
     );
 };
 
-// 4. Create a custom hook to easily "listen" to the intercom
 export const useAuth = () => {
     return useContext(AuthContext);
 };
-

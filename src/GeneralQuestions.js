@@ -265,7 +265,6 @@ function GeneralQuestions() {
     if (view === 'options') {
         return (
             <div className="app-container">
-                <div className="back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
                 <div className="start-options-container">
                     <div className="start-screen">
                         <h1>Interview Prep Flashcards</h1>
@@ -286,7 +285,6 @@ function GeneralQuestions() {
         if (isEditMode) {
             return (
                 <div className="app-container">
-                    <div className="back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
                     <div className="edit-mode-container">
                         <header className="edit-header">
                             <h2>Edit Answers</h2>
@@ -314,7 +312,6 @@ function GeneralQuestions() {
             }
             return (
                 <div className="app-container">
-                    <div className="back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
                     <div className="completion-wrapper">
                         <div className="completion-screen-new">
                             <div className="completion-header"><h1>{titleMessage}</h1></div>
@@ -359,7 +356,6 @@ function GeneralQuestions() {
 
         return (
             <div className="app-container">
-                 <div className="back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
                  <div className="flashcard-container">
                      <header className="header">
                          <button className="header-button" onClick={handleReset} title="Restart"><Icon path={ICONS.undo} /></button>
@@ -395,7 +391,6 @@ function GeneralQuestions() {
         if (testFinished) {
             return (
                 <div className="pt-app-container">
-                    <div className="pt-back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
                     <div className="pt-results-screen">
                         <h1>Test Complete!</h1>
                         <h2>Your Score: {ptScore} / {practiceTestQuestions.length}</h2>
@@ -416,7 +411,6 @@ function GeneralQuestions() {
 
         return (
             <div className="pt-app-container">
-                <div className="pt-back-homepage"><Link to="/">&larr; Back to Homepage</Link></div>
                 <div className="pt-test-header">
                     <div className="pt-progress-bar-container">
                         <div className="pt-progress-bar" style={{ width: `${((ptCurrentIndex + 1) / practiceTestQuestions.length) * 100}%` }}></div>
