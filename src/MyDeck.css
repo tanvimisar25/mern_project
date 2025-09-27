@@ -38,7 +38,7 @@
 }
 
 .progress-overview-card {
-  width: 100%;
+  width: 300%;
   max-width: 700px;  
   border-radius: 16px;
   padding: 24px;
@@ -71,9 +71,9 @@
   border: 1px solid var(--border-color);
 }
 
-/* This makes the FIRST card (Favourites) always span the full width */
-.progress-grid .progress-card:first-child {
-  grid-column: 1 / -1; 
+/* This makes ALL cards in the grid span the full width */
+.progress-grid > .progress-card {
+  grid-column: 1 / -1;
 }
 
 /* THIS IS THE KEY CLASS: It is conditionally applied via React to make an
@@ -166,7 +166,8 @@
   color: white;
   display: flex;
   flex-direction: column;
-  height: 510px;  
+  height: 510px; 
+  margin-left: 150px; 
 }
 
 .todo-list-card h3 {

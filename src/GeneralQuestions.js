@@ -37,10 +37,104 @@ const initialFlashcardQuestions = [
 const practiceTestQuestions = [
     {
         question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
-        options: ["A detailed, 5-minute summary of your life story.", "A brief intro to your professional background and relevant achievements.", "Asking them to read your resume instead.", "Talking about your hobbies unrelated to work."],
-        correctAnswer: "A brief intro to your professional background and relevant achievements."
+        options: [
+            "A detailed, 5-minute summary of your life story.", 
+            "A brief, professional summary of your skills and experience relevant to the job.", 
+            "Asking them to read your resume instead.", 
+            "Talking about your hobbies unrelated to work."
+        ],
+        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
     },
-    // ... rest of the practice test questions
+    {
+        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        options: [
+            "By listing generic strengths like 'hard-working' without context.",
+            "By highlighting skills relevant to the job, supported by examples.",
+            "By saying you don't have any weaknesses, only strengths.",
+            "By mentioning personal strengths that are not related to the job."
+        ],
+        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+    },
+    {
+        question: "What is the most effective way to discuss your weaknesses?",
+        options: [
+            "Claiming you have no weaknesses.",
+            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
+            "Mentioning a real weakness and explaining the steps you've taken to improve.",
+            "Mentioning a critical weakness that would make you unfit for the job."
+        ],
+        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+    },
+    {
+        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        options: [
+            "That you are actively looking for any job.",
+            "That you've researched the company and see a mutual fit for your skills and goals.",
+            "That you only care about the salary and benefits.",
+            "That you haven't applied anywhere else."
+        ],
+        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+    },
+    {
+        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        options: [
+            "Your specific life plan, including personal goals.",
+            "Your career ambitions and whether they align with the company's growth opportunities.",
+            "Whether you plan to leave the company for a competitor soon.",
+            "Your ability to predict the future accurately."
+        ],
+        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+    },
+    {
+        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        options: [
+            "A repetition of your entire resume.",
+            "How your skills and experience directly match the job description and will benefit the company.",
+            "Why you are better than other candidates you don't know.",
+            "Your personal need for the job."
+        ],
+        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+    },
+    {
+        question: "What makes an answer about your greatest achievement most impactful?",
+        options: [
+            "Describing a project without mentioning the outcome.",
+            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
+            "Talking about an achievement from your personal life.",
+            "Taking credit for the entire team's work."
+        ],
+        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+    },
+    {
+        question: "A good response about handling pressure should demonstrate what?",
+        options: [
+            "That you never feel pressure or stress.",
+            "Positive coping strategies like prioritization, organization, and clear communication.",
+            "That you complain to coworkers to relieve stress.",
+            "That you avoid stressful situations altogether."
+        ],
+        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+    },
+    {
+        question: "When asked about salary expectations, it is best to:",
+        options: [
+            "Give a single, non-negotiable number.",
+            "Say 'I'll take whatever you're offering.'",
+            "Provide a well-researched range and express flexibility.",
+            "Avoid answering the question entirely."
+        ],
+        correctAnswer: "Provide a well-researched range and express flexibility."
+    },
+    {
+        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        options: [
+            "That you weren't paying attention during the interview.",
+            "You are only interested in vacation days and benefits.",
+            "That you have no questions, which is a sign of confidence.",
+            "Your genuine interest in the role and that you are evaluating the company as well."
+        ],
+        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+    }
 ];
 
 function GeneralQuestions() {
@@ -129,16 +223,27 @@ function GeneralQuestions() {
     
     const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
+        
         const currentQ = questions[currentIndex];
-        setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left');
+        // 1. Start the exit animation for the current card
+        setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left'); 
+        
         setRoundResults(prev => ({
             correct: isCorrect ? [...prev.correct, currentQ] : prev.correct,
             incorrect: !isCorrect ? [...prev.incorrect, currentQ] : prev.incorrect,
         }));
+
+        // 2. Wait for the animation to finish (500ms)
         setTimeout(() => {
+            // 3. Update the score and move to the next index
             setScore(prev => ({ ...prev, correct: prev.correct + (isCorrect ? 1 : 0), wrong: prev.wrong + (!isCorrect ? 1 : 0) }));
             setCurrentIndex(prev => prev + 1);
-        }, 500);
+
+            // 4. ✅ THE FIX: Reset the state for the new card so it appears correctly
+            setIsFlipped(false); // Ensure the new card shows its front side
+            setAnimation('');    // Remove the slide-out animation class to make the new card visible
+            
+        }, 500); // This duration should match your CSS animation time
     };
 
     const handleShuffle = () => {
@@ -337,17 +442,19 @@ function GeneralQuestions() {
                         </div>
                         <div className="your-stats-container">
                             <h2>Your stats</h2>
-                            <div className="results-list-section">
-                                <h3>Know ({roundResults.correct.length})</h3>
-                                {roundResults.correct.map((q, i) => <div key={`c-${i}`} className="result-item"><p className="result-item-question">{q.front}</p><p className="result-item-answer">{q.back}</p></div>)}
-                            </div>
-                            {roundResults.incorrect.length > 0 && (
+                            <div className="results-scroll-container">
                                 <div className="results-list-section">
-                                    <h3>Still learning ({roundResults.incorrect.length})</h3>
-                                    {roundResults.incorrect.map((q, i) => <div key={`i-${i}`} className="result-item"><p className="result-item-question">{q.front}</p><p className="result-item-answer">{q.back}</p></div>)}
-                                    <button onClick={startPracticeRound} className="practice-button">Practice 'Still Learning' Cards</button>
+                                    <h3>Know ({roundResults.correct.length})</h3>
+                                    {roundResults.correct.map((q, i) => <div key={`c-${i}`} className="result-item"><p className="result-item-question">{q.front}</p><p className="result-item-answer">{q.back}</p></div>)}
                                 </div>
-                            )}
+                                {roundResults.incorrect.length > 0 && (
+                                    <div className="results-list-section">
+                                        <h3>Still learning ({roundResults.incorrect.length})</h3>
+                                        {roundResults.incorrect.map((q, i) => <div key={`i-${i}`} className="result-item"><p className="result-item-question">{q.front}</p><p className="result-item-answer">{q.back}</p></div>)}
+                                        <button onClick={startPracticeRound} className="practice-button">Practice 'Still Learning' Cards</button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -437,4 +544,3 @@ function GeneralQuestions() {
 }
 
 export default GeneralQuestions;
-

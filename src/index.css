@@ -189,7 +189,7 @@ body {
 
 .sidebar:hover ~ .main-content {
 margin-left: var(--sidebar-expanded-width); /* This line should already exist */
- padding-left: 30px; /* ✅ Add or verify this line is here */
+ padding-left: 1px; /* ✅ Add or verify this line is here */
 }
 
 
@@ -303,7 +303,7 @@ margin-left: var(--sidebar-expanded-width); /* This line should already exist */
 /* --- Main Content Area --- */
 .main-content {
     flex-grow: 1;
-  margin-left: var(--sidebar-collapsed-width);
+    margin-left: var(--sidebar-collapsed-width);
     transition: margin-left 0.3s ease-in-out;
     position: relative;
     z-index: 1;
@@ -316,8 +316,6 @@ margin-left: var(--sidebar-expanded-width); /* This line should already exist */
     height: 100vh; /* This is needed for vertical centering */
     
 }
-
-
 
 /* --- Shared Main Header --- */
 .main-header {
