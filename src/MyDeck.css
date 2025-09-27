@@ -1,34 +1,40 @@
-
-
-/* === MY DECKS PAGE SPECIFIC STYLES === */
+/* === MY DECKS PAGE SPECIFIC STYLES (CORRECTED) === */
 
 .my-decks-layout {
   display: flex;
-  min-height: 100vh;
-  align-items: flex-start; /* Sidebar stays pinned at the top */
+  align-items: flex-start;
+  width: 100%; /* Prevents the layout from becoming wider than the screen */
+  padding-right: 20px;;
 }
 
 /* --- Center Content Column --- */
 .center-content {
   flex-grow: 1;
-  padding: 40px;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;  
-  justify-content: flex-start; /* Start from top, not center */
+  align-items: center; 
+  justify-content: flex-start;
+  margin-right: 20px;
+  margin-left: 30px;
+  transition: margin-left 0.4s ease; /* Animate the transform property */
 }
+
+
 
 .mmain-header {
   width: 100%;
-  text-align: center;  
-  margin-bottom: 32px;
-  margin-left: 100px;
+  text-align: center; 
+  margin-bottom: 22px;
+  /* REMOVED: Unnecessary margin */
+  /* margin-left: 100px; */
 }
 
 .mmain-header h1 {
   font-size: 32px;
   font-weight: 700;
   margin: 0 0 8px 0;
+  color: var(--bg-dark);
 }
 
 .mmain-header .subtitle {
@@ -38,14 +44,15 @@
 }
 
 .progress-overview-card {
-  width: 300%;
-  max-width: 700px;  
+  /* FIXED: Width fits its container */
+  width: 100%;
+  max-width: 700px; 
   border-radius: 16px;
   padding: 24px;
-  background-color: rgba(255, 255, 255, 0.156);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(7, 0, 0, 0.082);
-  margin-left: 100px;
+  background-color: rgba(255, 255, 255, 0.5); /* Made this more visible */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  /* REMOVED: Unnecessary margin */
+  /* margin-left: 100px; */
 }
 
 .progress-overview-card h3 {
@@ -56,14 +63,13 @@
 }
 
 /* --- Grid & Card Layout --- */
-
 .progress-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 16px;
+  margin-top: 16px;
 }
 
-/* Base style for all cards in the grid */
 .progress-card {
   background-color: #f8f9fc;
   border-radius: 12px;
@@ -71,32 +77,26 @@
   border: 1px solid var(--border-color);
 }
 
-/* This makes ALL cards in the grid span the full width */
 .progress-grid > .progress-card {
   grid-column: 1 / -1;
 }
 
-/* THIS IS THE KEY CLASS: It is conditionally applied via React to make an
-   expanded card span the full width of the grid */
 .progress-card.full-width {
   grid-column: 1 / -1;
 }
 
 /* --- Expandable "Favorites Card" Styles --- */
-
-/* This style is applied to all three clickable/expandable cards */
 .progress-card.favorites-card {
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 26px;
-  text-align: left; /* Aligns the header content to the left */
+  text-align: left;
 }
 
 .favorites-header-inline {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px; /* Initial space when card is closed */
 }
 
 .favorites-header-inline h4 {
@@ -105,7 +105,6 @@
   font-weight: 500;
 }
 
-/* This styles the number (e.g., "5 decks") consistently */
 .favorites-header-inline p {
   margin: 0;
   font-size: 24px;
@@ -113,7 +112,6 @@
   color: var(--primary-accent);
 }
 
-/* Container for the animated list that appears on expand */
 .favorites-list {
   overflow: hidden;
   margin-top: 12px;
@@ -121,15 +119,12 @@
   border-top: 1px solid var(--border-color, #e2e8f0);
 }
 
-/* Grid layout for the items INSIDE an expanded card */
 .favorite-items {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
 }
 
-/* Styling for an individual deck item inside the list */
 .favorite-item {
   background: var(--primary-accent);
   border: 1px solid var(--border-color);
@@ -138,7 +133,7 @@
   text-align: center;
   font-weight: 500;
   font-size: 18px;
-  color: white; /* Ensure text is readable on the colored background */
+  color: white;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -149,12 +144,13 @@
 
 /* --- Right Sidebar (To-Do List) --- */
 .right-sidebar {
-  width: 350px;  
+  width: 350px; 
   flex-shrink: 0;
-  flex-grow: 0;  
-  padding: 24px;
+  padding: 5px -2px ; /* Matched top padding */
   display: flex;
   align-items: flex-start;
+  /* ✅ THIS IS THE KEY FIX: Makes the sidebar sticky */
+  position: sticky;
 }
 
 .todo-list-card {
@@ -166,8 +162,9 @@
   color: white;
   display: flex;
   flex-direction: column;
-  height: 510px; 
-  margin-left: 150px; 
+  height: 540px; /* Your desired fixed height */
+  /* REMOVED: Unnecessary margin causing overflow */
+  /* margin-left: 150px; */
 }
 
 .todo-list-card h3 {
@@ -177,7 +174,7 @@
   color: white;
 }
 
-/* To-Do List Inner Styles */
+/* --- To-Do List Inner Styles --- */
 .todo-form {
   display: flex;
   gap: 10px;

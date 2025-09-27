@@ -6,7 +6,7 @@ import "./index.css";
 
 import { useAuth } from './AuthContext';
 
-// --- SVG Icon Components ---
+// --- (All your SVG Icon components remain exactly the same) ---
 const HomeIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.5 1.5 0 012.122 0l8.954 8.955M2.25 12V21a.75.75 0 00.75.75H21a.75.75 0 00.75-.75V12M9 21V15a2.25 2.25 0 012.25-2.25h1.5A2.25 2.25 0 0115 15v6" /></svg> );
 const DecksIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-5.571 3-5.571-3zM2.25 12l5.571 3 5.571-3m0 0l5.571 3L12 21.75l-9.75-5.25 5.571-3z" /></svg> );
 const SkillIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg> );
@@ -37,13 +37,8 @@ export default function SidebarLayout() {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
 
-  // ✅ THIS IS THE KEY CHANGE
-  // The function is now 'async' to allow it to 'await' the logout process.
   const handleLogout = async () => {
-    // We 'await' the logout function to ensure the user is fully logged out...
     await logout(); 
-    
-    // ...BEFORE we navigate to the public homepage.
     navigate('/'); 
   };
 
@@ -79,7 +74,14 @@ export default function SidebarLayout() {
             <div className="sidebar-section">
               <p className="section-title">CATEGORY</p>
               <ul className="sidebar-menu">
-                <li><a className="sidebar-link"><SkillIcon /><span className="link-text">Technical & Professional</span></a></li>
+                {/* ✅ THIS IS THE KEY CHANGE */}
+                {/* The 'a' tag is now a 'Link' component with a 'to' prop */}
+                <li>
+                  <Link to="/core" className="sidebar-link">
+                    <SkillIcon />
+                    <span className="link-text">Core Interview Skills</span>
+                  </Link>
+                </li>
                 <li><a className="sidebar-link"><AptitudeIcon /><span className="link-text">General Aptitude</span></a></li>
                 <li><a className="sidebar-link"><AffairsIcon /><span className="link-text">Current Affairs</span></a></li>
                 <li><a className="sidebar-link"><EngineeringIcon /><span className="link-text">Engineering</span></a></li>

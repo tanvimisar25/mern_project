@@ -62,7 +62,7 @@ function Homepage() {
               {/* --- Expanded View --- */}
               <div className="grid-container">
                 {[
-                  { title: "General HR Questions", terms: "10 terms", link: "/generalquestions" },
+                  { title: "Behavioral Questions", terms: "10 terms", link: "/behavioralquestions" },
                   { title: "Data Structures & Algorithms", terms: "120 terms" },
                   { title: "Database & SQL", terms: "90 terms" },
                   { title: "General HR Questions", terms: "10 terms", link: "/generalquestions" },

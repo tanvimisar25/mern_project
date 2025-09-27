@@ -14,7 +14,8 @@ import Signup from "./Signup";
 import MyDeck from "./MyDeck";
 import PracticeTest from "./PracticeTest";
 import DeckOwn from "./DeckOwn";
-import GeneralQuestions from "./GeneralQuestions";
+import BehavioralQuestions from "./BehavioralQuestions";
+import Core from "./Core";
 
 
 // This is your existing ProtectedRoute component
@@ -71,7 +72,8 @@ function App() {
                 <Route path="/mydecks" element={<MyDeck />} />
                 <Route path="/practicetests" element={<PracticeTest />} />
                 <Route path="/deckowns" element={<DeckOwn />} />
-                <Route path="/generalquestions" element={<GeneralQuestions />} />
+                <Route path="/behavioralquestions" element={<BehavioralQuestions />} />
+                <Route path="/core" element={<Core />} />
               </Route>
 
             </Route>

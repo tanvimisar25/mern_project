@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import './GeneralQuestions.css';
+import './BehavioralQuestions.css';
 
 // ✅ 1. IMPORT THE USEAUTH HOOK - This is the correct way to get user info.
 import { useAuth } from './AuthContext'; 
@@ -372,7 +372,7 @@ function GeneralQuestions() {
             <div className="app-container">
                 <div className="start-options-container">
                     <div className="start-screen">
-                        <h1>Interview Prep Flashcards</h1>
+                        <h1> Prep Flashcards</h1>
                         <p>Use these cards to practice your responses.</p>
                         <button onClick={() => setView('flashcards')} className="start-button">Start Flashcards</button>
                     </div>
