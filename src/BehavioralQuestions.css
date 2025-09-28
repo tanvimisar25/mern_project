@@ -25,18 +25,17 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start; /* Align content to the top */
-    min-height: 100vh;
     padding: 1rem;
     overflow-x: hidden; 
     box-sizing: border-box;
     /* Add padding to prevent content from starting at the very edge */
-    padding-top: 6rem;
-    padding-bottom: 3rem;
+    padding-bottom: -50px;
+    margin-left: 100px;
 }
 
 .flashcard-container {
     width: 100%;
-    max-width: 672px;
+    max-width: 900px;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -51,6 +50,7 @@ body {
     width: 100%;
     max-width: 900px;
     margin-top: 100PX;
+    margin-bottom: 70px;
 }
 
 .start-screen {
@@ -160,11 +160,11 @@ body {
     justify-content: center;
     perspective: 1000px;
     width: 100%;
+    margin-left: -20px;
 }
 
 .card {
-    width: 100%;
-    max-width: 640px;
+    width: 600px;
     height: 20rem;
     position: relative;
     transition: transform 0.7s;
@@ -323,15 +323,26 @@ body {
     max-width: 800px;
     padding: 1rem;
     box-sizing: border-box;
+    margin-left: 80px;
 }
 
-.completion-screen-new {
-    background-color: #fff;
+/* This new, combined rule applies the same style to both containers */
+.completion-screen-new,
+.your-stats-container {
+    /* These properties are copied directly from your .start-screen for a perfect match */
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+
+    /* These properties ensure the curved edges and spacing are consistent */
     border-radius: 1rem;
-    padding: 2rem;
+    padding: 2.5rem 2rem; /* Using the more generous padding from .start-screen */
     width: 100%;
     box-sizing: border-box;
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+}
+
+/* We just need to keep the margin on the top box to separate it from the bottom one */
+.completion-screen-new {
     margin-bottom: 2rem;
 }
 
@@ -399,14 +410,7 @@ body {
     color: #1F2937;
 }
 
-.your-stats-container {
-    background-color: #fff;
-    border-radius: 1rem;
-    padding: 2rem;
-    width: 100%;
-    box-sizing: border-box;
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-}
+
 
 .your-stats-container h2 {
     font-size: 1.5rem;
@@ -452,46 +456,52 @@ body {
 }
 
 .practice-button, .restart-button-alt {
-    border: none;
+    background-color: var(--bg-card-front); /* Dark blue background */
+    color: #FFFFFF;
+    border: none; /* Removes the old border from the restart button */
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 700;
     border-radius: 0.5rem;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease; /* A slightly smoother transition */
     width: 100%;
 }
+
 .practice-button {
-    background-color: var(--color-blue);
-    color: #FFFFFF;
-    margin-top: 1rem;
+    margin-top: 1rem; /* Keeps the space above the practice button */
 }
-.practice-button:hover {
-    background-color: #2563EB;
-}
-.restart-button-alt {
-    background-color: transparent;
-    color: var(--color-blue);
-    border: 2px solid var(--color-blue);
-}
-.restart-button-alt:hover {
-    background-color: rgba(59, 130, 246, 0.1);
+
+/* This is the new hover effect for BOTH buttons, matching the start button */
+.practice-button:hover, .restart-button-alt:hover {
+    background-color: var(--bg-dark); /* Using the --bg-dark variable from your root */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
 }
 
  /* --- Edit Mode --- */
 .edit-mode-container {
-    background-color: #fff;
-    border-radius: 1rem;
-    padding: 1.5rem 2rem;
+    /* These properties are copied directly from your .start-screen for a perfect match */
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+
+    /* These properties ensure the curved edges and spacing match */
+    border-radius: 1.5rem;
+    padding: 2.5rem 2rem; /* Increased padding to match */
+
+    /* These properties are from your original code and our previous scrolling fix */
     width: 100%;
     max-width: 700px;
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 .edit-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2px;
     padding-bottom: 1rem;
     border-bottom: 1px solid #E5E7EB;
 }
@@ -501,21 +511,23 @@ body {
     color: #1F2937;
 }
 .done-button {
-    background-color: var(--color-blue);
-    color: #FFFFFF;
-    border: none;
-    padding: 0.5rem 1.25rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+background-color: var(--bg-card-front); /* Changed to the dark blue */
+color: #FFFFFF;
+ border: none;
+padding: 0.75rem 1.5rem; /* Matched padding */
+ font-size: 1rem;
+ font-weight: 700; /* Matched font weight */
+ border-radius: 0.5rem;
+ cursor: pointer;
+ transition: all 0.2s ease; /* Matched transition */
 }
 .done-button:hover {
-    background-color: #2563EB;
+-color: var(--bg-dark); /* Matched hover background */
+    transform: translateY(-2px); /* Matched "lift" effect */
+    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233); /* Matched "glow" effect */
 }
 .questions-list {
-    max-height: 70vh;
+    max-height: 65vh;
     overflow-y: auto;
     padding-right: 1rem;
 }
@@ -570,13 +582,16 @@ body {
  */
 .pt-app-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+flex-direction: column;
+align-items: center;
+ justify-content: flex-start; /* This pushes the box to the top */
+ min-height: 100vh;
+    padding-top: 5rem;
     color: #1F2937;
-    padding: 1rem;
+    margin-top: -100px;
+    margin-bottom: -10px;
     box-sizing: border-box;
+    margin-left: 100px;
 }
 
 .pt-back-homepage {
@@ -617,22 +632,34 @@ body {
 }
 
 .pt-timer {
+    /* --- Translucent Style Applied --- */
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+
+    /* --- Style Adjustments for Consistency --- */
     font-size: 1.25rem;
     font-weight: 600;
     color: #374151;
-    background-color: #fff;
     padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 0.75rem; /* Softer radius */
 }
 
 .pt-question-container {
-    background-color: #fff;
-    padding: 2rem;
+    /* These properties are copied from your .start-screen for a perfect match */
+    background-color: rgba(255, 255, 255, 0.5); /* The semi-transparent white */
+    border: 1px solid rgba(0, 0, 0, 0.08);      /* A subtle border for the edge */
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    backdrop-filter: blur(10px);                 /* This creates the sleek blur effect */
+
+    /* These properties ensure the curved edges and spacing are consistent */
     border-radius: 1rem;
+    padding: 1.5rem 2rem; /* Using the more generous padding from .start-screen */
+
+    /* These properties are from your original code and control the size */
     width: 900px;
     max-width: 800px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .pt-question-container h2 {
@@ -642,9 +669,9 @@ body {
 }
 
 .pt-question-text {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    margin: 1rem 0 2rem 0;
+    margin: 1rem 0 1.5rem 0;
 }
 
 .pt-options {
@@ -678,26 +705,30 @@ body {
 }
 
 .pt-next-button {
-    background-color: #10B981;
+    /* These properties are copied from your .start-button for a perfect match */
+    background-color: var(--bg-card-front); /* The solid dark blue */
     color: #FFFFFF;
     border: none;
-    padding: 0.75rem 2rem;
-    font-size: 1.1rem;
+    padding: 0.75rem 1.75rem; /* Standardized padding */
+    font-size: 1rem;      /* Standardized font size */
     font-weight: 700;
     border-radius: 0.5rem;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease; /* A smoother transition for all properties */
+
+    /* These layout properties are kept from the original button */
     margin-top: 2rem;
     float: right;
 }
 
+.pt-next-button:hover:not(:disabled) {
+    background-color: var(--bg-dark); /* The hover color from your other buttons */
+    transform: translateY(-2px);      /* The "lift" effect */
+    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233); /* The "glow" effect */
+}
 .pt-next-button:disabled {
     background-color: #D1D5DB;
     cursor: not-allowed;
-}
-
-.pt-next-button:hover:not(:disabled) {
-    background-color: #059669;
 }
 
 .pt-results-screen {

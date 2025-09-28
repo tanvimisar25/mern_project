@@ -137,7 +137,7 @@ const practiceTestQuestions = [
     }
 ];
 
-function GeneralQuestions() {
+function BehavioralQuestions() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -177,19 +177,18 @@ function GeneralQuestions() {
                 const usersCollection = mongo.db("prepdeck").collection("user");
                 const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
 
-                if (userProfile && userProfile.editedCards && userProfile.editedCards.length > 0) {
-                    const editsMap = new Map();
-                    userProfile.editedCards.forEach(edit => {
-                        editsMap.set(edit.card_id, edit.new_answer);
-                    });
-                    const personalizedQuestions = initialFlashcardQuestions.map(q => 
-                        editsMap.has(q.id) ? { ...q, back: editsMap.get(q.id) } : q
-                    );
-                    setQuestions(personalizedQuestions);
-                } else {
-                    // If the user has no edits, show the default questions
-                    setQuestions(initialFlashcardQuestions);
-                }
+                if (userProfile && userProfile.editedDecks) {
+    const personalizedQuestions = initialFlashcardQuestions.map(q => {
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
+        if (deckEdits && deckEdits[q.id]) {
+            return { ...q, back: deckEdits[q.id] };
+        }
+        return q;
+    });
+    setQuestions(personalizedQuestions);
+} else {
+    setQuestions(initialFlashcardQuestions);
+}
             } catch (error) {
                 console.error("Failed to load user data:", error);
                 setQuestions(initialFlashcardQuestions); // Fallback on error
@@ -254,33 +253,53 @@ function GeneralQuestions() {
         setRoundResults({ correct: [], incorrect: [] });
     };
 
-    const handleReset = () => {
-        setIsLoading(true); // Show loading feedback
-        // Re-use the loading logic to get fresh data for the current user
-        const loadData = async () => {
-            if(currentUser) {
-                 const mongo = currentUser.mongoClient("mongodb-atlas");
-                 const usersCollection = mongo.db("prepdeck").collection("user");
-                 const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-                 if(userProfile && userProfile.editedCards && userProfile.editedCards.length > 0){
-                    const editsMap = new Map();
-                    userProfile.editedCards.forEach(edit => editsMap.set(edit.card_id, edit.new_answer));
-                    setQuestions(initialFlashcardQuestions.map(q => editsMap.has(q.id) ? { ...q, back: editsMap.get(q.id) } : q));
-                 } else {
-                    setQuestions(initialFlashcardQuestions);
-                 }
-            } else {
-                setQuestions(initialFlashcardQuestions);
+// This is the only function you need to replace in your BehavioralQuestions.js file
+
+const handleReset = () => {
+    setIsLoading(true); // Show loading feedback while we re-fetch
+
+    // THIS IS THE FIX:
+    // This is the exact same, correct data-loading logic from your useEffect hook.
+    // By re-using it here, we ensure that restarting the deck always fetches
+    // the latest saved answers from your 'editedDecks' object in the database.
+    const loadData = async () => {
+        if (currentUser) {
+            try {
+                const mongo = currentUser.mongoClient("mongodb-atlas");
+                const usersCollection = mongo.db("prepdeck").collection("user");
+                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
+
+                const userEdits = userProfile?.editedDecks || {};
+                const personalizedQuestions = initialFlashcardQuestions.map(q => {
+                    const deckId = q.deckId;
+                    const cardId = q.id;
+                    if (userEdits[deckId] && userEdits[deckId][cardId]) {
+                        return { ...q, back: userEdits[deckId][cardId] };
+                    }
+                    return q;
+                });
+                setQuestions(personalizedQuestions);
+            } catch (error) {
+                console.error("Failed to re-load user data on reset:", error);
+                setQuestions(initialFlashcardQuestions); // Fallback on error
             }
-            setIsLoading(false);
-        };
-        loadData();
-        setCurrentIndex(0);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
-        setAnimation('reset');
-        setTimeout(() => setAnimation(''), 300);
+        } else {
+            // If logged out, just reset to the default questions
+            setQuestions(initialFlashcardQuestions);
+        }
+        setIsLoading(false);
     };
+
+    loadData(); // Execute the data-loading function
+
+    // Reset all the progress states
+    setCurrentIndex(0);
+    setIsFlipped(false);
+    setScore({ correct: 0, wrong: 0 });
+    setRoundResults({ correct: [], incorrect: [] });
+    setAnimation('reset');
+    setTimeout(() => setAnimation(''), 300);
+};
 
     const handleAnswerChange = (index, newAnswer) => {
         const updatedQuestions = [...questions];
@@ -319,10 +338,16 @@ function GeneralQuestions() {
                     edited_at: new Date()
                 };
             });
-            await usersCollection.updateOne(
-                { "auth_id": currentUser.id },
-                { $push: { editedCards: { $each: editedCardsToPush } } }
-            );
+            const updates = {};
+Object.keys(changedAnswers).forEach(cardId => {
+    const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
+    updates[`editedDecks.${originalCard.deckId}.${cardId}`] = changedAnswers[cardId];
+});
+
+await usersCollection.updateOne(
+     { "auth_id": currentUser.id || currentUser.sub || currentUser._id?.toString() },
+    { $set: updates }
+);
             alert("Your changes have been saved!");
             setChangedAnswers({});
             setIsEditMode(false);
@@ -543,4 +568,4 @@ function GeneralQuestions() {
     }
 }
 
-export default GeneralQuestions;
+export default BehavioralQuestions;

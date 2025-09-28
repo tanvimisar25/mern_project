@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react"; // NEW: Imported useEffect
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import './Core.css';
-import { useAuth } from './AuthContext'; // NEW: Imported your AuthContext hook
+import { useAuth } from './AuthContext';
+
+// Define the main category title as a constant to ensure consistency.
+const MAIN_CATEGORY_TITLE = "Core Interview Questions";
 
 const categories = [
-    // ... (category data remains the same)
     {
         title: "Behavioral Questions",
         description: "Prove your past skills and behaviors through real-life examples.",
@@ -29,93 +31,81 @@ const categories = [
 ];
 
 const HeartIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg xmlns="http://www.w.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
     </svg>
 );
 
 const Core = () => {
-    // NEW: Get the current user from your AuthContext
     const { currentUser } = useAuth();
+    const [favs, setFavs] = useState({});
 
-    // NEW: State now holds a Set for efficient checking (e.g., favorites.has('...'))
-    const [favorites, setFavorites] = useState(new Set());
-
-    // NEW: useEffect to fetch the user's favorites when the component loads
     useEffect(() => {
         const fetchUserFavorites = async () => {
-            if (!currentUser) return; // Don't run if the user isn't logged in yet
-
+            if (!currentUser) return;
             try {
                 const mongo = currentUser.mongoClient("mongodb-atlas");
                 const usersCollection = mongo.db("prepdeck").collection("user");
-                
-                // Find the user's document
                 const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
                 
-                // If the user and their favoriteDecks exist, update our state
-                if (userProfile && userProfile.favoriteDecks) {
-                    setFavorites(new Set(userProfile.favoriteDecks));
-                }
+                // This is now safe. New users have a `favs: {}` field from sign-up.
+                // The `|| {}` is an extra fallback for safety.
+                setFavs(userProfile?.favs || {});
+
             } catch (error) {
-                console.error("Failed to fetch user favorites:", error);
+                console.error("Failed to fetch favs:", error);
             }
         };
-
         fetchUserFavorites();
-    }, [currentUser]); // This effect re-runs if the user logs in or out
+    }, [currentUser]);
 
-
-    // NEW: The function is now async and connects to the database
-    const handleFavoriteClick = async (e, title) => {
+    const handleFavoriteClick = async (e, subCategoryTitle) => {
         e.preventDefault();
         e.stopPropagation();
+        if (!currentUser) return;
 
-        if (!currentUser) {
-            console.log("Please log in to save favorites.");
-            return;
+        const isCurrentlyFavorited = favs[MAIN_CATEGORY_TITLE]?.includes(subCategoryTitle);
+        // Create a deep copy to safely modify the state before updating
+        const newFavsState = JSON.parse(JSON.stringify(favs));
+        
+        if (!newFavsState[MAIN_CATEGORY_TITLE]) {
+            newFavsState[MAIN_CATEGORY_TITLE] = [];
         }
 
-        const isCurrentlyFavorited = favorites.has(title);
-
-        // --- 1. Optimistic UI Update ---
-        // Update the local state immediately for a fast user experience.
-        const newFavorites = new Set(favorites);
         if (isCurrentlyFavorited) {
-            newFavorites.delete(title);
+            newFavsState[MAIN_CATEGORY_TITLE] = newFavsState[MAIN_CATEGORY_TITLE].filter(
+                title => title !== subCategoryTitle
+            );
         } else {
-            newFavorites.add(title);
+            newFavsState[MAIN_CATEGORY_TITLE].push(subCategoryTitle);
         }
-        setFavorites(newFavorites);
+        setFavs(newFavsState);
 
-        // --- 2. Database Update ---
-        // Now, tell the database what changed.
         try {
             const mongo = currentUser.mongoClient("mongodb-atlas");
             const usersCollection = mongo.db("prepdeck").collection("user");
 
-            // Use $pull to remove an item, or $push to add it.
-            const updateOperation = isCurrentlyFavorited
-                ? { "$pull": { "favoriteDecks": title } }
-                : { "$push": { "favoriteDecks": title } };
-
+            // Use dot notation to target the nested array.
+            // $set is the safest operator as it creates the fields if they don't exist.
+            const fieldPath = `favs.${MAIN_CATEGORY_TITLE}`;
+            
             await usersCollection.updateOne(
-                { "auth_id": currentUser.id }, // Find the correct user
-                updateOperation // Apply the add or remove operation
+                { "auth_id": currentUser.id },
+                { "$set": { [fieldPath]: newFavsState[MAIN_CATEGORY_TITLE] } }
             );
-
         } catch (error) {
-            console.error("Failed to update favorites in database:", error);
-            // Optional: Revert the UI change if the database update fails
-            setFavorites(favorites);
+            console.error("Failed to update favs in database:", error);
+            setFavs(favs); // Revert UI on error
         }
     };
+
+    const favoritedForThisPage = new Set(favs[MAIN_CATEGORY_TITLE] || []);
 
     return (
         <div className="core-page-layout">
             <main className="core-main-content">
                 <div className="core-header">
-                    <h1>Core Interview Questions</h1>
+                    <h1>{MAIN_CATEGORY_TITLE}</h1>
                     <p className="subtitle">
                         Master the four key types of questions asked in every interview.
                     </p>
@@ -123,16 +113,15 @@ const Core = () => {
                 <div className="core-category-container">
                     <h3>Subcategories</h3>
                     <div className="category-grid">
-                        {categories.map((category, index) => (
-                            <Link to={category.link} key={index} className="category-link-wrapper">
+                        {categories.map((category) => (
+                            <Link to={category.link} key={category.title} className="category-link-wrapper">
                                 <motion.div
                                     className="category-box"
                                     whileHover={{ scale: 1.03 }}
                                     transition={{ type: "spring", stiffness: 400, damping: 15 }}
                                 >
                                     <button
-                                        // NEW: The 'favorited' class now checks the Set
-                                        className={`favorite-btn ${favorites.has(category.title) ? 'favorited' : ''}`}
+                                        className={`favorite-btn ${favoritedForThisPage.has(category.title) ? 'favorited' : ''}`}
                                         onClick={(e) => handleFavoriteClick(e, category.title)}
                                         aria-label={`Favorite ${category.title}`}
                                     >
