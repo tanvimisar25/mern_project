@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react'; // This line might have been the issue
 import { Link } from "react-router-dom";
 import './BehavioralQuestions.css';
 
@@ -196,10 +196,22 @@ function BehavioralQuestions() {
                 setIsLoading(false);
             }
         };
+        if (currentUser) {
+        // If a user IS logged in, load their specific data.
         loadUserQuestions();
-    // ✅ 3. THE FIX: This dependency array tells React to re-run this function
-    // whenever the currentUser changes (i.e., on login or logout).
-    }, [currentUser]); 
+    } else {
+        // If NO user is logged in (i.e., on logout), reset the state.
+        // This "wipes the whiteboard clean" and prevents showing the previous user's data.
+        console.log("User logged out. Resetting component state.");
+        setQuestions(initialFlashcardQuestions);
+        setScore({ correct: 0, wrong: 0 });
+        setRoundResults({ correct: [], incorrect: [] });
+        setCurrentIndex(0);
+        setIsFlipped(false);
+        setChangedAnswers({});
+        setIsLoading(false); // We aren't loading, so stop the loading indicator.
+    }
+}, [currentUser]);
 
     // --- Other Effects (No changes) ---
     useEffect(() => {
@@ -217,14 +229,57 @@ function BehavioralQuestions() {
         return () => clearInterval(timerId);
     }, [timeLeft, view, testFinished]);
 
+    // ✅ REPLACE THIS ENTIRE FUNCTION IN BehavioralQuestions.js
+
+    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckId, deckType, deckCategory }) => {
+        if (!currentUser) return;
+
+        const percentage = finalScore / totalQuestions;
+        const isMastered = percentage >= 0.9; // Mastery threshold: 90%
+
+        try {
+            const mongo = currentUser.mongoClient("mongodb-atlas");
+            const usersCollection = mongo.db("prepdeck").collection("user");
+
+            let updateOperation;
+
+            if (isMastered) {
+                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
+                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
+                updateOperation = {
+                    $addToSet: { [masteredPath]: deckId }, // Add to mastered list
+                    $pull: { [completedPath]: deckId }      // Remove from completed list
+                };
+                console.log(`Deck '${deckId}' mastered! Moving to Mastered list.`);
+            } else {
+                // --- THIS IS THE FIX ---
+                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
+                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
+                updateOperation = {
+                    $addToSet: { [completedPath]: deckId }, // Add to completed list
+                    $pull: { [masteredPath]: deckId }       // AND REMOVE from mastered list
+                };
+                console.log(`Score for '${deckId}' was below 90%. Moving to Completed and removing from Mastered.`);
+            }
+
+            await usersCollection.updateOne({ "auth_id": currentUser.id }, updateOperation);
+
+        } catch (error) {
+            console.error("Failed to update user deck progress:", error);
+        }
+    }, [currentUser]);
+
     // --- Handlers ---
     const handleFlip = () => !animation && setIsFlipped(!isFlipped);
     
-    const handleAnswer = (isCorrect) => {
+    // This is the only function you need to replace in your BehavioralQuestions.js file
+
+// Replace the existing handleAnswer function with this one
+
+const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
         
         const currentQ = questions[currentIndex];
-        // 1. Start the exit animation for the current card
         setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left'); 
         
         setRoundResults(prev => ({
@@ -232,17 +287,26 @@ function BehavioralQuestions() {
             incorrect: !isCorrect ? [...prev.incorrect, currentQ] : prev.incorrect,
         }));
 
-        // 2. Wait for the animation to finish (500ms)
         setTimeout(() => {
-            // 3. Update the score and move to the next index
-            setScore(prev => ({ ...prev, correct: prev.correct + (isCorrect ? 1 : 0), wrong: prev.wrong + (!isCorrect ? 1 : 0) }));
-            setCurrentIndex(prev => prev + 1);
-
-            // 4. ✅ THE FIX: Reset the state for the new card so it appears correctly
-            setIsFlipped(false); // Ensure the new card shows its front side
-            setAnimation('');    // Remove the slide-out animation class to make the new card visible
+            const newCorrectCount = score.correct + (isCorrect ? 1 : 0);
+            const newWrongCount = score.wrong + (!isCorrect ? 1 : 0);
+            setScore({ correct: newCorrectCount, wrong: newWrongCount });
             
-        }, 500); // This duration should match your CSS animation time
+            // Check if this was the last question
+            if (currentIndex + 1 === questions.length) {
+                updateUserDeckProgress({
+                    finalScore: newCorrectCount,
+                    totalQuestions: questions.length,
+                    deckId: "general_hr",
+                    deckType: "Flashcards",
+                    deckCategory: "Behavioral"
+                });
+            }
+
+            setCurrentIndex(prev => prev + 1);
+            setIsFlipped(false);
+            setAnimation(''); 
+        }, 500);
     };
 
     const handleShuffle = () => {
@@ -316,60 +380,81 @@ const handleReset = () => {
         setRoundResults({ correct: [], incorrect: [] });
     };
 
-    const handleSaveChanges = async () => {
-        if (!currentUser) {
-            alert("You must be logged in to save your changes.");
-            return;
-        }
-        if (Object.keys(changedAnswers).length === 0) {
-            setIsEditMode(false);
-            return;
-        }
-        try {
-            const mongo = currentUser.mongoClient("mongodb-atlas");
-            const usersCollection = mongo.db("prepdeck").collection("user");
-            const editedCardsToPush = Object.keys(changedAnswers).map(cardId => {
-                const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
-                return {
-                    card_id: cardId,
-                    deck_id: originalCard.deckId,
-                    original_answer: originalCard.back,
-                    new_answer: changedAnswers[cardId],
-                    edited_at: new Date()
-                };
-            });
-            const updates = {};
-Object.keys(changedAnswers).forEach(cardId => {
-    const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
-    updates[`editedDecks.${originalCard.deckId}.${cardId}`] = changedAnswers[cardId];
-});
+    // In BehavioralQuestions.js, replace your entire handleSaveChanges function with this one.
 
-await usersCollection.updateOne(
-     { "auth_id": currentUser.id || currentUser.sub || currentUser._id?.toString() },
-    { $set: updates }
-);
-            alert("Your changes have been saved!");
-            setChangedAnswers({});
-            setIsEditMode(false);
-        } catch (error) {
-            console.error("Failed to save edited cards:", error);
-            alert("An error occurred while saving your changes. Please try again.");
-        }
-    };
+const handleSaveChanges = async () => {
+    // For debugging, let's see which user is saving.
+    console.log("Attempting to save changes for user:", currentUser);
+
+    
+    if (Object.keys(changedAnswers).length === 0) {
+        setIsEditMode(false);
+        return;
+    }
+    try {
+        const mongo = currentUser.mongoClient("mongodb-atlas");
+        const usersCollection = mongo.db("prepdeck").collection("user");
+        
+        const updates = {};
+        Object.keys(changedAnswers).forEach(cardId => {
+            const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
+            if (originalCard) {
+                updates[`editedDecks.${originalCard.deckId}.${cardId}`] = changedAnswers[cardId];
+            }
+        });
+
+        console.log("Sending these updates to the database:", updates);
+
+        // --- ✅ THIS IS THE FIX ---
+        // We are simplifying the query to ONLY use currentUser.id.
+        // This makes it consistent with how users are created and prevents the bug.
+        const result = await usersCollection.updateOne(
+            { "auth_id": currentUser.id }, // The corrected, reliable query
+            { $set: updates }
+        );
+
+        console.log("MongoDB update result:", result);
+
+        // Check if the update actually found a user to modify.
+        if (result.matchedCount === 0) {
+            alert("Error: Could not find your user profile to save the changes.");
+        } 
+        
+        setChangedAnswers({});
+        setIsEditMode(false);
+    } catch (error) {
+        console.error("Failed to save edited cards:", error);
+        alert("An error occurred while saving your changes. Please check the console.");
+    }
+};
     
     // Practice Test handlers are unchanged
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
-    const handleNextQuestion = () => {
+    // Replace the existing handleNextQuestion function with this one
+
+const handleNextQuestion = () => {
         const isCorrect = selectedAnswer === practiceTestQuestions[ptCurrentIndex].correctAnswer;
-        if (isCorrect) setPtScore(prev => prev + 1);
+        const newPtScore = ptScore + (isCorrect ? 1 : 0);
+        
+        if (isCorrect) setPtScore(newPtScore);
+        
         setUserAnswers(prev => [...prev, { question: practiceTestQuestions[ptCurrentIndex].question, selected: selectedAnswer, correct: practiceTestQuestions[ptCurrentIndex].correctAnswer, isCorrect }]);
         setSelectedAnswer(null);
-        if (ptCurrentIndex < practiceTestQuestions.length - 1) {
-            setPtCurrentIndex(prev => prev + 1);
-        } else {
+
+        if (ptCurrentIndex + 1 === practiceTestQuestions.length) {
             setTestFinished(true);
+            updateUserDeckProgress({
+                finalScore: newPtScore,
+                totalQuestions: practiceTestQuestions.length,
+                deckId: "general_hr_test",
+                deckType: "Tests",
+                deckCategory: "Behavioral"
+            });
+        } else {
+            setPtCurrentIndex(prev => prev + 1);
         }
     };
+
     const handleTestRestart = () => {
         setView('practiceTest');
         setPtCurrentIndex(0);

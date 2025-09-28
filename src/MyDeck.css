@@ -1,270 +1,324 @@
-/* === MY DECKS PAGE SPECIFIC STYLES (CORRECTED) === */
+/* === MY DECKS PAGE SPECIFIC STYLES === */
 
 .my-decks-layout {
-  display: flex;
-  align-items: flex-start;
-  width: 100%; /* Prevents the layout from becoming wider than the screen */
-  padding-right: 20px;;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    padding-right: 20px;
 }
 
 /* --- Center Content Column --- */
 .center-content {
-  flex-grow: 1;
-  padding: 40px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  justify-content: flex-start;
-  margin-right: 20px;
-  margin-left: 30px;
-  transition: margin-left 0.4s ease; /* Animate the transform property */
+    flex-grow: 1;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-right: 20px;
+    margin-left: 30px;
+    transition: margin-left 0.4s ease;
 }
 
-
-
 .mmain-header {
-  width: 100%;
-  text-align: center; 
-  margin-bottom: 22px;
-  /* REMOVED: Unnecessary margin */
-  /* margin-left: 100px; */
+    width: 100%;
+    text-align: center;
+    margin-bottom: 22px;
 }
 
 .mmain-header h1 {
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0 0 8px 0;
-  color: var(--bg-dark);
+    font-size: 39px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: var(--bg-dark);
 }
 
 .mmain-header .subtitle {
-  font-size: 18px;
-  color: var(--text-muted);
-  margin-top: 8px;
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-top: 8px;
 }
 
 .progress-overview-card {
-  /* FIXED: Width fits its container */
-  width: 100%;
-  max-width: 700px; 
-  border-radius: 16px;
-  padding: 24px;
-  background-color: rgba(255, 255, 255, 0.5); /* Made this more visible */
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  /* REMOVED: Unnecessary margin */
-  /* margin-left: 100px; */
+    width: 100%;
+    max-width: 700px;
+    border-radius: 16px;
+    padding: 24px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .progress-overview-card h3 {
-  margin-top: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--bg-dark);
+    margin-top: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--bg-dark);
 }
 
 /* --- Grid & Card Layout --- */
 .progress-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 16px;
 }
 
 .progress-card {
-  background-color: #f8f9fc;
-  border-radius: 12px;
-  padding: 16px;
-  border: 1px solid var(--border-color);
+    background-color: #f8f9fc;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    
 }
 
 .progress-grid > .progress-card {
-  grid-column: 1 / -1;
+    grid-column: 1 / -1;
 }
 
 .progress-card.full-width {
-  grid-column: 1 / -1;
+    grid-column: 1 / -1;
 }
 
 /* --- Expandable "Favorites Card" Styles --- */
 .progress-card.favorites-card {
-  cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 26px;
-  text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 26px;
+    text-align: left;
 }
 
 .favorites-header-inline {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .favorites-header-inline h4 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
+  color: var(--bg-dark);
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .favorites-header-inline p {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--primary-accent);
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-accent);
 }
 
 .favorites-list {
-  overflow: hidden;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-color, #e2e8f0);
+    overflow: hidden;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color, #e2e8f0);
 }
 
+.favorite-category-group h5 {
+    font-size: 17px; /* Adjust this value to your preferred size */
+    font-weight: 600;
+    color: var(--bg-dark); /* Optional: A slightly darker color for better contrast */
+    margin-bottom: 1rem; /* Optional: Adds a bit more space below the title */
+    margin-top: 1rem;
+    margin-left: 6px;
+}
+
+/* ✅ --- CSS CHANGES START HERE --- ✅ */
+
+/* Change the grid layout to a vertical flex layout */
 .favorite-items {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
+    display: flex;
+    flex-direction: column; /* This stacks the items vertically */
+    gap: 0.75rem; /* Adjusts the space between the vertical items */
 }
 
+/* Make the items thinner and look more like list entries */
 .favorite-item {
-  background: var(--primary-accent);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 42px;
-  text-align: center;
-  font-weight: 500;
-  font-size: 18px;
-  color: white;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: #e6ebf4;
+     /* A lighter, softer background color */
+    border: 1px solid #e2e8f0; /* Softer border */
+    border-radius: 8px;
+    padding: 16px 20px; /* Reduced padding to make items thinner */
+    text-align: left; /* Align text to the left */
+    font-weight: 500;
+    font-size: 16px;
+    color: #334155; /* Darker text for better readability */
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Adjust the hover effect for the new list-style items */
 .favorite-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transform: translateY(-2px); /* The "lift" effect on hover */
+    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
+    background: var(--primary-accent); /* Slightly darken on hover */
 }
+
+.favorite-item-wrapper {
+  position: relative;
+}
+
+.favorite-item-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.favorite-item span {
+  flex-grow: 1;
+}
+
+.remove-deck-btn {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8; /* A muted color */
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.favorite-item-wrapper:hover .remove-deck-btn {
+  opacity: 1; /* Show button on hover of the wrapper */
+}
+
+.remove-deck-btn:hover {
+  color: #ef4444; /* Red color on hover */
+}
+
+.remove-deck-btn .trash-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ✅ --- CSS CHANGES END HERE --- ✅ */
+
 
 /* --- Right Sidebar (To-Do List) --- */
 .right-sidebar {
-  width: 350px; 
-  flex-shrink: 0;
-  padding: 5px -2px ; /* Matched top padding */
-  display: flex;
-  align-items: flex-start;
-  /* ✅ THIS IS THE KEY FIX: Makes the sidebar sticky */
-  position: sticky;
+    width: 350px;
+    flex-shrink: 0;
+    padding: 5px -2px;
+    display: flex;
+    align-items: flex-start;
+    position: sticky;
 }
 
 .todo-list-card {
-  width: 100%;
-  background: var(--bg-dark);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: var(--shadow);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  height: 540px; /* Your desired fixed height */
-  /* REMOVED: Unnecessary margin causing overflow */
-  /* margin-left: 150px; */
+    width: 100%;
+    background: var(--bg-dark);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    height: 540px;
 }
 
 .todo-list-card h3 {
-  margin-top: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: white;
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
 }
 
 /* --- To-Do List Inner Styles --- */
 .todo-form {
-  display: flex;
-  gap: 10px;
-  margin: 16px 0;
+    display: flex;
+    gap: 10px;
+    margin: 16px 0;
 }
 
 .todo-form input {
-  flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #4a5568;
-  border-radius: 8px;
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  background-color: #2d3748;
-  color: white;
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #4a5568;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    background-color: #2d3748;
+    color: white;
 }
 
 .todo-form button {
-  background-color: var(--primary-accent);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background-color: var(--primary-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .add-icon {
-  width: 20px;
-  height: 20px;
+    width: 20px;
+    height: 20px;
 }
 
 .todo-items {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex-grow: 1;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .todo-items::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 .todo-items li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 4px;
-  border-bottom: 1px solid #4a5568;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 4px;
+    border-bottom: 1px solid #4a5568;
 }
 
 .todo-items li:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .todo-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    flex-grow: 1;
 }
 
 .todo-content input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+    width: 18px;
+    height: 18px;
 }
 
 .todo-items li.completed span {
-  text-decoration: line-through;
-  color: var(--text-muted);
+    text-decoration: line-through;
+    color: var(--text-muted);
 }
 
 .delete-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
 }
 
 .delete-btn:hover {
-  color: #ef4444;
+    color: #ef4444;
 }
 
 .trash-icon {
-  width: 18px;
-  height: 18px;
+    width: 18px;
+    height: 18px;
 }
