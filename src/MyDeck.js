@@ -20,7 +20,7 @@ const ALL_DECK_INFO = {
 };
 
 // =================================================================
-// --- To-Do List Component (Included and fully functional) ---
+// --- To-Do List Component ---
 // =================================================================
 const TodoList = ({ initialTodos, onUpdate }) => {
     const [todos, setTodos] = useState(initialTodos);
@@ -62,7 +62,7 @@ const TodoList = ({ initialTodos, onUpdate }) => {
         const localTodos = todos.map(todo =>
             todo._id.toString() === id.toString() ? { ...todo, completed: !todo.completed } : todo
         );
-        setTodos(localTodos); // Optimistic UI update
+        setTodos(localTodos);
         onUpdate(localTodos);
 
         try {
@@ -75,7 +75,7 @@ const TodoList = ({ initialTodos, onUpdate }) => {
             );
         } catch (error) {
             console.error("Failed to toggle todo:", error);
-            setTodos(todos); // Revert on error
+            setTodos(todos);
             onUpdate(todos);
         }
     };
@@ -83,7 +83,7 @@ const TodoList = ({ initialTodos, onUpdate }) => {
     const deleteTodo = async (id) => {
         if (!currentUser) return;
         const updatedTodos = todos.filter(todo => todo._id.toString() !== id.toString());
-        setTodos(updatedTodos); // Optimistic UI update
+        setTodos(updatedTodos);
         onUpdate(updatedTodos);
 
         try {
@@ -95,7 +95,7 @@ const TodoList = ({ initialTodos, onUpdate }) => {
             );
         } catch (error) {
             console.error("Failed to delete todo:", error);
-            setTodos(todos); // Revert on error
+            setTodos(todos);
             onUpdate(todos);
         }
     };
@@ -127,9 +127,8 @@ const TodoList = ({ initialTodos, onUpdate }) => {
     );
 };
 
-
 // ========================================================
-// --- Main My Decks Page Component (FIXED) ---
+// --- Main My Decks Page Component ---
 // ========================================================
 const MyDeck = () => {
     const { currentUser } = useAuth();
@@ -176,20 +175,20 @@ const MyDeck = () => {
         );
     }
     
-    // === THE MAIN FIX IS HERE ===
-    // This logic correctly and safely reads the OBJECTS from your database.
-    
     const favoriteCategories = Object.entries(userProfile.favs || {});
+    const favoriteDecksCount = Object.values(userProfile.favs || {}).reduce((total, decks) => total + decks.length, 0);
 
-    const completedDecks = Object.values(userProfile.completedDecks || {})
-        .flat()
-        .map(id => ALL_DECK_INFO[id])
-        .filter(Boolean);
+    const completedByType = {
+        "Flashcards": Object.values(userProfile.completedDecks?.flashcards || {}).flat().map(id => ALL_DECK_INFO[id]).filter(Boolean),
+        "Practice Test": Object.values(userProfile.completedDecks?.practiceTest || {}).flat().map(id => ALL_DECK_INFO[id]).filter(Boolean)
+    };
+    const completedDecksCount = completedByType.Flashcards.length + completedByType["Practice Test"].length;
 
-    const masteredDecks = Object.values(userProfile.masteredDecks || {})
-        .flat()
-        .map(id => ALL_DECK_INFO[id])
-        .filter(Boolean);
+    const masteredByType = {
+        "Flashcards": Object.values(userProfile.masteredDecks?.flashcards || {}).flat().map(id => ALL_DECK_INFO[id]).filter(Boolean),
+        "Practice Test": Object.values(userProfile.masteredDecks?.practiceTest || {}).flat().map(id => ALL_DECK_INFO[id]).filter(Boolean)
+    };
+    const masteredDecksCount = masteredByType.Flashcards.length + masteredByType["Practice Test"].length;
 
     return (
         <div className="my-decks-layout">
@@ -202,7 +201,6 @@ const MyDeck = () => {
                     <h3>Progress Overview</h3>
                     <div className="progress-grid">
                         
-                        {/* Favorites Section - Renders the new structure */}
                         <motion.div
                             className="progress-card favorites-card"
                             onClick={() => setFavoritesExpanded(!favoritesExpanded)}
@@ -210,7 +208,7 @@ const MyDeck = () => {
                         >
                             <div className="favorites-header-inline">
                                 <h4>Your Favourites</h4>
-                                <p>{favoriteCategories.length} categories</p>
+                                <p>{favoriteDecksCount} decks</p>
                             </div>
                             <AnimatePresence>
                                 {favoritesExpanded && (
@@ -241,17 +239,17 @@ const MyDeck = () => {
                             </AnimatePresence>
                         </motion.div>
 
-                        {/* Completed Section */}
-                         <ExpandableDeckSection 
+                        <ExpandableDeckSection 
                             title="Completed"
-                            decks={completedDecks}
+                            groupedDecks={completedByType}
+                            totalCount={completedDecksCount}
                             isExpanded={completedExpanded}
                             toggleExpand={() => setCompletedExpanded(!completedExpanded)}
                         />
-                        {/* Mastered Section */}
-                         <ExpandableDeckSection 
+                        <ExpandableDeckSection 
                             title="Mastered"
-                            decks={masteredDecks}
+                            groupedDecks={masteredByType}
+                            totalCount={masteredDecksCount}
                             isExpanded={masteredExpanded}
                             toggleExpand={() => setMasteredExpanded(!masteredExpanded)}
                         />
@@ -265,8 +263,8 @@ const MyDeck = () => {
     );
 };
 
-// Helper component for Completed and Mastered sections
-const ExpandableDeckSection = ({ title, decks, isExpanded, toggleExpand }) => (
+// --- Helper component for Completed and Mastered sections ---
+const ExpandableDeckSection = ({ title, groupedDecks, totalCount, isExpanded, toggleExpand }) => (
     <motion.div
         className="progress-card favorites-card"
         onClick={toggleExpand}
@@ -274,7 +272,7 @@ const ExpandableDeckSection = ({ title, decks, isExpanded, toggleExpand }) => (
     >
         <div className="favorites-header-inline">
             <h4>{title}</h4>
-            <p>{decks.length} decks</p>
+            <p>{totalCount} decks</p>
         </div>
         <AnimatePresence>
             {isExpanded && (
@@ -285,20 +283,27 @@ const ExpandableDeckSection = ({ title, decks, isExpanded, toggleExpand }) => (
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
                 >
-                    {decks.length > 0 ? (
-                        <div className="favorite-items">
-                            {decks.map((deck, index) => (
-                                <motion.div
-                                    key={deck.id || index}
-                                    className="favorite-item"
-                                    initial={{ y: 10, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    transition={{ delay: index * 0.05 }}
-                                >
-                                    {deck.title}
-                                </motion.div>
-                            ))}
-                        </div>
+                    {totalCount > 0 ? (
+                        Object.entries(groupedDecks).map(([type, decks]) => (
+                            decks.length > 0 && (
+                                <div key={type} className="favorite-category-group">
+                                    <h5>{type}</h5>
+                                    <div className="favorite-items">
+                                        {decks.map((deck, index) => (
+                                            <motion.div
+                                                key={deck.id || index}
+                                                className="favorite-item"
+                                                initial={{ y: 10, opacity: 0 }}
+                                                animate={{ y: 0, opacity: 1 }}
+                                                transition={{ delay: index * 0.05 }}
+                                            >
+                                                {deck.title}
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )
+                        ))
                     ) : (
                         <p className="empty-state-message">No decks in this category yet.</p>
                     )}

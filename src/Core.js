@@ -31,7 +31,7 @@ const categories = [
 ];
 
 const HeartIcon = () => (
-    <svg xmlns="http://www.w.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
     </svg>
 );
@@ -48,8 +48,6 @@ const Core = () => {
                 const usersCollection = mongo.db("prepdeck").collection("user");
                 const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
                 
-                // This is now safe. New users have a `favs: {}` field from sign-up.
-                // The `|| {}` is an extra fallback for safety.
                 setFavs(userProfile?.favs || {});
 
             } catch (error) {
@@ -59,43 +57,66 @@ const Core = () => {
         fetchUserFavorites();
     }, [currentUser]);
 
+    // ✅ --- UPDATED FAVORITE HANDLER ---
     const handleFavoriteClick = async (e, subCategoryTitle) => {
         e.preventDefault();
         e.stopPropagation();
         if (!currentUser) return;
 
         const isCurrentlyFavorited = favs[MAIN_CATEGORY_TITLE]?.includes(subCategoryTitle);
-        // Create a deep copy to safely modify the state before updating
-        const newFavsState = JSON.parse(JSON.stringify(favs));
-        
-        if (!newFavsState[MAIN_CATEGORY_TITLE]) {
-            newFavsState[MAIN_CATEGORY_TITLE] = [];
-        }
+        const originalFavs = favs; // Keep a copy in case of DB error
 
-        if (isCurrentlyFavorited) {
-            newFavsState[MAIN_CATEGORY_TITLE] = newFavsState[MAIN_CATEGORY_TITLE].filter(
-                title => title !== subCategoryTitle
-            );
-        } else {
-            newFavsState[MAIN_CATEGORY_TITLE].push(subCategoryTitle);
-        }
-        setFavs(newFavsState);
+        // Optimistic UI Update using functional form for safety
+        setFavs(currentFavs => {
+            const newFavs = JSON.parse(JSON.stringify(currentFavs)); // Deep copy
 
+            if (isCurrentlyFavorited) {
+                // Remove the item
+                const updatedList = (newFavs[MAIN_CATEGORY_TITLE] || []).filter(
+                    title => title !== subCategoryTitle
+                );
+                // If the list is now empty, remove the category key
+                if (updatedList.length === 0) {
+                    delete newFavs[MAIN_CATEGORY_TITLE];
+                } else {
+                    newFavs[MAIN_CATEGORY_TITLE] = updatedList;
+                }
+            } else {
+                // Add the item
+                if (!newFavs[MAIN_CATEGORY_TITLE]) {
+                    newFavs[MAIN_CATEGORY_TITLE] = [];
+                }
+                newFavs[MAIN_CATEGORY_TITLE].push(subCategoryTitle);
+            }
+            return newFavs;
+        });
+
+        // Database Update using atomic operators
         try {
             const mongo = currentUser.mongoClient("mongodb-atlas");
             const usersCollection = mongo.db("prepdeck").collection("user");
-
-            // Use dot notation to target the nested array.
-            // $set is the safest operator as it creates the fields if they don't exist.
             const fieldPath = `favs.${MAIN_CATEGORY_TITLE}`;
             
+            let updateOperation;
+            if (isCurrentlyFavorited) {
+                // If the array will become empty, we can use $unset to remove the field
+                if (originalFavs[MAIN_CATEGORY_TITLE]?.length === 1) {
+                    updateOperation = { "$unset": { [`favs.${MAIN_CATEGORY_TITLE}`]: "" } };
+                } else {
+                    updateOperation = { "$pull": { [fieldPath]: subCategoryTitle } };
+                }
+            } else {
+                updateOperation = { "$addToSet": { [fieldPath]: subCategoryTitle } };
+            }
+
             await usersCollection.updateOne(
                 { "auth_id": currentUser.id },
-                { "$set": { [fieldPath]: newFavsState[MAIN_CATEGORY_TITLE] } }
+                updateOperation
             );
+
         } catch (error) {
             console.error("Failed to update favs in database:", error);
-            setFavs(favs); // Revert UI on error
+            setFavs(originalFavs); // Revert UI on error
         }
     };
 
