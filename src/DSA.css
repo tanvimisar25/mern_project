@@ -1,0 +1,141 @@
+/* --- Base Layout for the Core Page --- */
+.core-page-layout {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 40px 24px;
+}
+
+/* --- Main Content Area --- */
+.core-main-content {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 100px;
+}
+
+/* --- Page Header --- */
+.core-header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.core-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--bg-dark);
+  margin: 0 0 8px 0;
+}
+
+.core-header .subtitle {
+  font-size: 18px;
+  color: var(--text-muted, #718096);
+  line-height: 1.6;
+}
+
+/* --- Main Translucent Container --- */
+.core-category-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  padding: 24px;
+  padding-bottom: 25px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.core-category-container h3 {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--bg-dark);
+  margin-bottom: 24px;
+  padding-left: 8px;
+}
+
+/* --- The 2x2 Grid --- */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px; 
+}
+
+.category-link-wrapper {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* --- Individual Category Box Styling --- */
+.category-box {
+  background-color: #f8f9fc;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  height: 60%;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  position: relative; /* This is crucial for positioning the icon */
+}
+
+.category-box h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--bg-dark);
+  margin: 0 0 8px 0;
+  padding:0;
+  padding-right: 40px; /* Makes space for the icon */
+}
+
+.category-box p {
+  font-size: 14px;
+  color: var(--text-muted, #718096);
+  line-height: 1.5;
+  margin: 0;
+  padding-right: 40px; /* Makes space for the icon */
+}
+
+/* --- NEW STYLES FOR THE FAVORITE BUTTON --- */
+.favorite-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: transparent;
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 2; /* Ensures it's clickable above other content */
+}
+
+.favorite-btn svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--text-muted, #718096);
+  stroke-width: 1.5;
+  fill: none; /* The heart is empty by default */
+  transition: all 0.2s ease;
+}
+
+/* .favorite-btn:hover {
+  background-color: rgba(239, 68, 68, 0.1); /* Adds a faint red circle on hover 
+} */
+
+.favorite-btn:hover svg {
+  stroke: #ef4444a6; /* Makes the heart outline red on hover */
+}
+
+/* This class is added when the heart is clicked */
+.favorite-btn.favorited svg {
+  stroke: #ef444471;
+  fill: #ef4444; /* Fills the heart with red */
+}

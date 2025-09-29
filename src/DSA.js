@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import './Core.css';
+import './DSA.css';
 import { useAuth } from './AuthContext';
 
 // Define the main category title as a constant to ensure consistency.
-const MAIN_CATEGORY_TITLE = "Core Interview Questions";
+const MAIN_CATEGORY_TITLE = "Data Structure and Algorithm";
 
 const categories = [
     {
-        title: "General HR Questions",
-        description: "Showcase your personality, values, and cultural fit by answering common workplace-related questions.",
-        link: "/generalquestions"
+        title: "Arrays & Strings",
+        description: "Master fundamental data structures and manipulate sequences efficiently.",
+        link: "/arraystring"
     },
     {
-        title: "Behavioral Questions",
-        description: "Prove your past skills and behaviors through real-life examples.",
-        link: "/behavioraquestions"
+        title: "Trees & Graphs",
+        description: "Navigate hierarchical and interconnected data with optimized algorithms.",
+        link: "/treegraph"
     },
     {
-        title: "Situational Questions",
-        description: "Assess your judgment with hypothetical 'what would you do if' scenarios.",
-        link: "/situationalquestions"
+        title: "Dynamic Programming & Recursion",
+        description: "Solve complex problems by breaking them into manageable subproblems.",
+        link: "/dynamic"
     },
     {
-        title: "Resume & Project Deep Dive",
-        description: "A detailed examination of the projects and experiences on your resume.",
-        link: "/resumedive"
+        title: "Searching & Sorting Algorithms",
+        description: "Organize and retrieve data effectively using key algorithmic strategies.",
+        link: "/searchsort"
     }
 ];
 
@@ -36,7 +36,7 @@ const HeartIcon = () => (
     </svg>
 );
 
-const Core = () => {
+const DSA = () => {
     const { currentUser } = useAuth();
     const [favs, setFavs] = useState({});
 
@@ -128,7 +128,7 @@ const Core = () => {
                 <div className="core-header">
                     <h1>{MAIN_CATEGORY_TITLE}</h1>
                     <p className="subtitle">
-                        Master the four key types of questions asked in every interview.
+                        Sharpen problem-solving skills with essential coding patterns and techniques.
                     </p>
                 </div>
                 <div className="core-category-container">
@@ -160,4 +160,4 @@ const Core = () => {
     );
 };
 
-export default Core;
+export default DSA;

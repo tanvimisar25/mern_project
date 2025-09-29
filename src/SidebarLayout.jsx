@@ -82,7 +82,10 @@ export default function SidebarLayout() {
                     <span className="link-text">Core Interview Skills</span>
                   </Link>
                 </li>
-                <li><a className="sidebar-link"><AptitudeIcon /><span className="link-text">General Aptitude</span></a></li>
+                <li><Link to="/dsa" className="sidebar-link">
+                  <AptitudeIcon />
+                    <span className="link-text">DSA</span>
+                </Link></li>
                 <li><a className="sidebar-link"><AffairsIcon /><span className="link-text">Current Affairs</span></a></li>
                 <li><a className="sidebar-link"><EngineeringIcon /><span className="link-text">Engineering</span></a></li>
                 <li><a className="sidebar-link"><ComputerIcon /><span className="link-text">Computer Science</span></a></li>

@@ -13,8 +13,16 @@ import Login from "./Login";
 import Signup from "./Signup";
 import MyDeck from "./MyDeck";
 import PracticeTest from "./PracticeTest";
-import BehavioralQuestions from "./BehavioralQuestions";
+import GeneralQuestions from "./GeneralQuestions";
+import BehavioraQuestions from "./BehavioraQuestions";
+import SituationalQuestions from "./SituationalQuestions";
+import ResumeDive from "./ResumeDive";
 import Core from "./Core";
+import ArrayString from "./ArrayString";
+import TreeGraph from "./TreeGraph";
+import Dynamic from "./Dynamic";
+import SearchSort from "./SearchSort";
+import DSA from "./DSA";
 
 
 // This is your existing ProtectedRoute component
@@ -70,8 +78,16 @@ function App() {
                 <Route path="/dashboard" element={<Homepage2 />} />
                 <Route path="/mydecks" element={<MyDeck />} />
                 <Route path="/practicetests" element={<PracticeTest />} />
-                <Route path="/behavioralquestions" element={<BehavioralQuestions />} />
+                <Route path="/generalquestions" element={<GeneralQuestions />} />
+                <Route path="/behavioraquestions" element={<BehavioraQuestions />} />
+                <Route path="/situationalquestions" element={<SituationalQuestions />} />
+                <Route path="/resumedive" element={<ResumeDive />} />
                 <Route path="/core" element={<Core />} />
+                <Route path="/arraystring" element={<ArrayString />} />
+                <Route path="/treegraph" element={<TreeGraph />} />
+                <Route path="/dynamic" element={<Dynamic />} />
+                <Route path="/searchsort" element={<SearchSort />} />
+                <Route path="/dsa" element={<DSA />} />
               </Route>
 
             </Route>
