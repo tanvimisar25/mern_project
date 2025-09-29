@@ -113,7 +113,7 @@ function Homepage2() {
                         cx="50%"
                         cy="50%"
                         innerRadius={85}
-                        outerRadius={120}
+                        outerRadius={150}
                         paddingAngle={3}
                         dataKey="value"
                         cornerRadius={10}
