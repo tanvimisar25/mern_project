@@ -152,7 +152,7 @@ export default function SidebarLayout() {
           </div>
         </aside>
 
-        <div className={`main-content ${isSidebarHovered ? 'sidebar-is-hovered' : ''}`}>
+        <div className={`main-content1 ${isSidebarHovered ? 'sidebar-is-hovered' : ''}`}>
           <Outlet />
         </div>
         

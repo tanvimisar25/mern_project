@@ -56,6 +56,7 @@ body {
     /* z-index: 1; */ /* This can also be removed to help with blur effects */
 }
 
+
 /* --- Sidebar --- */
 .sidebar {
     background-color: var(--bg-dark);
@@ -188,7 +189,7 @@ body {
     gap: 4px;
 }
 
-.sidebar:hover ~ .main-content {
+.sidebar:hover ~ .main-content1 {
 margin-left: var(--sidebar-expanded-width); /* This line should already exist */
  padding-left: 1px; /* ✅ Add or verify this line is here */
 }
@@ -302,7 +303,7 @@ margin-left: var(--sidebar-expanded-width); /* This line should already exist */
 }
 
 /* --- Main Content Area --- */
-.main-content {
+.main-content1 {
     flex-grow: 1;
     margin-left: var(--sidebar-collapsed-width);
     transition: margin-left 0.3s ease-in-out;

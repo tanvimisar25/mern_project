@@ -44,7 +44,7 @@ function Homepage() {
   return (
     <div className="homepage-container">
       <div className="layout">
-        <div className="main-content">
+        <div className="main-content1">
           <div className="main-header">
             <h1>Let's get you ready for your next interview!!</h1>
             <p className="subtitle">
@@ -62,10 +62,26 @@ function Homepage() {
               {/* --- Expanded View --- */}
               <div className="grid-container">
                 {[
-                  { title: "Behavioral Questions", terms: "10 terms", link: "/behavioralquestions" },
-                  { title: "Data Structures & Algorithms", terms: "120 terms" },
-                  { title: "Database & SQL", terms: "90 terms" },
-                  { title: "General HR Questions", terms: "10 terms", link: "/generalquestions" },
+                  {
+                    title: "General HR Questions",
+                    terms: "20 decks",
+                    link: "/generalquestions",
+                  },
+                  {
+                    title: "Back End Development",
+                    terms: "20 decks",
+                    link: "/backend",
+                  },
+                  {
+                    title: "Machine Learning",
+                    terms: "20 decks",
+                    link: "/machinelearning",
+                  },
+                  {
+                    title: "Ethical Hacking",
+                    terms: "20 decks",
+                    link: "/ethicalhacking",
+                  },
                 ].map((card, index) => (
                   card.link ? (
                     <Link
@@ -91,9 +107,9 @@ function Homepage() {
               <div className="decks-collapsed-view">
                 {[
                   { short: "HR", link: "/generalquestions" },
-                  { short: "DSA", link: "/dsa" },
-                  { short: "SQL", link: "/sql" },
-                  { short: "HR", link: "/generalquestions" }
+                  { short: "DEV", link: "/backend" },
+                  { short: "ML", link: "/machinelearning" },
+                  { short: "EH", link: "/ethicalhacking" },
                 ].map((deck, index) => (
                   deck.link ? (
                     <Link key={index} to={deck.link} className="deck-bubble-link">

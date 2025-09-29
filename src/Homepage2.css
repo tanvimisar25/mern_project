@@ -2,11 +2,13 @@
 .main-content2 {
     flex-grow: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* This is the corrected alignment */
+    justify-content: flex-start;
     perspective: 1000px;
     width: 100%;
-    margin-left: -20px;
+    margin-left: -100px;
 }
 
 .dashboard-grid {
@@ -16,21 +18,22 @@
   gap: 20px;
   width: 100%;
   max-width: 1100px;
-  margin: 40px auto;
+  margin: 10px auto;
   min-height: 500px;
   padding: 0 20px;
 }
 
 .dashboard-card {
   border-radius: 16px;
-  padding: 32px;
+  padding: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-left: 10px;
-  height: 500px;
+  /* Adjusted height to better fit content */
+  height: 450px;
   background-color: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -49,27 +52,14 @@
   height: 130px;
 }
 
-.dashboard-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
 .chart-card {
   grid-row: 1 / 4;
   grid-column: 1 / 2;
   padding: 40px;
   display: flex;
   flex-direction: column;
-  align-items: stretch;   /* allows chart to expand */
+  align-items: stretch;
   justify-content: flex-start;
-}
-
-.chart-card h3 {
-  margin-top: 0;
-  margin-bottom: 30px;
-  font-size: 1.5rem;
-  color: #1f2937;
-  font-weight: 600;
 }
 
 .stat-card {
@@ -95,60 +85,45 @@
   margin: 0;
 }
 
+/* --- UPDATED LEGEND STYLES --- */
 .chart-legend {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Creates two columns */
+  gap: 12px 24px; /* Row and column gap */
+  margin-top: 30px; /* Increased top margin */
+  padding: 0 40px; /* Adds horizontal padding */
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px; /* Increased gap */
+  justify-self: start; /* Aligns items to the left within their grid cell */
 }
 
 .legend-color {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px; /* Changed to a squircle */
 }
 
 .legend-text {
-  font-size: 0.95rem;
+  font-size: 1rem; /* Slightly larger text */
   color: #4b5563;
   font-weight: 500;
 }
 
-.empty-chart-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #9ca3af;
-  font-size: 1.1rem;
-}
-
-.loading-fullscreen {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-  font-size: 1.5rem;
-  color: #1f2937;
-}
-
 /* Header */
-.main-header {
+.main-header2 {
   text-align: center;
-  margin-bottom: 30px;
+  margin-left: -250px;
 }
 
-.main-header h1 {
+.main-header2 h1 {
   font-size: 2.8rem;
   font-weight: 700;
   color: #1f2937;
-  margin: 10px 0;
+  margin: -10px 0;
 }
 
 .header-subtitle {
@@ -160,7 +135,8 @@
 /* Chart */
 .chart-container {
   width: 100%;
-  height: 320px;
+  /* Adjusted height to fit the new layout */
+  height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -186,6 +162,10 @@
   }
 
   .chart-container {
-    height: 480px;
+    height: 300px;
+  }
+
+  .chart-legend {
+    grid-template-columns: 1fr; /* Stack legend items on mobile */
   }
 }
