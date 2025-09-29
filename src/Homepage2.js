@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import "./Homepage2.css";
+import "./Homepage2.css"; // Imports the separate CSS file
 
+// --- FLIP CARD COMPONENT ---
 const InfoFlipCard = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const navigate = useNavigate();
@@ -21,7 +22,6 @@ const InfoFlipCard = () => {
         <div className="info-card-face info-card-front">
           <h2>Flip me!</h2>
         </div>
-
         <div className="info-card-face info-card-back">
           <div className="info-card-content">
             <h3>Why PrepDeck?</h3>
@@ -40,15 +40,49 @@ const InfoFlipCard = () => {
   );
 };
 
+// --- CUSTOM LABEL FOR THE PIE CHART ---
+const CustomizedLabel = ({ cx, cy, midAngle, outerRadius, payload }) => {
+  if (payload.name !== "Mastered") {
+    return null;
+  }
+
+  const RADIAN = Math.PI / 180;
+  const radius = outerRadius + 25;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const textAnchor = x > cx ? "start" : "end";
+
+  return (
+    <g>
+      <rect
+        x={textAnchor === "start" ? x : x - 70}
+        y={y - 12}
+        width={70}
+        height={24}
+        rx={6}
+        fill="#1f2937"
+      />
+      <text
+        x={textAnchor === "start" ? x + 35 : x - 35}
+        y={y}
+        className="custom-label-text"
+        textAnchor="middle"
+        dominantBaseline="central"
+      >
+        {`${payload.value}%`}
+      </text>
+    </g>
+  );
+};
+
+// --- MAIN HOMEPAGE COMPONENT ---
 function Homepage2() {
-  // Donut chart data
   const chartData = [
     { name: "Mastered", value: 45, color: "#10b981" },
     { name: "In Progress", value: 30, color: "#3b82f6" },
     { name: "Not Started", value: 25, color: "#e5e7eb" },
   ];
 
-  // Stats data
   const stats = {
     accuracy: 87,
     completed: 65,
@@ -59,36 +93,44 @@ function Homepage2() {
     <div className="homepage-container">
       <div className="layout">
         <div className="main-content2">
-          {/* Header Section */}
           <div className="main-header">
-            {/* <p className="header-subtitle">Track Your Progress</p> */}
             <h1>WELCOME BACK!!!</h1>
             <p className="header-subtitle">Continue your learning journey</p>
           </div>
-
-          {/* Dashboard Section */}
           <div className="dashboard-grid">
-            {/* Donut Chart */}
             <div className="dashboard-card chart-card">
               <h3>Your Learning Progress</h3>
-              <div className="chart-container">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={chartData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={70}
-                      outerRadius={130}
-                      paddingAngle={3}
-                      dataKey="value"
-                    >
-                      {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
+              <div className="chart-wrapper">
+                {/* <div className="chart-center-text">
+                  <h3>{stats.mastered}%</h3>
+                  <p>Mastered</p>
+                </div> */}
+                <div className="chart-container">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={chartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={85}
+                        outerRadius={120}
+                        paddingAngle={3}
+                        dataKey="value"
+                        cornerRadius={10}
+                        labelLine={false}
+                        // label={<CustomizedLabel />}
+                      >
+                        {chartData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={entry.color}
+                            stroke={entry.color}
+                          />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
               <div className="chart-legend">
                 {chartData.map((item, idx) => (
@@ -102,31 +144,24 @@ function Homepage2() {
                 ))}
               </div>
             </div>
-
-            {/* Stats Boxes */}
             <div className="dashboard2-card stat-card">
               <h4>Total Accuracy Score</h4>
               <p className="stat-value">{stats.accuracy}%</p>
             </div>
-
             <div className="dashboard2-card stat-card">
               <h4>Completed Decks</h4>
               <p className="stat-value">{stats.completed}%</p>
             </div>
-
             <div className="dashboard2-card stat-card">
               <h4>Mastered Decks</h4>
               <p className="stat-value">{stats.mastered}%</p>
             </div>
           </div>
-
-          {/* Featured Decks */}
           <div className="decks-section">
             <div className="explore-decks-card">
               <h2>
                 <span className="title-expanded">Featured </span>Decks
               </h2>
-
               <div className="grid-container">
                 {[
                   {
@@ -161,7 +196,6 @@ function Homepage2() {
                   )
                 )}
               </div>
-
               <div className="decks-collapsed-view">
                 {[
                   { short: "HR", link: "/generalquestions" },
