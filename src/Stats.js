@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useCallback } from 'react'; // This line might have been the issue
 import { Link } from "react-router-dom";
-import './BehavioraQuestions.css';
+import './Questions.css';
 
 // ✅ 1. IMPORT THE USEAUTH HOOK - This is the correct way to get user info.
 import { useAuth } from './AuthContext'; 
@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "bq_1", deckId: "behave", front: "Tell me about a time when you had to work under a tight deadline.", back: "I managed my tasks by prioritizing critical items first, breaking down work into smaller steps, and collaborating with teammates. This helped us deliver the project on time without compromising quality." },
-    { id: "bq_2", deckId: "behave", front: "Describe a situation where you faced a conflict with a team member. How did you handle it?", back: "I scheduled a one-on-one conversation, actively listened to their concerns, and clarified misunderstandings. We agreed on a middle ground and improved our collaboration afterward." },
-    { id: "bq_3", deckId: "behave", front: "Give an example of when you went above and beyond at work.", back: " During a product release, I volunteered extra hours to automate repetitive testing tasks. This reduced QA time by 30% and ensured a smoother release." },
-    { id: "bq_4", deckId: "behave", front: "Tell me about a time you failed at something. How did you recover?", back: "I once underestimated the time needed for integration testing. I took accountability, informed my manager early, and worked with the QA team to create a new testing checklist that prevented similar delays." },
-    { id: "bq_5", deckId: "behave", front: "Describe a time you worked with a difficult client", back: " A client was unhappy with constant delays. I maintained transparency, provided frequent progress updates, and managed expectations, which helped rebuild trust." },
-    { id: "bq_6", deckId: "behave", front: "Share an instance where you had to quickly learn a new skill for a project.", back: "I had to pick up React within a week for a feature requirement. I used online tutorials, practiced small projects, and collaborated with a senior developer, which enabled me to contribute effectively" },
-    { id: "bq_7", deckId: "behave", front: " Tell me about a time you showed leadership without being in a formal role.", back: "In a group project, I took initiative to divide responsibilities, kept track of progress, and motivated the team. This improved coordination and we completed the task successfully." },
-    { id: "bq_8", deckId: "behave", front: "Describe a situation where you improved a process at work.", back: " I noticed manual deployment caused frequent errors, so I introduced CI/CD pipelines. This reduced deployment time and minimized production issues." },
-    { id: "bq_9", deckId: "behave", front: "Give an example of a goal you set and how you achieved it.", back: " I aimed to improve my coding speed. I practiced solving 2-3 coding problems daily and reviewed optimized solutions, which significantly improved my efficiency in real projects." },
-    { id: "bq_10", deckId: "behave", front: "Tell me about a time you worked in a diverse team.", back: "In my internship, I collaborated with teammates from different cultural and educational backgrounds. I adapted my communication style and respected everyone’s input, which led to better solutions." }
+    { id: "sp_1", deckId: "statistics_probability", front: "What is the difference between mean, median, and mode?", back: "They are all measures of central tendency.\nMean is the average of all data points.\nMedian is the middle value in a sorted dataset. It's robust to outliers.\nMode is the value that appears most frequently in a dataset." },
+    { id: "sp_2", deckId: "statistics_probability", front: "Explain what a p-value is in the context of hypothesis testing.", back: "A p-value is the probability of observing results as extreme as, or more extreme than, the ones actually observed, assuming the null hypothesis is true. A small p-value (typically < 0.05) suggests that the observed data is unlikely under the null hypothesis, leading us to reject it." },
+    { id: "sp_3", deckId: "statistics_probability", front: "What is the Central Limit Theorem (CLT)?", back: "The Central Limit Theorem states that the sampling distribution of the sample mean will approach a normal distribution as the sample size gets larger, regardless of the shape of the population distribution. This theorem is foundational to many statistical procedures." },
+    { id: "sp_4", deckId: "statistics_probability", front: "Describe the difference between Type I and Type II errors.", back: "In hypothesis testing:\nA Type I error is a 'false positive': rejecting the null hypothesis when it is actually true.\nA Type II error is a 'false negative': failing to reject the null hypothesis when it is actually false." },
+    { id: "sp_5", deckId: "statistics_probability", front: "What is Bayes' Theorem used for?", back: "Bayes' Theorem is used to calculate conditional probability. It describes the probability of an event based on prior knowledge of conditions that might be related to the event. It allows us to update our beliefs about a hypothesis as we gather more evidence. P(A|B) = P(B|A) * P(A) / P(B)" },
+    { id: "sp_6", deckId: "statistics_probability", front: "Explain the difference between correlation and causation.", back: "Correlation is a statistical measure that indicates the extent to which two or more variables fluctuate together. A positive correlation means they move in the same direction, while a negative correlation means they move in opposite directions. Causation indicates that one event is the result of the occurrence of the other event. Correlation does not imply causation." },
+    { id: "sp_7", deckId: "statistics_probability", front: "What is a Normal Distribution and what are its key properties?", back: "A Normal Distribution, also known as a Gaussian distribution or 'bell curve,' is a probability distribution that is symmetric about the mean. Its key properties are that the mean, median, and mode are all equal, and it is defined by its mean (μ) and standard deviation (σ)." },
+    { id: "sp_8", deckId: "statistics_probability", front: "What is selection bias?", back: "Selection bias is a systematic error that occurs when the sample population is not a proper representation of the population being studied. This happens when the process of selecting subjects or data for analysis is not random, leading to skewed and inaccurate conclusions." },
+    { id: "sp_9", deckId: "statistics_probability", front: "What is a confidence interval?", back: "A confidence interval is a range of values, derived from a sample, that is likely to contain the true value of an unknown population parameter. For example, a 95% confidence interval means that if we were to take many samples and construct an interval for each, 95% of those intervals would contain the true population parameter." },
+    { id: "sp_10", deckId: "statistics_probability", front: "What is the difference between descriptive and inferential statistics?", back: "Descriptive statistics summarize or describe the characteristics of a known dataset (e.g., calculating the mean or standard deviation). Inferential statistics use data from a sample to make inferences or predictions about a larger population (e.g., conducting a hypothesis test or creating a confidence interval)." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When interviewers ask you to 'Tell me about a time you handled conflict,' what should your answer focus on?",
+        question: "In a dataset that is skewed by a few very high-income individuals, which measure of central tendency would be the most representative of a typical person's income?",
         options: [
-            "Blaming the other person in detail.",
-            "Describing how you handled the situation constructively and what you learned.",
-            "Avoiding the question by saying you never had conflicts.",
-            "Giving a vague response without examples."
+            "Mean",
+            "Median",
+            "Mode",
+            "Standard Deviation"
         ],
-        correctAnswer: "Describing how you handled the situation constructively and what you learned."
+        correctAnswer: "Median"
     },
     {
-        question: "What is the best structure to answer behavioral questions?",
+        question: "You conduct a statistical test and get a p-value of 0.02. If you are using a standard alpha level of 0.05, what is the most appropriate conclusion?",
         options: [
-            "STAR (Situation, Task, Action, Result)",
-            "Giving a random story.",
-            "Talking only about results without context.",
-            "Listing skills without examples."
+            "Accept the null hypothesis.",
+            "Reject the null hypothesis.",
+            "The test is inconclusive.",
+            "The alternative hypothesis is false."
         ],
-        correctAnswer: "STAR (Situation, Task, Action, Result)"
+        correctAnswer: "Reject the null hypothesis."
     },
     {
-        question: "What is the main purpose of behavioral interview questions?",
+        question: "The bell-shaped curve is characteristic of which probability distribution?",
         options: [
-            "To test your technical coding ability.",
-            "To understand how you behaved in past situations as a predictor of future performance.",
-            "To check your general knowledge.",
-            "To evaluate your typing speed."
+            "Binomial Distribution",
+            "Poisson Distribution",
+            "Normal Distribution",
+            "Uniform Distribution"
         ],
-        correctAnswer: "To understand how you behaved in past situations as a predictor of future performance."
+        correctAnswer: "Normal Distribution"
     },
     {
-        question: "When answering 'Tell me about a failure,' the best approach is to:",
+        question: "A medical test incorrectly identifies a healthy person as having a disease. This is an example of which type of error?",
         options: [
-            "Say you never failed.",
-            "Share a real failure, take responsibility, and explain what you learned.",
-            "Blame teammates or external factors.",
-            "Describe a minor failure but hide the outcome."
+            "Type I Error",
+            "Type II Error",
+            "Random Error",
+            "Sampling Error"
         ],
-        correctAnswer: "Share a real failure, take responsibility, and explain what you learned."
+        correctAnswer: "Type I Error"
     },
     {
-        question: "Which of the following is MOST effective when asked about teamwork?",
+        question: "If the correlation coefficient between two variables is -0.9, what does this indicate?",
         options: [
-            "Talking about working completely alone.",
-            "Giving an example of successful collaboration and your role in it.",
-            "Saying you prefer not to work in teams.",
-            "Avoiding specifics and giving generic statements."
+            "A strong positive linear relationship.",
+            "A weak negative linear relationship.",
+            "A strong negative linear relationship.",
+            "No linear relationship."
         ],
-        correctAnswer: "Giving an example of successful collaboration and your role in it."
+        correctAnswer: "A strong negative linear relationship."
     },
     {
-        question: "Why do interviewers ask about handling difficult clients or managers?",
+        question: "According to the Central Limit Theorem, what happens to the shape of the sampling distribution of the sample mean as the sample size gets larger?",
         options: [
-            "To see if you gossip about others.",
-            "To assess your communication, patience, and conflict resolution skills.",
-            "To test your memory of incidents.",
-            "To know if you’ll refuse to work with difficult people."
+            "It becomes skewed to the right.",
+            "It approaches a normal distribution.",
+            "It becomes uniform.",
+            "It depends on the underlying population distribution."
         ],
-        correctAnswer: "To assess your communication, patience, and conflict resolution skills."
+        correctAnswer: "It approaches a normal distribution."
     },
     {
-        question: "Which type of example works best in behavioral answers?",
+        question: "If two events, A and B, are independent, the probability that both occur, P(A and B), is:",
         options: [
-            "Hypothetical examples.",
-            "Real-life examples from past work, internships, or projects.",
-            "Examples unrelated to work, like personal life only.",
-            "Made-up stories to impress."
+            "P(A) + P(B)",
+            "P(A) / P(B)",
+            "P(A | B)",
+            "P(A) * P(B)"
         ],
-        correctAnswer: "Real-life examples from past work, internships, or projects."
+        correctAnswer: "P(A) * P(B)"
     },
     {
-        question: "When asked about a leadership experience, you should:",
+        question: "The range of values between the 25th percentile (Q1) and the 75th percentile (Q3) is known as:",
         options: [
-            "Highlight how you directed the team, solved problems, and the outcome.",
-            "Only talk about technical contributions.",
-            "Say you’ve never led and skip the question.",
-            "Criticize teammates’ performance."
+            "The standard deviation",
+            "The variance",
+            "The Interquartile Range (IQR)",
+            "The Z-score"
         ],
-        correctAnswer: "Highlight how you directed the team, solved problems, and the outcome."
+        correctAnswer: "The Interquartile Range (IQR)"
     },
     {
-        question: "What should you emphasize when discussing working under pressure?",
+        question: "A standard normal distribution is a normal distribution with:",
         options: [
-            "That you panic but somehow manage.",
-            "Strategies you use to stay calm, organized, and productive.",
-            "That you avoid such situations.",
-            "That you don’t like deadlines."
+            "A mean of 1 and a standard deviation of 1.",
+            "A mean of 0 and a standard deviation of 1.",
+            "A mean of 0 and a standard deviation of 0.",
+            "Any mean and a standard deviation of 1."
         ],
-        correctAnswer: "Strategies you use to stay calm, organized, and productive."
+        correctAnswer: "A mean of 0 and a standard deviation of 1."
     },
     {
-        question: "How can you make your behavioral answers most impressive?",
+        question: "The process of using a sample of data to make conclusions about a larger population is called:",
         options: [
-            "By using the STAR method and backing answers with measurable results.",
-            "By memorizing scripted answers without flexibility.",
-            "By keeping answers extremely short without detail.",
-            "By focusing only on your technical knowledge."
+            "Descriptive Statistics",
+            "Data Wrangling",
+            "Inferential Statistics",
+            "Data Visualization"
         ],
-        correctAnswer: "By using the STAR method and backing answers with measurable results."
+        correctAnswer: "Inferential Statistics"
     }
 ];
 
-function BehavioraQuestions() {
+function Stats() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -179,7 +179,7 @@ function BehavioraQuestions() {
 
                 if (userProfile && userProfile.editedDecks) {
     const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
         if (deckEdits && deckEdits[q.id]) {
             return { ...q, back: deckEdits[q.id] };
         }
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "behave",
+                    deckId: "statistics_probability",
                     deckType: "Flashcards",
-                    deckCategory: "Behavioral"
+                    deckCategory: "Stats"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "behave_test",
+                deckId: "statistics_probability_test",
                 deckType: "Tests",
-                deckCategory: "Behavioral"
+                deckCategory: "Stats"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default BehavioraQuestions;
+export default Stats;

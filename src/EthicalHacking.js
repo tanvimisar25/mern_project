@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "eh_1", deckId: "ethical_hacking_pen_testing", front: "What are the five phases of ethical hacking?", back: "1. Reconnaissance (Info gathering), 2. Scanning (Find vulnerabilities), 3. Gaining Access (Exploitation), 4. Maintaining Access (Persistence), 5. Covering Tracks (Clear evidence)." },
+    { id: "eh_2", deckId: "ethical_hacking_pen_testing", front: "What is the difference between a vulnerability assessment and a penetration test?", back: "An assessment identifies potential vulnerabilities. A pen test actively tries to exploit those vulnerabilities to confirm if they are real threats. An assessment finds what *might* be a problem; a pen test proves what *is* a problem." },
+    { id: "eh_3", deckId: "ethical_hacking_pen_testing", front: "Explain the differences between Black Box, White Box, and Grey Box penetration testing.", back: "Defines the tester's knowledge level:\n- Black Box: No prior knowledge; simulates an external attacker.\n- White Box: Full knowledge (source code, diagrams); allows for a thorough test.\n- Grey Box: Limited knowledge (e.g., a user account); simulates an insider threat." },
+    { id: "eh_4", deckId: "ethical_hacking_pen_testing", front: "What is 'reconnaissance' in the context of a penetration test?", back: "The initial info-gathering phase. Passive recon uses public sources (social media) without direct contact. Active recon directly probes the target's systems (e.g., with a port scan) to gather data." },
+    { id: "eh_5", deckId: "ethical_hacking_pen_testing", front: "What is the primary purpose of the Nmap tool?", back: "Nmap is a network scanning tool used to discover hosts and services on a network. It's used for host discovery, port scanning, and OS detection, creating a 'map' of the target network." },
+    { id: "eh_6", deckId: "ethical_hacking_pen_testing", front: "What is the Metasploit Framework?", back: "Metasploit is a popular penetration testing framework that provides a database of known exploits and payloads. It simplifies the process of attacking and exploiting vulnerabilities once they are identified." },
+    { id: "eh_7", deckId: "ethical_hacking_pen_testing", front: "What are the 'Rules of Engagement' (RoE) for a penetration test?", back: "The RoE is a formal document defining the scope and terms of a pen test. It's a critical legal agreement specifying what systems can be tested, the allowed methods, and the timeframe, protecting both the client and the tester." },
+    { id: "eh_8", deckId: "ethical_hacking_pen_testing", front: "What is the difference between a 'Red Team' and a 'Blue Team'?", back: "Red Team: The 'attackers' who emulate real-world adversaries to test an organization's defenses.\nBlue Team: The 'defenders,' the internal security team responsible for stopping the Red Team and real attacks." },
+    { id: "eh_9", deckId: "ethical_hacking_pen_testing", front: "What is social engineering?", back: "The art of manipulating people to get confidential information or make them perform specific actions. It relies on psychological tricks rather than technical exploits. Phishing is a common example." },
+    { id: "eh_10", deckId: "ethical_hacking_pen_testing", front: "What is the role of Burp Suite in web application testing?", back: "Burp Suite is a platform for web app security testing. Its main feature is an intercepting proxy that sits between the browser and the application, allowing a tester to inspect and modify all traffic to find vulnerabilities." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "The first phase of any ethical hacking process, which involves passively and actively gathering information about a target, is called:",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "Exploitation",
+            "Scanning",
+            "Reconnaissance",
+            "Maintaining Access"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Reconnaissance"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "In which type of penetration test is the tester given full knowledge of the target's infrastructure, including source code and network diagrams?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "Black Box",
+            "White Box",
+            "Grey Box",
+            "Red Box"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "White Box"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "Which tool is a powerful network scanner used for host discovery, port scanning, and OS detection?",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "Wireshark",
+            "Metasploit",
+            "Nmap",
+            "Burp Suite"
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "Nmap"
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "A security assessment that identifies and reports on vulnerabilities but does not attempt to actively exploit them is a:",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Red Team Engagement",
+            "Penetration Test",
+            "Vulnerability Assessment",
+            "Code Review"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "Vulnerability Assessment"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "A piece of code that takes advantage of a security vulnerability to cause unintended behavior is called a(n):",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "Payload",
+            "Exploit",
+            "Firewall",
+            "Honeypot"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "Exploit"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "Which of the following is a comprehensive framework that contains a database of exploits and allows testers to launch them against a target?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "Nmap",
+            "Wireshark",
+            "John the Ripper",
+            "Metasploit"
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "Metasploit"
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "The phase of hacking that involves creating a backdoor or installing malware to ensure future access to the target is known as:",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "Gaining Access",
+            "Covering Tracks",
+            "Reconnaissance",
+            "Maintaining Access"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "Maintaining Access"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "The legal document that defines the scope, permissions, and boundaries of a penetration test is called the:",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "Service Level Agreement (SLA)",
+            "Non-Disclosure Agreement (NDA)",
+            "Rules of Engagement (RoE)",
+            "Acceptable Use Policy (AUP)"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "Rules of Engagement (RoE)"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "A tool that primarily functions as an intercepting proxy to inspect and manipulate HTTP/S traffic is:",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "Nmap",
+            "Burp Suite",
+            "Metasploit",
+            "Aircrack-ng"
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "Burp Suite"
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "The team responsible for defending a network and responding to security incidents is known as the:",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "Red Team",
+            "Blue Team",
+            "White Team",
+            "Green Team"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "Blue Team"
     }
 ];
 
-function GeneralQuestions() {
+function EthicalHacking() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -179,7 +179,7 @@ function GeneralQuestions() {
 
                 if (userProfile && userProfile.editedDecks) {
     const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
         if (deckEdits && deckEdits[q.id]) {
             return { ...q, back: deckEdits[q.id] };
         }
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "ethical_hacking_pen_testing",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "EthicalHacking"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "ethical_hacking_pen_testing",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "EthicalHacking"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default EthicalHacking;

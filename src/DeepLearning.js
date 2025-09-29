@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "dl_1", deckId: "deep_learning", front: "What is a neuron in a neural network?", back: "A neuron, or perceptron, is the fundamental processing unit of a neural network. It receives one or more inputs, applies a weight to each, sums them up, adds a bias, and then passes the result through an activation function to produce an output." },
+    { id: "dl_2", deckId: "deep_learning", front: "What is the purpose of an activation function? Name a common one.", back: "An activation function introduces non-linearity into the output of a neuron. Without non-linearity, a neural network, no matter how many layers it has, would behave just like a single-layer linear model. A very common activation function is ReLU (Rectified Linear Unit)." },
+    { id: "dl_3", deckId: "deep_learning", front: "Explain the process of backpropagation.", back: "Backpropagation (backward propagation of errors) is the algorithm used to train neural networks. After making a prediction (forward pass), it calculates the loss (error). It then propagates this error backward through the network, layer by layer, computing the gradient of the loss with respect to each weight and bias. These gradients are then used by an optimization algorithm (like Gradient Descent) to update the weights and improve the model." },
+    { id: "dl_4", deckId: "deep_learning", front: "What is a Convolutional Neural Network (CNN) and what is it used for?", back: "A CNN is a specialized type of neural network designed to process grid-like data, such as images. It uses special layers called convolutional layers that apply filters to input data to capture spatial hierarchies and patterns (like edges, textures, and objects). They are primarily used for tasks like image classification, object detection, and segmentation." },
+    { id: "dl_5", deckId: "deep_learning", front: "What kind of problems are Recurrent Neural Networks (RNNs) suited for?", back: "RNNs are designed to work with sequential data. They have connections that form a directed cycle, allowing them to maintain a 'memory' or a hidden state that captures information about what has been processed so far. This makes them ideal for tasks like natural language processing (NLP), time series analysis, and speech recognition." },
+    { id: "dl_6", deckId: "deep_learning", front: "What is the vanishing gradient problem?", back: "The vanishing gradient problem is an issue that can occur during the training of deep neural networks, especially RNNs. During backpropagation, the gradients can become exponentially small as they are propagated back through many layers. This means the weights of the initial layers do not get updated effectively, and the network fails to learn." },
+    { id: "dl_7", deckId: "deep_learning", front: "What is a loss function?", back: "A loss function (or cost function) is a function that quantifies the difference between the model's predicted output and the actual target values. The goal of training is to adjust the model's weights to minimize the value of this loss function. Common examples include Mean Squared Error (MSE) for regression and Cross-Entropy Loss for classification." },
+    { id: "dl_8", deckId: "deep_learning", front: "Explain the difference between an epoch, a batch, and an iteration.", back: "Epoch: One complete pass of the entire training dataset through the neural network.\nBatch: A subset of the training dataset. Instead of the entire dataset, the model processes data in smaller batches.\nIteration: A single update of the model's weights. This happens once per batch. If you have 1000 samples and a batch size of 100, one epoch consists of 10 iterations." },
+    { id: "dl_9", deckId: "deep_learning", front: "What is a pooling layer in a CNN?", back: "A pooling layer (e.g., Max Pooling) is used in a CNN to progressively reduce the spatial size (width and height) of the feature maps. This reduces the number of parameters and computation in the network, which helps to control overfitting and makes the detected features more robust to changes in position." },
+    { id: "dl_10", deckId: "deep_learning", front: "What is the main advantage of the ReLU activation function over Sigmoid?", back: "The main advantage of ReLU (Rectified Linear Unit) is that it does not saturate in the positive region, which helps to mitigate the vanishing gradient problem. It is also computationally very efficient, as it only involves a simple max(0, x) operation, leading to faster training times compared to the more complex exponential calculations in Sigmoid." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "Convolutional Neural Networks (CNNs) are most commonly and effectively used for which type of task?",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "Time series forecasting",
+            "Text translation",
+            "Image recognition",
+            "Customer segmentation"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Image recognition"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "The core algorithm used to calculate gradients and update the weights in a neural network is called:",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "Gradient Descent",
+            "Forward Propagation",
+            "Backpropagation",
+            "K-Means Clustering"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "Backpropagation"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "Which activation function helps to mitigate the vanishing gradient problem and is the most widely used choice for hidden layers in deep neural networks?",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "Sigmoid",
+            "Tanh",
+            "ReLU (Rectified Linear Unit)",
+            "Linear"
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "ReLU (Rectified Linear Unit)"
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "In a neural network, the process of feeding an input through the layers to generate an output is known as:",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Backpropagation",
+            "Gradient Descent",
+            "Forward Propagation (or Inference)",
+            "An Epoch"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "Forward Propagation (or Inference)"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "LSTMs and GRUs are advanced types of RNNs developed primarily to address which specific issue?",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "Overfitting on image data",
+            "The inability to process text",
+            "The vanishing and exploding gradient problems",
+            "Slow computation on GPUs"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "The vanishing and exploding gradient problems"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "For a multi-class classification problem with 10 classes, which activation function is most appropriate for the output layer?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "ReLU",
+            "Sigmoid",
+            "Softmax",
+            "Tanh"
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "Softmax"
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "A single pass of the entire training dataset through the learning algorithm is called:",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "An iteration",
+            "A batch",
+            "An epoch",
+            "A step"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "An epoch"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "Which of the following is an advanced optimization algorithm, often used as an alternative to standard Stochastic Gradient Descent, to train deep learning models?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "PCA",
+            "Adam",
+            "K-Means",
+            "SVM"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "Adam"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "For a binary classification problem (e.g., cat vs. dog), which loss function is the most suitable choice?",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "Mean Squared Error (MSE)",
+            "Binary Cross-Entropy",
+            "Hinge Loss",
+            "Categorical Cross-Entropy"
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "Binary Cross-Entropy"
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "Recurrent Neural Networks (RNNs) are distinguished from standard feedforward networks by the presence of:",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "Convolutional layers",
+            "More hidden layers",
+            "Feedback loops (cycles) allowing them to maintain a state",
+            "Pooling layers"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "Feedback loops (cycles) allowing them to maintain a state"
     }
 ];
 
-function GeneralQuestions() {
+function DeepLearning() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "deep_learning",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "DeepLearning"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "deep_learning_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "DeepLearning"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default DeepLearning;

@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "c_1", deckId: "containerization", front: "What is the fundamental difference between a container and a virtual machine (VM)?", back: "A VM virtualizes the hardware, meaning each VM runs a full copy of a guest operating system. A container virtualizes the operating system, allowing multiple containers to run on a single OS kernel. This makes containers much more lightweight, faster to start, and less resource-intensive." },
+    { id: "c_2", deckId: "containerization", front: "What is a Docker image?", back: "A Docker image is a lightweight, standalone, executable package that includes everything needed to run an application: the code, a runtime, system tools, libraries, and settings. It is a read-only template used to create Docker containers." },
+    { id: "c_3", deckId: "containerization", front: "What is the purpose of a Dockerfile?", back: "A Dockerfile is a text document that contains all the commands, in order, needed to build a specific Docker image. It acts as the blueprint, automating the process of creating an image by specifying a base image, adding files, running commands, and setting configuration." },
+    { id: "c_4", deckId: "containerization", front: "What is Kubernetes and what core problem does it solve?", back: "Kubernetes (often abbreviated as K8s) is an open-source container orchestration platform. It solves the problem of managing containerized applications at scale by automating their deployment, scaling, and operations across clusters of hosts." },
+    { id: "c_5", deckId: "containerization", front: "Explain the role of a Pod in Kubernetes.", back: "A Pod is the smallest and simplest deployable unit in Kubernetes. It is a group of one or more containers that share storage and network resources and a specification for how to run the containers. Containers within the same Pod are always co-located and co-scheduled on the same machine." },
+    { id: "c_6", deckId: "containerization", front: "What is a Kubernetes Service and why is it necessary?", back: "A Kubernetes Service provides a stable, abstract way to expose an application running on a set of Pods. Since Pods are ephemeral and can be created or destroyed, a Service provides a single, persistent endpoint (a stable IP address and DNS name) to access the application, regardless of which Pods are currently running." },
+    { id: "c_7", deckId: "containerization", front: "What is the difference between a Deployment and a Pod in Kubernetes?", back: "A Pod is the basic unit that runs your containers. A Deployment is a higher-level controller that manages the state of your application. It allows you to describe the desired state (e.g., 'I want 3 replicas of this Pod running') and the Deployment controller works to maintain that state, handling updates, rollbacks, and scaling automatically." },
+    { id: "c_8", deckId: "containerization", front: "What is a Docker Volume?", back: "A Docker Volume is the preferred mechanism for persisting data generated by and used by Docker containers. It is a directory on the host machine that is mounted into a container. Volumes are managed by Docker and are not tied to the lifecycle of a single container, allowing data to persist even if the container is removed." },
+    { id: "c_9", deckId: "containerization", front: "What is container orchestration?", back: "Container orchestration is the automated management, coordination, scaling, and deployment of containers. As the number of containers grows, orchestration tools like Kubernetes become essential to handle tasks like load balancing, service discovery, health monitoring, and scaling applications across multiple servers." },
+    { id: "c_10", deckId: "containerization", front: "What is a container registry (like Docker Hub)?", back: "A container registry is a storage and distribution system for container images. It is a central place where you can store your images and from which you can pull images to run on your systems. Docker Hub is a popular public registry, but organizations often use private registries for their proprietary images." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "A running instance of a Docker image is called a:",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "Dockerfile",
+            "Container",
+            "Volume",
+            "Layer"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Container"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "Which command is used to build an image from a Dockerfile?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "docker run",
+            "docker build",
+            "docker create",
+            "docker compose"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "docker build"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "The primary benefit of using a container orchestration tool like Kubernetes is to:",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "Write application code faster.",
+            "Manage containerized applications at scale automatically.",
+            "Build Docker images more efficiently.",
+            "Provide a free public container registry."
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "Manage containerized applications at scale automatically."
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "In Kubernetes, the most fundamental, deployable object that represents a single instance of a running process is a:",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Service",
+            "Node",
+            "Deployment",
+            "Pod"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "Pod"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "To see a list of all currently running Docker containers, which command would you use?",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "docker images",
+            "docker ps",
+            "docker list",
+            "docker status"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "docker ps"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "The main purpose of a Kubernetes Service is to:",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "Persist data for stateful applications.",
+            "Provide a stable network endpoint (IP address/DNS) to access a set of Pods.",
+            "Define how many replicas of a Pod should be running.",
+            "Run a one-off task or job."
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "Provide a stable network endpoint (IP address/DNS) to access a set of Pods."
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "What is the primary problem that containerization platforms like Docker were designed to solve?",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "Slow internet connections.",
+            "The \"it works on my machine\" problem by creating consistent environments.",
+            "The high cost of physical servers.",
+            "A lack of programming languages."
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "The \"it works on my machine\" problem by creating consistent environments."
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "The kubectl command-line tool is used to:",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "Build Docker images.",
+            "Interact with and manage a Kubernetes cluster.",
+            "Push images to a container registry.",
+            "Configure the Docker daemon."
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "Interact with and manage a Kubernetes cluster."
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "Which of the following best describes the relationship between a Dockerfile, an image, and a container?",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "You run a Dockerfile to create an image, which is a container.",
+            "You use an image to create a Dockerfile, which runs a container.",
+            "You use a Dockerfile to build an image, and you run the image to create a container.",
+            "A container is used to build an image from a Dockerfile."
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "You use a Dockerfile to build an image, and you run the image to create a container."
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "You need to ensure that data generated by your database container persists even after the container is deleted. What should you use?",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "A Docker image layer",
+            "A Docker Volume",
+            "A new Dockerfile",
+            "A container label"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "A Docker Volume"
     }
 ];
 
-function GeneralQuestions() {
+function Containerization() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -179,7 +179,7 @@ function GeneralQuestions() {
 
                 if (userProfile && userProfile.editedDecks) {
     const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
         if (deckEdits && deckEdits[q.id]) {
             return { ...q, back: deckEdits[q.id] };
         }
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "containerization",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "Containerization"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "containerization_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "Containerization"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default Containerization;

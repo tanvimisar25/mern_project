@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "pipe_1", deckId: "cicd_pipelines", front: "What is a CI/CD pipeline?", back: "A CI/CD pipeline is an automated workflow that developers use to reliably build, test, and deploy their code. It's a series of automated stages that an application goes through, from a code commit in a version control system all the way to a release in a production environment, minimizing the chance for human error." },
+    { id: "pipe_2", deckId: "cicd_pipelines", front: "What is the primary goal of Continuous Integration (CI)?", back: "The primary goal of Continuous Integration is to prevent integration problems by merging all developer working copies to a shared mainline several times a day. Each merge triggers an automated build and test sequence to detect issues as quickly as possible, leading to a more stable codebase." },
+    { id: "pipe_3", deckId: "cicd_pipelines", front: "Explain the key difference between Continuous Delivery and Continuous Deployment.", back: "Both are extensions of CI.\nContinuous Delivery: The pipeline automatically builds, tests, and prepares the code for release to production. However, the final push to production requires a manual approval step.\nContinuous Deployment: The entire process is automated. Every change that passes all the automated tests is automatically deployed to production without any human intervention." },
+    { id: "pipe_4", deckId: "cicd_pipelines", front: "What is 'Pipeline as Code'? Name a tool that uses it.", back: "Pipeline as Code is the practice of defining the CI/CD pipeline configuration in a version-controlled text file (like YAML or a script) alongside the application's source code. This makes the pipeline reproducible, reviewable, and easier to manage. Common tools include Jenkins (using a Jenkinsfile), GitLab CI (using .gitlab-ci.yml), and GitHub Actions." },
+    { id: "pipe_5", deckId: "cicd_pipelines", front: "What is a build artifact in a CI/CD pipeline? Give an example.", back: "A build artifact is the output of a successful build stage in the pipeline. It is the compiled, packaged, and ready-to-deploy version of the application. Examples include a Docker image, a Java .jar or .war file, or a zipped directory of static web assets." },
+    { id: "pipe_6", deckId: "cicd_pipelines", front: "What is 'static code analysis' and where does it fit in a pipeline?", back: "Static code analysis is the automated process of analyzing source code for potential bugs, security vulnerabilities, and stylistic errors without actually executing the code. It is typically one of the first stages in a CI pipeline, running right after the code is checked out, to provide fast feedback to developers. Tools like SonarQube or ESLint are often used." },
+    { id: "pipe_7", deckId: "cicd_pipelines", front: "What is a 'trigger' in the context of a CI/CD pipeline?", back: "A trigger is an event that automatically starts a pipeline. The most common trigger is a git push or a merge request to a specific branch in a version control repository. Pipelines can also be triggered on a schedule (e.g., nightly builds) or manually." },
+    { id: "pipe_8", deckId: "cicd_pipelines", front: "What is the purpose of having a 'staging' environment?", back: "A staging environment is a near-production replica of the actual production environment. Its purpose is to test the application in a production-like setting to catch any issues related to infrastructure, configuration, or data before deploying to the live production environment that real users interact with." },
+    { id: "pipe_9", deckId: "cicd_pipelines", front: "Explain what a 'rollback' strategy is.", back: "A rollback strategy is the process of reverting a deployment to a previously stable version if the newly deployed version is found to have critical issues. This is a crucial safety mechanism in CI/CD, and strategies like Blue-Green deployments are designed to make rollbacks nearly instantaneous." },
+    { id: "pipe_10", deckId: "cicd_pipelines", front: "What is a 'runner' or 'agent' in a CI/CD system?", back: "A runner or agent is the machine or process that executes the jobs defined in a CI/CD pipeline. The CI/CD server (like GitLab or Jenkins) orchestrates the pipeline, but it delegates the actual work—like compiling code, running tests, and executing deployment scripts—to one or more runners." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "The practice of developers frequently merging their code changes into a central repository, after which automated builds and tests are run, is known as:",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "Continuous Deployment",
+            "Continuous Integration",
+            "Continuous Delivery",
+            "Continuous Monitoring"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Continuous Integration"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "In a typical CI/CD pipeline, which automated stage comes immediately after the code is successfully built?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "Deployment to production",
+            "Code review",
+            "Unit and integration testing",
+            "Manual quality assurance"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "Unit and integration testing"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "The primary advantage of 'Pipeline as Code' is that it allows the pipeline configuration to be:",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "Managed by a graphical user interface only.",
+            "Stored, versioned, and reviewed alongside the application code.",
+            "Executed only on a developer's local machine.",
+            "Written in a proprietary, binary format."
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "Stored, versioned, and reviewed alongside the application code."
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "A .gitlab-ci.yml file is the standard way to define a CI/CD pipeline for which tool?",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Jenkins",
+            "CircleCI",
+            "GitHub Actions",
+            "GitLab CI/CD"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "GitLab CI/CD"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "What is the key activity that differentiates Continuous Delivery from Continuous Deployment?",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "Automated testing",
+            "A manual approval step before deploying to production",
+            "Building a code artifact",
+            "Using version control"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "A manual approval step before deploying to production"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "A Docker image that is created during a pipeline run and stored for later deployment is an example of a(n):",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "Trigger",
+            "Runner",
+            "Artifact",
+            "Stage"
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "Artifact"
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "A tool like SonarQube or ESLint, which checks source code for bugs and quality issues without running it, is used for:",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "Unit Testing",
+            "Static Code Analysis",
+            "Integration Testing",
+            "Penetration Testing"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "Static Code Analysis"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "The event that automatically starts a CI/CD pipeline, such as a git push to the main branch, is called a:",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "Job",
+            "Stage",
+            "Step",
+            "Trigger"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "Trigger"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "GitHub's native CI/CD tool, which uses YAML files in a .github/workflows directory to define pipelines, is called:",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "GitHub CI",
+            "GitHub Pipelines",
+            "GitHub Actions",
+            "GitHub Flow"
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "GitHub Actions"
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "Which of the following is NOT a primary stage of a fully automated CI/CD pipeline?",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "Build",
+            "Test",
+            "Deploy",
+            "Manual code approval"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "Manual code approval"
     }
 ];
 
-function GeneralQuestions() {
+function Pipelines() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -179,7 +179,7 @@ function GeneralQuestions() {
 
                 if (userProfile && userProfile.editedDecks) {
     const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
         if (deckEdits && deckEdits[q.id]) {
             return { ...q, back: deckEdits[q.id] };
         }
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "cicd_pipelines",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "Pipelines"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "cicd_pipelines_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "Pipelines"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default Pipelines;

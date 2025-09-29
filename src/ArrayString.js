@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useCallback } from 'react'; // This line might have been the issue
 import { Link } from "react-router-dom";
-import './ArrayString.css';
+import './Questions.css';
 
 // ✅ 1. IMPORT THE USEAUTH HOOK - This is the correct way to get user info.
 import { useAuth } from './AuthContext'; 
@@ -280,7 +280,7 @@ const handleAnswer = (isCorrect) => {
                     totalQuestions: questions.length,
                     deckId: "arrstr",
                     deckType: "Flashcards",
-                    deckCategory: "Behavioral"
+                    deckCategory: "DSA"
                 });
             }
 
@@ -429,7 +429,7 @@ const handleNextQuestion = () => {
                 totalQuestions: practiceTestQuestions.length,
                 deckId: "arrstr_test",
                 deckType: "Tests",
-                deckCategory: "Behavioral"
+                deckCategory: "DSA"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);

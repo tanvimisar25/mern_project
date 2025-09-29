@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "py_1", deckId: "python_data_libraries", front: "What is the difference between a list and a tuple in Python?", back: "The main difference is mutability. A list is mutable, meaning you can change its contents (add, remove, or modify elements) after it's created. A tuple is immutable, meaning once it's created, its contents cannot be changed. Tuples are generally faster than lists." },
+    { id: "py_2", deckId: "python_data_libraries", front: "What is a list comprehension and what is its main advantage?", back: "A list comprehension is a concise and readable way to create a list in Python. It allows you to generate a new list by applying an expression to each item in an existing iterable. Its main advantage is that it's often more performant and uses a more compact, expressive syntax than an equivalent for loop. e.g., squares = [x**2 for x in range(10)]" },
+    { id: "py_3", deckId: "python_data_libraries", front: "Explain the difference between a Pandas Series and a DataFrame.", back: "A Series is a one-dimensional labeled array, similar to a single column of a spreadsheet. A DataFrame is a two-dimensional labeled data structure with columns of potentially different types, much like a full spreadsheet or an SQL table. A DataFrame can be thought of as a collection of Series." },
+    { id: "py_4", deckId: "python_data_libraries", front: "In Pandas, what is the difference between loc and iloc for selecting data?", back: ".loc is a label-based selector, which means you select data based on the index labels and column names. .iloc is an integer position-based selector, meaning you select data based on its integer position, similar to how you would slice a standard Python list." },
+    { id: "py_5", deckId: "python_data_libraries", front: "What is the purpose of the groupby() function in Pandas?", back: "The groupby() function is used for splitting the data into groups based on some criteria, applying a function to each group independently (like aggregation, transformation, or filtering), and then combining the results back into a data structure. It's central to the 'split-apply-combine' strategy for data analysis." },
+    { id: "py_6", deckId: "python_data_libraries", front: "What is vectorization in NumPy and why is it important for performance?", back: "Vectorization is the practice of performing operations on entire arrays at once instead of iterating over elements one by one using explicit loops. It's important because NumPy's underlying operations are implemented in highly optimized, pre-compiled C code, making vectorized calculations significantly faster than their pure Python equivalents." },
+    { id: "py_7", deckId: "python_data_libraries", front: "What are lambda functions in Python?", back: "A lambda function is a small, anonymous function defined with the lambda keyword. It can take any number of arguments but can only have one expression. They are often used as throwaway functions when a simple function is needed for a short period, such as an argument to a higher-order function like map() or filter()." },
+    { id: "py_8", deckId: "python_data_libraries", front: "How would you handle missing values in a Pandas DataFrame?", back: "There are two primary methods. You can remove them using .dropna(), which deletes rows or columns containing NaN values. Alternatively, you can impute them using .fillna(), which replaces NaN values with a specified value, such as the mean, median, or mode of the column." },
+    { id: "py_9", deckId: "python_data_libraries", front: "What is the primary data structure in NumPy?", back: "The primary data structure is the ndarray (N-dimensional array). It is a fast, flexible, and memory-efficient grid of values, all of which must have the same data type. It enables efficient element-wise and matrix operations." },
+    { id: "py_10", deckId: "python_data_libraries", front: "Explain what pd.merge() is used for in Pandas.", back: "The pd.merge() function is used to combine two or more DataFrames based on the values of one or more common columns or indices, similar to how a JOIN operation works in SQL. It allows for different types of joins, such as inner, outer, left, and right." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "Which Python data structure is an unordered collection of unique, immutable elements?",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "List",
+            "Tuple",
+            "Dictionary",
+            "Set"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Set"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "To select rows from a Pandas DataFrame based on their integer position (e.g., the first 5 rows), which accessor should you use?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            ".loc[]",
+            ".iloc[]",
+            ".ix[]",
+            ".get()"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: ".iloc[]"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "The high performance of NumPy and Pandas is largely due to their core components being built in which programming language?",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "Java",
+            "Python",
+            "C",
+            "R"
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "C"
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "What is the output of the following list comprehension? [x.upper() for x in 'abc']",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "\"ABC\"",
+            "('A', 'B', 'C')",
+            "['A', 'B', 'C']",
+            "Error"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "['A', 'B', 'C']"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "In Pandas, which function is most suitable for combining two DataFrames with different columns, aligning them on a common index?",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "pd.concat()",
+            "pd.merge()",
+            "df.join()",
+            "df.append()"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "df.join()"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "NumPy's ability to perform element-wise arithmetic operations on arrays of different but compatible shapes is called:",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "Vectorization",
+            "Broadcasting",
+            "Indexing",
+            "Slicing"
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "Broadcasting"
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "Which library is considered the standard for data manipulation and analysis in Python?",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "NumPy",
+            "SciPy",
+            "Pandas",
+            "Matplotlib"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "Pandas"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "When using a Pandas method like .sum() or .mean(), what does the axis=0 parameter typically specify?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "The operation should be performed row-wise.",
+            "The operation should be performed column-wise (down the rows).",
+            "The operation should be performed in-place.",
+            "The operation should ignore NaN values."
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "The operation should be performed column-wise (down the rows)."
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "A single column selected from a Pandas DataFrame is returned as which data structure?",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "A NumPy array",
+            "A Python list",
+            "A Series",
+            "A DataFrame"
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "A Series"
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "Which of the following correctly defines a simple anonymous function that doubles its input?",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "def(x): return x * 2",
+            "function x => x * 2",
+            "lambda x: x * 2",
+            "anon x: x * 2"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "lambda x: x * 2"
     }
 ];
 
-function GeneralQuestions() {
+function Python() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "python_data_libraries",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "Python"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "python_data_libraries_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "Python"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default Python;

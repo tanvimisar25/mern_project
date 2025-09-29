@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "be_1", deckId: "backend_development", front: "What is a RESTful API?", back: "A RESTful API (Representational State Transfer) is an architectural style for designing networked applications. It uses standard HTTP methods (like GET, POST, PUT, DELETE) to operate on resources (data), which are identified by URIs. Key principles include being stateless and having a client-server architecture." },
+    { id: "be_2", deckId: "backend_development", front: "Explain the difference between SQL and NoSQL databases.", back: "SQL databases (e.g., MySQL, PostgreSQL) are relational, storing data in structured tables with a predefined schema. They are vertically scalable and enforce ACID properties. NoSQL databases (e.g., MongoDB, Redis) are non-relational, offering flexible data models (document, key-value, etc.) without a rigid schema. They are horizontally scalable and often prioritize performance and availability (BASE properties)." },
+    { id: "be_3", deckId: "backend_development", front: "What is the purpose of a JOIN clause in SQL?", back: "A JOIN clause is used to combine rows from two or more tables based on a related column between them. Common types include INNER JOIN (returns records with matching values in both tables) and LEFT JOIN (returns all records from the left table and the matched records from the right table)." },
+    { id: "be_4", deckId: "backend_development", front: "What are JSON Web Tokens (JWT) and how are they used for authentication?", back: "A JWT is a compact, URL-safe means of representing claims to be transferred between two parties. For authentication, a user logs in with credentials, and the server validates them and returns a signed JWT. The client then sends this JWT in the header of subsequent requests to access protected routes, and the server verifies the token's signature to authenticate the user." },
+    { id: "be_5", deckId: "backend_development", front: "What is middleware in a back-end framework like Express.js?", back: "Middleware functions are functions that have access to the request (req), response (res), and the next middleware function in the application's request-response cycle. They can execute code, make changes to the request and response objects, end the cycle, or call the next middleware in the stack. They are often used for logging, authentication, and error handling." },
+    { id: "be_6", deckId: "backend_development", front: "What are the ACID properties of a database transaction?", back: "ACID is an acronym that guarantees the reliability of database transactions:\nAtomicity: The entire transaction either succeeds completely or fails completely.\nConsistency: The transaction brings the database from one valid state to another.\nIsolation: Concurrent transactions do not affect each other's execution.\nDurability: Once a transaction is committed, its changes are permanent." },
+    { id: "be_7", deckId: "backend_development", front: "What is the difference between a Primary Key and a Foreign Key?", back: "A Primary Key is a constraint that uniquely identifies each record in a table; it must contain unique values and cannot contain NULL values. A Foreign Key is a key used to link two tables together. It is a field in one table that refers to the Primary Key in another table." },
+    { id: "be_8", deckId: "backend_development", front: "Explain the difference between horizontal and vertical scaling.", back: "Vertical Scaling (scaling up) involves adding more power (e.g., CPU, RAM) to an existing server. Horizontal Scaling (scaling out) involves adding more servers to the system to distribute the load. NoSQL databases are typically designed to scale horizontally." },
+    { id: "be_9", deckId: "backend_development", front: "What is an ORM (Object-Relational Mapping)?", back: "An ORM is a programming technique that acts as a bridge between an object-oriented programming language and a relational database. It allows developers to interact with the database using objects and methods of their preferred language instead of writing raw SQL queries, which can simplify and speed up development." },
+    { id: "be_10", deckId: "backend_development", front: "What are database indexes and why are they important?", back: "An index is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space. By creating an index on a column, you create a lookup table that allows the database engine to find rows matching a query much faster, avoiding a full table scan." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "Which HTTP status code should be returned when a new resource is successfully created on the server?",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "200 OK",
+            "201 Created",
+            "302 Found",
+            "400 Bad Request"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "201 Created"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "In a relational database, what is the main purpose of normalization?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "To increase data redundancy.",
+            "To speed up all types of queries.",
+            "To make the database schema more flexible.",
+            "To reduce data redundancy and improve data integrity."
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "To reduce data redundancy and improve data integrity."
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "Which of the following is a primary characteristic of NoSQL databases?",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "They have a strict, predefined schema.",
+            "They are designed for horizontal scalability.",
+            "They primarily use SQL for queries.",
+            "They guarantee full ACID compliance for all operations."
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "They are designed for horizontal scalability."
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "In the MVC (Model-View-Controller) architecture, what is the 'Model' primarily responsible for?",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Rendering the user interface and displaying data.",
+            "Handling user input and routing requests.",
+            "Managing the application's data, logic, and rules.",
+            "Serving static files like CSS and JavaScript."
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "Managing the application's data, logic, and rules."
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "A LEFT JOIN from TableA to TableB will return:",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "Only the rows that have matching values in both tables.",
+            "All rows from TableB and any matching rows from TableA.",
+            "All rows from TableA and any matching rows from TableB.",
+            "A Cartesian product of both tables."
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "All rows from TableA and any matching rows from TableB."
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "The CAP theorem states that a distributed database system can only deliver two of which three guarantees?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "Atomicity, Consistency, Durability",
+            "Performance, Scalability, Security",
+            "Readability, Writability, Accessibility",
+            "Consistency, Availability, Partition Tolerance"
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "Consistency, Availability, Partition Tolerance"
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "Which HTTP method is designed to be idempotent, meaning multiple identical requests should have the same effect as a single one?",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "POST",
+            "GET",
+            "PATCH",
+            "HEAD"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "GET"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "MongoDB is an example of which type of NoSQL database?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "Key-Value Store",
+            "Document Store",
+            "Column-Family Store",
+            "Graph Database"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "Document Store"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "What part of a JSON Web Token (JWT) is used to verify that the sender is who they claim to be and that the message wasn't changed along the way?",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "The Header",
+            "The Payload",
+            "The Signature",
+            "The Encryption Key"
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "The Signature"
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "What does the 'C' in the ACID properties of a transaction stand for?",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "Concurrency",
+            "Complexity",
+            "Consistency",
+            "Commitment"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "Consistency"
     }
 ];
 
-function GeneralQuestions() {
+function BackEnd() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "backend_development",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "WebDev"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "backend_development_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "WebDev"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default BackEnd;

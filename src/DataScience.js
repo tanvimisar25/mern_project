@@ -4,39 +4,40 @@ import { motion } from "framer-motion";
 import './Core.css';
 import { useAuth } from './AuthContext';
 
-// Define the main category title as a constant to ensure consistency.
-const MAIN_CATEGORY_TITLE = "Core Interview Questions";
+// --- (1) MAIN CATEGORY TITLE UPDATED ---
+const MAIN_CATEGORY_TITLE = "Data Science and AI";
 
+// --- (2) SUBCATEGORIES UPDATED ---
 const categories = [
     {
-        title: "General HR Questions",
-        description: "Showcase your personality, values, and cultural fit by answering common workplace-related questions.",
-        link: "/generalquestions"
+        title: "Machine Learning Algorithms",
+        description: "Understand supervised, unsupervised, and reinforcement learning models.",
+        link: "/machinelearning"
     },
     {
-        title: "Behavioral Questions",
-        description: "Prove your past skills and behaviors through real-life examples.",
-        link: "/behavioralquestions"
+        title: "Python & Data Analysis Libraries",
+        description: "Master essential tools like NumPy, Pandas, and Scikit-learn.",
+        link: "/python"
     },
     {
-        title: "Situational Questions",
-        description: "Assess your judgment with hypothetical 'what would you do if' scenarios.",
-        link: "/situationalquestions"
+        title: "Statistics & Probability",
+        description: "Grasp the foundational concepts that power data science.",
+        link: "/stats"
     },
     {
-        title: "Resume & Project Deep Dive",
-        description: "A detailed examination of the projects and experiences on your resume.",
-        link: "/resumedive"
+        title: "Deep Learning",
+        description: "Explore neural networks, TensorFlow, and PyTorch.",
+        link: "/deeplearning"
     }
 ];
 
 const HeartIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg xmlns="http://www.w.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
     </svg>
 );
 
-const Core = () => {
+const DataScience = () => {
     const { currentUser } = useAuth();
     const [favs, setFavs] = useState({});
 
@@ -57,32 +58,27 @@ const Core = () => {
         fetchUserFavorites();
     }, [currentUser]);
 
-    // ✅ --- UPDATED FAVORITE HANDLER ---
     const handleFavoriteClick = async (e, subCategoryTitle) => {
         e.preventDefault();
         e.stopPropagation();
         if (!currentUser) return;
 
         const isCurrentlyFavorited = favs[MAIN_CATEGORY_TITLE]?.includes(subCategoryTitle);
-        const originalFavs = favs; // Keep a copy in case of DB error
+        const originalFavs = favs; 
 
-        // Optimistic UI Update using functional form for safety
         setFavs(currentFavs => {
-            const newFavs = JSON.parse(JSON.stringify(currentFavs)); // Deep copy
+            const newFavs = JSON.parse(JSON.stringify(currentFavs)); 
 
             if (isCurrentlyFavorited) {
-                // Remove the item
                 const updatedList = (newFavs[MAIN_CATEGORY_TITLE] || []).filter(
                     title => title !== subCategoryTitle
                 );
-                // If the list is now empty, remove the category key
                 if (updatedList.length === 0) {
                     delete newFavs[MAIN_CATEGORY_TITLE];
                 } else {
                     newFavs[MAIN_CATEGORY_TITLE] = updatedList;
                 }
             } else {
-                // Add the item
                 if (!newFavs[MAIN_CATEGORY_TITLE]) {
                     newFavs[MAIN_CATEGORY_TITLE] = [];
                 }
@@ -91,7 +87,6 @@ const Core = () => {
             return newFavs;
         });
 
-        // Database Update using atomic operators
         try {
             const mongo = currentUser.mongoClient("mongodb-atlas");
             const usersCollection = mongo.db("prepdeck").collection("user");
@@ -99,7 +94,6 @@ const Core = () => {
             
             let updateOperation;
             if (isCurrentlyFavorited) {
-                // If the array will become empty, we can use $unset to remove the field
                 if (originalFavs[MAIN_CATEGORY_TITLE]?.length === 1) {
                     updateOperation = { "$unset": { [`favs.${MAIN_CATEGORY_TITLE}`]: "" } };
                 } else {
@@ -116,7 +110,7 @@ const Core = () => {
 
         } catch (error) {
             console.error("Failed to update favs in database:", error);
-            setFavs(originalFavs); // Revert UI on error
+            setFavs(originalFavs); 
         }
     };
 
@@ -127,8 +121,9 @@ const Core = () => {
             <main className="core-main-content">
                 <div className="core-header">
                     <h1>{MAIN_CATEGORY_TITLE}</h1>
+                    {/* --- (3) MAIN SUBTITLE UPDATED --- */}
                     <p className="subtitle">
-                        Master the four key types of questions asked in every interview.
+                        Dive into the core concepts of machine learning, data analysis, and artificial intelligence.
                     </p>
                 </div>
                 <div className="core-category-container">
@@ -160,4 +155,4 @@ const Core = () => {
     );
 };
 
-export default Core;
+export default DataScience;

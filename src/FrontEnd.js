@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "fe_1", deckId: "frontend_frameworks", front: "What is the Virtual DOM?", back: "The Virtual DOM (VDOM) is a programming concept where a virtual representation of the UI is kept in memory and synced with the 'real' DOM. When a component's state changes, a new VDOM is created, compared with the old one (a process called 'diffing'), and only the necessary changes are applied to the actual DOM, improving performance." },
+    { id: "fe_2", deckId: "frontend_frameworks", front: "In React, what is the main difference between state and props?", back: "Props (properties) are read-only and are passed down from a parent component to a child component to communicate data. State is a private, mutable data structure managed within a component that holds data that can change over time, causing the component to re-render when it does." },
+    { id: "fe_3", deckId: "frontend_frameworks", front: "What is a component lifecycle in a framework like React or Angular?", back: "A component lifecycle is a sequence of phases a component goes through from its creation (mounting) to its removal from the DOM (unmounting). Developers can tap into these phases using lifecycle methods (e.g., componentDidMount in class components or useEffect in functional React) to run code at specific times." },
+    { id: "fe_4", deckId: "frontend_frameworks", front: "Explain what two-way data binding is in a framework like Angular.", back: "Two-way data binding is a mechanism where changes in the UI (e.g., a user typing in an input field) automatically update the underlying component's model (state), and changes in the model automatically update the UI. Angular achieves this with the [(ngModel)] directive." },
+    { id: "fe_5", deckId: "frontend_frameworks", front: "What are directives in Angular?", back: "Directives are markers on a DOM element that tell Angular to attach a specific behavior to that element or even transform it and its children. Examples include *ngIf to conditionally add/remove elements and *ngFor to render a list of items." },
+    { id: "fe_6", deckId: "frontend_frameworks", front: "What is a primary architectural difference between React and Angular?", back: "React is a library focused only on the view layer, providing flexibility to choose other libraries for state management or routing. Angular is a full-fledged framework that is more opinionated, providing a comprehensive solution out-of-the-box for state management, routing, and HTTP requests." },
+    { id: "fe_7", deckId: "frontend_frameworks", front: "What is a 'computed property' in Vue.js?", back: "A computed property is a value that is derived from other data properties. Vue caches computed properties based on their reactive dependencies; they only re-evaluate when a dependency has changed, making them more performant than calling a method in the template." },
+    { id: "fe_8", deckId: "frontend_frameworks", front: "How does a React Hook like useEffect work?", back: "The useEffect hook in React functional components allows you to perform side effects, such as data fetching, subscriptions, or manually changing the DOM. It runs after every render by default but can be configured to run only when specific state or props values change." },
+    { id: "fe_9", deckId: "frontend_frameworks", front: "How does state management work in a large-scale application?", back: "In large applications, passing state through many layers of components (prop drilling) becomes complex. Libraries like Redux (for React), Vuex (for Vue), or NgRx (for Angular) are used to manage a centralized, global state store that any component can access directly, making state management predictable and easier to debug." },
+    { id: "fe_10", deckId: "frontend_frameworks", front: "What is JSX?", back: "JSX (JavaScript XML) is a syntax extension for JavaScript, commonly used with React. It allows you to write HTML-like code directly within your JavaScript, which is then transpiled into standard React.createElement() calls, making UI code more readable and easier to write." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "In React, why is it a bad practice to directly modify the state object?",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "It will throw a syntax error.",
+            "It does not trigger a re-render of the component to reflect the UI changes.",
+            "It makes the component less secure.",
+            "It is slower than using the setState method."
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "It does not trigger a re-render of the component to reflect the UI changes."
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "Which of the following is a key feature of Angular but NOT of React?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "A Virtual DOM for performance optimization.",
+            "A component-based architecture.",
+            "An opinionated, built-in dependency injection system.",
+            "The use of a syntax extension like JSX."
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "An opinionated, built-in dependency injection system."
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "In Vue.js, what is the primary purpose of the v-if directive?",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "To hide an element using CSS by setting display: none;.",
+            "To conditionally render an element by actually adding or removing it from the DOM.",
+            "To loop through an array of items and render them.",
+            "To bind an element's visibility to a component's method."
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "To conditionally render an element by actually adding or removing it from the DOM."
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "What does the React hook useState return?",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Only the current state value.",
+            "A single function to update the state.",
+            "An object containing the state and its update function.",
+            "An array containing the current state value and a function to update it."
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "An array containing the current state value and a function to update it."
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "In Angular, what is the role of a 'Service'?",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "To define the HTML structure of a component.",
+            "To handle styling and animations for the application.",
+            "To encapsulate business logic or share data/functions across different components.",
+            "To manage the application's routing configuration."
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "To encapsulate business logic or share data/functions across different components."
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "Which statement best describes Vue's reactivity system?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "It requires manually calling a function like setState to track changes.",
+            "It uses a Virtual DOM exclusively to detect changes.",
+            "It automatically tracks dependencies and re-renders components only when dependent data changes.",
+            "It re-renders the entire application on every state change."
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "It automatically tracks dependencies and re-renders components only when dependent data changes."
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "What is the primary advantage of using a component-based architecture in modern front-end frameworks?",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "It makes the application run faster by default.",
+            "It allows developers to write code in a single massive file.",
+            "It improves code reusability, maintainability, and encapsulation.",
+            "It eliminates the need for CSS."
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "It improves code reusability, maintainability, and encapsulation."
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "In React, what are 'keys' used for when rendering a list of elements?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "To provide a unique CSS class for each element in the list.",
+            "To help React identify which items have changed, been added, or been removed for efficient updates.",
+            "To act as a unique route for each item in the list.",
+            "To store a secret value associated with the data."
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "To help React identify which items have changed, been added, or been removed for efficient updates."
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "Which of these is a structural directive in Angular?",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "ngModel",
+            "ngStyle",
+            "*ngFor",
+            "ngClass"
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "*ngFor"
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "How does Redux maintain a predictable state container?",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "By allowing any part of the application to modify the state directly.",
+            "By using a mutable state tree that can be changed by reference.",
+            "By enforcing that all state mutations happen through pure functions called 'reducers.'",
+            "By storing all application state in the browser's local storage."
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "By enforcing that all state mutations happen through pure functions called 'reducers.'"
     }
 ];
 
-function GeneralQuestions() {
+function FrontEnd() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "frontend_frameworks",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "WebDev"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "frontend_frameworks_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "WebDev"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default FrontEnd;

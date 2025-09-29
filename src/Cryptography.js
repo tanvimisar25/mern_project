@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "crypto_1", deckId: "cryptography_concepts", front: "What is the difference between symmetric and asymmetric encryption?", back: "Symmetric Encryption uses a single, shared key for both encryption and decryption. It is very fast but has the challenge of securely distributing the shared key.\nAsymmetric Encryption uses a key pair: a public key for encryption and a private key for decryption. It is slower but solves the key distribution problem." },
+    { id: "crypto_2", deckId: "cryptography_concepts", front: "How does a Public/Private key pair work in asymmetric encryption?", back: "The public key can be shared with anyone and is used to encrypt data. The corresponding private key is kept secret by the owner and is the only key that can decrypt the data encrypted with the public key. This allows anyone to send a secure message to the owner, but only the owner can read it." },
+    { id: "crypto_3", deckId: "cryptography_concepts", front: "What is a cryptographic hash function, and what are its key properties?", back: "A hash function is a one-way mathematical function that takes an input of any size and produces a fixed-size string of characters, called a hash. Key properties are:\nDeterministic: The same input will always produce the same output.\nPre-image Resistance: It is infeasible to reverse the function (find the input from the output).\nCollision Resistance: It is infeasible to find two different inputs that produce the same output." },
+    { id: "crypto_4", deckId: "cryptography_concepts", front: "What is a digital signature and what security services does it provide?", back: "A digital signature is a cryptographic mechanism used to verify the authenticity and integrity of a digital message. It is created by hashing the message and then encrypting the hash with the sender's private key. It provides:\nAuthentication: Verifies the sender's identity.\nIntegrity: Ensures the message has not been altered.\nNon-repudiation: The sender cannot deny having sent the message." },
+    { id: "crypto_5", deckId: "cryptography_concepts", front: "What is the role of a Certificate Authority (CA)?", back: "A Certificate Authority (CA) is a trusted third-party entity that issues digital certificates. The CA verifies the identity of an entity (like a website or organization) and then signs their public key with its own private key, creating a certificate. This allows others to trust that a given public key truly belongs to that entity." },
+    { id: "crypto_6", deckId: "cryptography_concepts", front: "What is 'salting' in the context of password hashing?", back: "Salting is the process of adding a unique, random string of characters (the 'salt') to each user's password before it is hashed. The salt is then stored along with the hash. This ensures that even if two users have the same password, their stored hashes will be different, which protects against attacks like rainbow tables." },
+    { id: "crypto_7", deckId: "cryptography_concepts", front: "Name one common symmetric encryption algorithm and one asymmetric one.", back: "Symmetric: AES (Advanced Encryption Standard) is the most widely used standard.\nAsymmetric: RSA (Rivest–Shamir–Adleman) is one of the most common algorithms." },
+    { id: "crypto_8", deckId: "cryptography_concepts", front: "What is the 'key distribution problem'?", back: "The key distribution problem is the challenge of securely sharing a secret key between two parties so they can communicate using symmetric encryption, without an eavesdropper being able to intercept the key. Asymmetric cryptography was invented primarily to solve this problem." },
+    { id: "crypto_9", deckId: "cryptography_concepts", front: "What is a digital certificate?", back: "A digital certificate is an electronic document used to prove the ownership of a public key. It contains the public key, information about the owner (like a domain name), and a digital signature from a Certificate Authority (CA). Browsers use these certificates to verify the identity of a website and establish a secure HTTPS connection." },
+    { id: "crypto_10", deckId: "cryptography_concepts", front: "What does 'non-repudiation' mean?", back: "Non-repudiation is a security service that provides proof of the origin and integrity of data. In practice, it means that a party cannot deny having sent a message or performed an action. Digital signatures are a key tool for achieving non-repudiation." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "The AES (Advanced Encryption Standard) algorithm is a widely used example of which type of encryption?",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "Asymmetric",
+            "Symmetric",
+            "Hashing",
+            "Steganography"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Symmetric"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "In asymmetric cryptography, the public key is used for _____, while the private key is used for _____.",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "decryption, encryption",
+            "creating signatures, verifying signatures",
+            "encryption, decryption",
+            "decryption, creating signatures"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "encryption, decryption"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "A one-way function that takes an input of any size and produces a fixed-size output is called a:",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "Symmetric cipher",
+            "Asymmetric cipher",
+            "Cryptographic hash function",
+            "Digital signature"
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "Cryptographic hash function"
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "To ensure data integrity and verify that a downloaded file has not been altered in transit, which cryptographic tool would you use?",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Symmetric encryption",
+            "A hash function",
+            "Asymmetric encryption",
+            "A digital certificate"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "A hash function"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "The RSA algorithm is a foundational and widely used example of which type of encryption?",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "Hash-based",
+            "Symmetric",
+            "Asymmetric",
+            "Stream cipher"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "Asymmetric"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "What is the primary purpose of adding a 'salt' to a password before hashing it?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "To make the hash shorter.",
+            "To make the password easier to remember.",
+            "To make the hashing process reversible.",
+            "To prevent pre-computed hash attacks (like rainbow tables)."
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "To prevent pre-computed hash attacks (like rainbow tables)."
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "A digital signature is created by encrypting a hash of the message with the sender's:",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "Public Key",
+            "Private Key",
+            "Symmetric Key",
+            "Session Key"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "Private Key"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "Which of the following is NOT a fundamental property of a secure hash function?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "Collision Resistance",
+            "Pre-image Resistance",
+            "Determinism",
+            "Reversibility"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "Reversibility"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "If Alice wants to send a securely encrypted message to Bob using asymmetric cryptography, which key should she use to encrypt the message?",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "Alice's private key",
+            "Alice's public key",
+            "Bob's private key",
+            "Bob's public key"
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "Bob's public key"
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "In the Public Key Infrastructure (PKI) model, the entity responsible for issuing and vouching for the authenticity of digital certificates is the:",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "Registration Authority (RA)",
+            "Certificate Authority (CA)",
+            "End User",
+            "Domain Registrar"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "Certificate Authority (CA)"
     }
 ];
 
-function GeneralQuestions() {
+function Cryptography() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -179,7 +179,7 @@ function GeneralQuestions() {
 
                 if (userProfile && userProfile.editedDecks) {
     const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
         if (deckEdits && deckEdits[q.id]) {
             return { ...q, back: deckEdits[q.id] };
         }
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "cryptography_concepts",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "Cryptography"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "cryptography_concepts_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "Cryptography"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default Cryptography;

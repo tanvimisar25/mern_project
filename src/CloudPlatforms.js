@@ -5,6 +5,7 @@ import './Questions.css';
 
 // ✅ 1. IMPORT THE USEAUTH HOOK - This is the correct way to get user info.
 import { useAuth } from './AuthContext'; 
+import { Cloud } from 'lucide-react';
 
 // --- Reusable Components & Data ---
 const Icon = ({ path, className = "icon" }) => (
@@ -22,122 +23,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "cp_1", deckId: "cloud_platforms", front: "What is the difference between IaaS, PaaS, and SaaS?", back: "These are the three main service models in cloud computing:\nIaaS (Infrastructure as a Service): Provides virtualized computing resources over the internet (Example: AWS EC2).\nPaaS (Platform as a Service): Provides a platform allowing customers to develop, run, and manage applications without the complexity of building and maintaining the infrastructure. (Example: Heroku, AWS Elastic Beanstalk).\nSaaS (Software as a Service): Provides ready-to-use software applications over the internet, on a subscription basis. (Example: Google Workspace, Salesforce)." },
+    { id: "cp_2", deckId: "cloud_platforms", front: "Explain the concept of an 'Availability Zone' (AZ) in a cloud platform.", back: "An Availability Zone (AZ) is one or more discrete data centers with redundant power, networking, and cooling, housed in separate facilities within a specific geographic Region. Deploying applications across multiple AZs provides high availability and fault tolerance, as it protects them from a single data center failure." },
+    { id: "cp_3", deckId: "cloud_platforms", front: "What is AWS S3, and what type of storage is it?", back: "Amazon S3 (Simple Storage Service) is a highly scalable object storage service. It is designed to store and retrieve any amount of data from anywhere. It's not a file system for an OS, but is ideal for storing unstructured data like images, videos, backups, and static website assets." },
+    { id: "cp_4", deckId: "cloud_platforms", front: "What is the primary 'compute' service in AWS, Azure, and GCP?", back: "These services provide virtual servers in the cloud:\nAWS: EC2 (Elastic Compute Cloud)\nAzure: Virtual Machines (VMs)\nGCP: Compute Engine" },
+    { id: "cp_5", deckId: "cloud_platforms", front: "What is 'serverless' computing? Name one serverless service.", back: "Serverless computing is a cloud execution model where the cloud provider dynamically manages the allocation and provisioning of servers. Developers write and deploy code in functions without worrying about the underlying infrastructure. A popular example is AWS Lambda, Azure Functions, or Google Cloud Functions." },
+    { id: "cp_6", deckId: "cloud_platforms", front: "What is a Virtual Private Cloud (VPC)?", back: "A VPC (Virtual Private Cloud), or VNet in Azure, is a logically isolated section of a public cloud where you can launch resources in a virtual network that you define. It gives you full control over your virtual networking environment, including a range of IP addresses, creation of subnets, and configuration of route tables and network gateways." },
+    { id: "cp_7", deckId: "cloud_platforms", front: "Explain the Shared Responsibility Model in the cloud.", back: "The Shared Responsibility Model defines the security obligations of the cloud provider versus the customer. The provider (e.g., AWS) is responsible for the security 'of' the cloud (the infrastructure, hardware, and software that runs the services). The customer is responsible for security 'in' the cloud (managing their data, configuring access controls, and patching guest operating systems)." },
+    { id: "cp_8", deckId: "cloud_platforms", front: "What is Auto Scaling?", back: "Auto Scaling is a cloud feature that automatically adjusts the number of compute resources (like EC2 instances or VMs) allocated to your application based on its current load or on a defined schedule. It helps to ensure performance during demand spikes and to minimize costs during quiet periods." },
+    { id: "cp_9", deckId: "cloud_platforms", front: "What is a managed database service like Amazon RDS?", back: "A managed database service (like Amazon RDS, Azure SQL Database, or Google Cloud SQL) is a cloud service that automates the time-consuming administrative tasks of a database, such as hardware provisioning, setup, patching, and backups. This allows developers to focus on their application instead of database management." },
+    { id: "cp_10", deckId: "cloud_platforms", front: "What is a Content Delivery Network (CDN)?", back: "A CDN is a globally distributed network of proxy servers that cache content closer to end-users. When a user requests content, the CDN redirects the request to the server with the lowest latency. This speeds up the delivery of static and dynamic content like images, videos, and web pages. Examples include AWS CloudFront and Azure CDN." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "AWS Lambda is an example of which cloud computing model?",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "Infrastructure as a Service (IaaS)",
+            "Platform as a Service (PaaS)",
+            "Software as a Service (SaaS)",
+            "Function as a Service (FaaS)"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Function as a Service (FaaS)"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "To host a relational database like PostgreSQL with managed backups and scaling, which AWS service is the most appropriate choice?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "Amazon S3",
+            "Amazon EC2",
+            "Amazon RDS",
+            "Amazon DynamoDB"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "Amazon RDS"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "In cloud terminology, the ability of a system to automatically add or remove resources to precisely match fluctuating demand is known as:",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "High Availability",
+            "Fault Tolerance",
+            "Elasticity",
+            "Durability"
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "Elasticity"
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "Which of the following is an example of an object storage service?",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Amazon EBS (Elastic Block Store)",
+            "Azure Disk Storage",
+            "Google Cloud Storage",
+            "A local hard drive"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "Google Cloud Storage"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "A company wants to lift-and-shift a legacy application to the cloud, giving them full control over the operating system and server environment. Which service model should they choose?",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "IaaS (Infrastructure as a Service)",
+            "PaaS (Platform as a Service)",
+            "SaaS (Software as a Service)",
+            "FaaS (Function as a Service)"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "IaaS (Infrastructure as a Service)"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "Under the AWS Shared Responsibility Model, which of the following is the customer's responsibility?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "Managing the physical security of data centers.",
+            "Patching the host operating system of an EC2 instance.",
+            "Configuring security groups and network ACLs.",
+            "Maintaining the networking hardware."
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "Configuring security groups and network ACLs."
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "Amazon EC2, Azure Virtual Machines, and Google Compute Engine are all examples of which service model?",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "SaaS",
+            "PaaS",
+            "IaaS",
+            "FaaS"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "IaaS"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "Which service is designed to deliver web content to end-users with low latency by caching it at locations around the world?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "A Virtual Private Cloud (VPC)",
+            "An Auto Scaling Group",
+            "A Content Delivery Network (CDN)",
+            "An Object Storage bucket"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "A Content Delivery Network (CDN)"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "Azure's globally distributed, multi-model NoSQL database service, designed for high availability and low latency, is called:",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "Azure SQL Database",
+            "Azure Blob Storage",
+            "Azure Cosmos DB",
+            "Azure Synapse"
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "Azure Cosmos DB"
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "A geographic area containing two or more Availability Zones is known as a:",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "Edge Location",
+            "Region",
+            "Data Center",
+            "Local Zone"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "Region"
     }
 ];
 
-function GeneralQuestions() {
+function CloudPlatforms() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -179,7 +180,7 @@ function GeneralQuestions() {
 
                 if (userProfile && userProfile.editedDecks) {
     const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
         if (deckEdits && deckEdits[q.id]) {
             return { ...q, back: deckEdits[q.id] };
         }
@@ -297,9 +298,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "cloud_platforms",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "CloudComputing"
                 });
             }
 
@@ -446,9 +447,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "cloud_platforms_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "CloudComputing"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +654,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default CloudPlatforms;

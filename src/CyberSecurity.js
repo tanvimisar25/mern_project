@@ -4,29 +4,30 @@ import { motion } from "framer-motion";
 import './Core.css';
 import { useAuth } from './AuthContext';
 
-// Define the main category title as a constant to ensure consistency.
-const MAIN_CATEGORY_TITLE = "Core Interview Questions";
+// --- (1) MAIN CATEGORY TITLE UPDATED ---
+const MAIN_CATEGORY_TITLE = "CyberSecurity";
 
+// --- (2) SUBCATEGORIES UPDATED ---
 const categories = [
     {
-        title: "General HR Questions",
-        description: "Showcase your personality, values, and cultural fit by answering common workplace-related questions.",
-        link: "/generalquestions"
+        title: "Network Security Fundamentals",
+        description: "Understand core concepts of securing networks, traffic, and firewalls.",
+        link: "/networksecurity"
     },
     {
-        title: "Behavioral Questions",
-        description: "Prove your past skills and behaviors through real-life examples.",
-        link: "/behavioralquestions"
+        title: "Application Security",
+        description: "Learn to identify and mitigate common vulnerabilities in software.",
+        link: "/appsecurity"
     },
     {
-        title: "Situational Questions",
-        description: "Assess your judgment with hypothetical 'what would you do if' scenarios.",
-        link: "/situationalquestions"
+        title: "Cryptography Concepts",
+        description: "Explore the basics of encryption, hashing, and secure communication.",
+        link: "/cryptography"
     },
     {
-        title: "Resume & Project Deep Dive",
-        description: "A detailed examination of the projects and experiences on your resume.",
-        link: "/resumedive"
+        title: "Ethical Hacking & Pen Testing",
+        description: "Discover methods for finding and exploiting security weaknesses.",
+        link: "/ethicalhacking"
     }
 ];
 
@@ -36,7 +37,8 @@ const HeartIcon = () => (
     </svg>
 );
 
-const Core = () => {
+// --- (4) COMPONENT RENAMED ---
+const CyberSecurity = () => {
     const { currentUser } = useAuth();
     const [favs, setFavs] = useState({});
 
@@ -57,32 +59,27 @@ const Core = () => {
         fetchUserFavorites();
     }, [currentUser]);
 
-    // ✅ --- UPDATED FAVORITE HANDLER ---
     const handleFavoriteClick = async (e, subCategoryTitle) => {
         e.preventDefault();
         e.stopPropagation();
         if (!currentUser) return;
 
         const isCurrentlyFavorited = favs[MAIN_CATEGORY_TITLE]?.includes(subCategoryTitle);
-        const originalFavs = favs; // Keep a copy in case of DB error
+        const originalFavs = favs;
 
-        // Optimistic UI Update using functional form for safety
         setFavs(currentFavs => {
-            const newFavs = JSON.parse(JSON.stringify(currentFavs)); // Deep copy
+            const newFavs = JSON.parse(JSON.stringify(currentFavs));
 
             if (isCurrentlyFavorited) {
-                // Remove the item
                 const updatedList = (newFavs[MAIN_CATEGORY_TITLE] || []).filter(
                     title => title !== subCategoryTitle
                 );
-                // If the list is now empty, remove the category key
                 if (updatedList.length === 0) {
                     delete newFavs[MAIN_CATEGORY_TITLE];
                 } else {
                     newFavs[MAIN_CATEGORY_TITLE] = updatedList;
                 }
             } else {
-                // Add the item
                 if (!newFavs[MAIN_CATEGORY_TITLE]) {
                     newFavs[MAIN_CATEGORY_TITLE] = [];
                 }
@@ -91,7 +88,6 @@ const Core = () => {
             return newFavs;
         });
 
-        // Database Update using atomic operators
         try {
             const mongo = currentUser.mongoClient("mongodb-atlas");
             const usersCollection = mongo.db("prepdeck").collection("user");
@@ -99,7 +95,6 @@ const Core = () => {
             
             let updateOperation;
             if (isCurrentlyFavorited) {
-                // If the array will become empty, we can use $unset to remove the field
                 if (originalFavs[MAIN_CATEGORY_TITLE]?.length === 1) {
                     updateOperation = { "$unset": { [`favs.${MAIN_CATEGORY_TITLE}`]: "" } };
                 } else {
@@ -116,7 +111,7 @@ const Core = () => {
 
         } catch (error) {
             console.error("Failed to update favs in database:", error);
-            setFavs(originalFavs); // Revert UI on error
+            setFavs(originalFavs);
         }
     };
 
@@ -127,8 +122,9 @@ const Core = () => {
             <main className="core-main-content">
                 <div className="core-header">
                     <h1>{MAIN_CATEGORY_TITLE}</h1>
+                    {/* --- (3) MAIN SUBTITLE UPDATED --- */}
                     <p className="subtitle">
-                        Master the four key types of questions asked in every interview.
+                        Learn to protect systems, networks, and data from digital attacks.
                     </p>
                 </div>
                 <div className="core-category-container">
@@ -160,4 +156,4 @@ const Core = () => {
     );
 };
 
-export default Core;
+export default CyberSecurity;

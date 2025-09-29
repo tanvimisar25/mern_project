@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "bq_1", deckId: "behave", front: "Tell me about a time when you had to work under a tight deadline.", back: "I managed my tasks by prioritizing critical items first, breaking down work into smaller steps, and collaborating with teammates. This helped us deliver the project on time without compromising quality." },
+    { id: "bq_2", deckId: "behave", front: "Describe a situation where you faced a conflict with a team member. How did you handle it?", back: "I scheduled a one-on-one conversation, actively listened to their concerns, and clarified misunderstandings. We agreed on a middle ground and improved our collaboration afterward." },
+    { id: "bq_3", deckId: "behave", front: "Give an example of when you went above and beyond at work.", back: " During a product release, I volunteered extra hours to automate repetitive testing tasks. This reduced QA time by 30% and ensured a smoother release." },
+    { id: "bq_4", deckId: "behave", front: "Tell me about a time you failed at something. How did you recover?", back: "I once underestimated the time needed for integration testing. I took accountability, informed my manager early, and worked with the QA team to create a new testing checklist that prevented similar delays." },
+    { id: "bq_5", deckId: "behave", front: "Describe a time you worked with a difficult client", back: " A client was unhappy with constant delays. I maintained transparency, provided frequent progress updates, and managed expectations, which helped rebuild trust." },
+    { id: "bq_6", deckId: "behave", front: "Share an instance where you had to quickly learn a new skill for a project.", back: "I had to pick up React within a week for a feature requirement. I used online tutorials, practiced small projects, and collaborated with a senior developer, which enabled me to contribute effectively" },
+    { id: "bq_7", deckId: "behave", front: " Tell me about a time you showed leadership without being in a formal role.", back: "In a group project, I took initiative to divide responsibilities, kept track of progress, and motivated the team. This improved coordination and we completed the task successfully." },
+    { id: "bq_8", deckId: "behave", front: "Describe a situation where you improved a process at work.", back: " I noticed manual deployment caused frequent errors, so I introduced CI/CD pipelines. This reduced deployment time and minimized production issues." },
+    { id: "bq_9", deckId: "behave", front: "Give an example of a goal you set and how you achieved it.", back: " I aimed to improve my coding speed. I practiced solving 2-3 coding problems daily and reviewed optimized solutions, which significantly improved my efficiency in real projects." },
+    { id: "bq_10", deckId: "behave", front: "Tell me about a time you worked in a diverse team.", back: "In my internship, I collaborated with teammates from different cultural and educational backgrounds. I adapted my communication style and respected everyone’s input, which led to better solutions." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "When interviewers ask you to 'Tell me about a time you handled conflict,' what should your answer focus on?",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "Blaming the other person in detail.",
+            "Describing how you handled the situation constructively and what you learned.",
+            "Avoiding the question by saying you never had conflicts.",
+            "Giving a vague response without examples."
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Describing how you handled the situation constructively and what you learned."
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "What is the best structure to answer behavioral questions?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "STAR (Situation, Task, Action, Result)",
+            "Giving a random story.",
+            "Talking only about results without context.",
+            "Listing skills without examples."
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "STAR (Situation, Task, Action, Result)"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "What is the main purpose of behavioral interview questions?",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "To test your technical coding ability.",
+            "To understand how you behaved in past situations as a predictor of future performance.",
+            "To check your general knowledge.",
+            "To evaluate your typing speed."
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "To understand how you behaved in past situations as a predictor of future performance."
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "When answering 'Tell me about a failure,' the best approach is to:",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Say you never failed.",
+            "Share a real failure, take responsibility, and explain what you learned.",
+            "Blame teammates or external factors.",
+            "Describe a minor failure but hide the outcome."
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "Share a real failure, take responsibility, and explain what you learned."
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "Which of the following is MOST effective when asked about teamwork?",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "Talking about working completely alone.",
+            "Giving an example of successful collaboration and your role in it.",
+            "Saying you prefer not to work in teams.",
+            "Avoiding specifics and giving generic statements."
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "Giving an example of successful collaboration and your role in it."
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "Why do interviewers ask about handling difficult clients or managers?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "To see if you gossip about others.",
+            "To assess your communication, patience, and conflict resolution skills.",
+            "To test your memory of incidents.",
+            "To know if you’ll refuse to work with difficult people."
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "To assess your communication, patience, and conflict resolution skills."
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "Which type of example works best in behavioral answers?",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "Hypothetical examples.",
+            "Real-life examples from past work, internships, or projects.",
+            "Examples unrelated to work, like personal life only.",
+            "Made-up stories to impress."
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "Real-life examples from past work, internships, or projects."
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "When asked about a leadership experience, you should:",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "Highlight how you directed the team, solved problems, and the outcome.",
+            "Only talk about technical contributions.",
+            "Say you’ve never led and skip the question.",
+            "Criticize teammates’ performance."
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "Highlight how you directed the team, solved problems, and the outcome."
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "What should you emphasize when discussing working under pressure?",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "That you panic but somehow manage.",
+            "Strategies you use to stay calm, organized, and productive.",
+            "That you avoid such situations.",
+            "That you don’t like deadlines."
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "Strategies you use to stay calm, organized, and productive."
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "How can you make your behavioral answers most impressive?",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "By using the STAR method and backing answers with measurable results.",
+            "By memorizing scripted answers without flexibility.",
+            "By keeping answers extremely short without detail.",
+            "By focusing only on your technical knowledge."
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "By using the STAR method and backing answers with measurable results."
     }
 ];
 
-function GeneralQuestions() {
+function BehavioralQuestions() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -179,7 +179,7 @@ function GeneralQuestions() {
 
                 if (userProfile && userProfile.editedDecks) {
     const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
         if (deckEdits && deckEdits[q.id]) {
             return { ...q, back: deckEdits[q.id] };
         }
@@ -297,7 +297,7 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "behave",
                     deckType: "Flashcards",
                     deckCategory: "Core"
                 });
@@ -446,7 +446,7 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "behave_test",
                 deckType: "Tests",
                 deckCategory: "Core"
             });
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default BehavioralQuestions;

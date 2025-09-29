@@ -22,122 +22,121 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "as_1", deckId: "application_security", front: "What is the OWASP Top 10?", back: "The OWASP (Open Web Application Security Project) Top 10 is a standard awareness document for developers and web application security professionals. It represents a broad consensus about the most critical security risks to web applications, updated every few years to reflect the changing threat landscape." },
+    { id: "as_2", deckId: "application_security", front: "What is an SQL Injection (SQLi) attack?", back: "SQL Injection is a type of injection attack where an attacker inserts malicious SQL code into a query. If the application does not properly sanitize the user input, the malicious query can be executed against the database, allowing the attacker to bypass authentication, access, modify, or delete data." },
+    { id: "as_3", deckId: "application_security", front: "How can you prevent SQL Injection?", back: "The primary defense is to use parameterized queries (also known as prepared statements). This practice separates the SQL query's structure from the user-supplied data, ensuring that the input is always treated as data and never as executable code. Input validation and using Object-Relational Mapping (ORM) tools also help." },
+    { id: "as_4", deckId: "application_security", front: "What is Cross-Site Scripting (XSS)? Explain one type.", back: "Cross-Site Scripting (XSS) is a vulnerability where an attacker injects malicious scripts (usually JavaScript) into a web page viewed by other users.\nStored XSS: The malicious script is permanently stored on the target server (e.g., in a database via a comment field) and is served to every user who views the page." },
+    { id: "as_5", deckId: "application_security", front: "What is 'Broken Access Control'? Give an example.", back: "Broken Access Control refers to flaws in how an application enforces restrictions on what authenticated users are allowed to do. An example is Insecure Direct Object Reference (IDOR), where a user can change a parameter in a URL (like ?invoiceId=100) to access another user's data (?invoiceId=101) without proper authorization checks." },
+    { id: "as_6", deckId: "application_security", front: "Explain 'Security Misconfiguration.'", back: "Security Misconfiguration occurs when an application or its underlying infrastructure is not configured securely. This is a very common risk and can include things like leaving default usernames and passwords, having unnecessary ports open, displaying overly verbose error messages that leak information, or having misconfigured cloud services (like a publicly open S3 bucket)." },
+    { id: "as_7", deckId: "application_security", front: "What does 'Vulnerable and Outdated Components' refer to?", back: "This risk involves using components—such as libraries, frameworks, and other software modules—that are unsupported, out of date, or have known security vulnerabilities. Attackers can exploit these known flaws to take control of a system or steal data. A famous example is the Log4Shell vulnerability in the Log4j library." },
+    { id: "as_8", deckId: "application_security", front: "What is Server-Side Request Forgery (SSRF)?", back: "SSRF is a vulnerability where an attacker can force a server-side application to make HTTP requests to an arbitrary domain of the attacker's choosing. This can be exploited to pivot and attack internal systems that are normally protected behind a firewall and inaccessible from the external network." },
+    { id: "as_9", deckId: "application_security", front: "What is a common example of 'Identification and Authentication Failures'?", back: "This category, formerly known as Broken Authentication, covers failures in how an application manages user identity and sessions. A common example is allowing credential stuffing, where an attacker uses lists of compromised usernames and passwords to try and log into the system. Other examples include not enforcing strong password policies or improper session management." },
+    { id: "as_10", deckId: "application_security", front: "What is a Content Security Policy (CSP)?", back: "A Content Security Policy (CSP) is an added layer of security, implemented via an HTTP response header, that helps to detect and mitigate certain types of attacks, particularly Cross-Site Scripting (XSS). It allows you to specify a whitelist of trusted sources from which a browser is allowed to load resources like scripts, styles, and images." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "An attacker altering a URL parameter like user_id=123 to user_id=124 to access another user's private data is a classic example of what vulnerability?",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "SQL Injection",
+            "Cross-Site Scripting (XSS)",
+            "Insecure Direct Object Reference (IDOR)",
+            "Security Misconfiguration"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Insecure Direct Object Reference (IDOR)"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "What is the most effective and widely recommended defense against SQL Injection attacks?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "Blacklisting dangerous characters like ';'.",
+            "Using a Web Application Firewall (WAF).",
+            "Using parameterized queries (prepared statements).",
+            "Encrypting the entire database."
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "Using parameterized queries (prepared statements)."
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "An attack where a malicious script is injected into a trusted website, which then executes in the victim's browser when they visit the site, is called:",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "Cross-Site Request Forgery (CSRF)",
+            "Server-Side Request Forgery (SSRF)",
+            "Cross-Site Scripting (XSS)",
+            "Command Injection"
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "Cross-Site Scripting (XSS)"
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "Leaving default administrator credentials on a server, enabling directory listing, or showing detailed stack traces in error messages are examples of:",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Injection",
+            "Broken Access Control",
+            "Security Misconfiguration",
+            "Cryptographic Failures"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "Security Misconfiguration"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "The practice of validating, filtering, and encoding user-supplied data before it is rendered on a page is a primary defense against:",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "Broken Authentication",
+            "Server-Side Request Forgery (SSRF)",
+            "Insecure Design",
+            "Cross-Site Scripting (XSS)"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "Cross-Site Scripting (XSS)"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "Which OWASP Top 10 category best describes the risk associated with using a third-party software library that has a publicly known exploit?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "Insecure Design",
+            "Security Misconfiguration",
+            "Vulnerable and Outdated Components",
+            "Software and Data Integrity Failures"
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "Vulnerable and Outdated Components"
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "Allowing users to set weak passwords, not protecting against brute-force attacks, and having insecure password recovery mechanisms fall under which OWASP category?",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "Cryptographic Failures",
+            "Identification and Authentication Failures",
+            "Broken Access Control",
+            "Security Logging and Monitoring Failures"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "Identification and Authentication Failures"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "Storing user passwords in plain text or using a weak, deprecated hashing algorithm like MD5 in a database is an example of which vulnerability?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "A01: Broken Access Control",
+            "A02: Cryptographic Failures",
+            "A03: Injection",
+            "A05: Security Misconfiguration"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "A02: Cryptographic Failures"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "An attack that tricks a server into making a request to an internal service, like http://127.0.0.1/admin, is known as:",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "Cross-Site Request Forgery (CSRF)",
+            "Server-Side Request Forgery (SSRF)",
+            "Reflected XSS",
+            "Insecure Deserialization"
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "Server-Side Request Forgery (SSRF)"
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "An application that does not adequately log security events like login failures makes it difficult to detect an ongoing attack. This issue is categorized under:",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "A04: Insecure Design",
+            "A07: Identification and Authentication Failures",
+            "A09: Security Logging and Monitoring Failures",
+            "A01: Broken Access Control"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "A09: Security Logging and Monitoring Failures"
     }
 ];
-
-function GeneralQuestions() {
+function AppSecurity() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -179,7 +178,7 @@ function GeneralQuestions() {
 
                 if (userProfile && userProfile.editedDecks) {
     const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
         if (deckEdits && deckEdits[q.id]) {
             return { ...q, back: deckEdits[q.id] };
         }
@@ -297,9 +296,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "behaapplication_securityve",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "AppSecurity"
                 });
             }
 
@@ -446,9 +445,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "application_security_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "AppSecurity"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +652,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default AppSecurity;

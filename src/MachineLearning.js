@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "ml_1", deckId: "machine_learning_algorithms", front: "What is the main difference between Supervised and Unsupervised learning?", back: "Supervised learning uses labeled data to train a model, meaning each data point is tagged with a correct output or target. The goal is to learn a mapping function to predict outputs for new, unseen data (e.g., predicting house prices). Unsupervised learning uses unlabeled data to find patterns or structures within the data itself, without any predefined target variables (e.g., customer segmentation)." },
+    { id: "ml_2", deckId: "machine_learning_algorithms", front: "Explain what 'overfitting' is in a machine learning model.", back: "Overfitting occurs when a model learns the training data too well, including its noise and random fluctuations. As a result, the model has low error on the training data but performs poorly on new, unseen data because it fails to generalize." },
+    { id: "ml_3", deckId: "machine_learning_algorithms", front: "How does a Decision Tree work?", back: "A Decision Tree is a supervised learning algorithm that works by splitting the data into subsets based on the value of input features. It starts at a single root node and recursively splits the data at each node by selecting the feature that best separates the data (e.g., using Gini impurity or information gain), creating a tree-like structure of decisions." },
+    { id: "ml_4", deckId: "machine_learning_algorithms", front: "What is the main idea behind a Support Vector Machine (SVM)?", back: "A Support Vector Machine is a classification algorithm that finds the optimal hyperplane that best separates data points of different classes in a high-dimensional space. The 'best' hyperplane is the one with the largest margin, which is the distance between the hyperplane and the nearest data points from each class (the 'support vectors')." },
+    { id: "ml_5", deckId: "machine_learning_algorithms", front: "What is K-Means Clustering used for?", back: "K-Means Clustering is an unsupervised algorithm used to partition a dataset into a predefined number of K clusters. It works by iteratively assigning each data point to the nearest cluster centroid (mean) and then recalculating the centroids based on the new assignments until the clusters stabilize." },
+    { id: "ml_6", deckId: "machine_learning_algorithms", front: "Explain the difference between classification and regression.", back: "Both are types of supervised learning. Classification is used to predict a discrete categorical label (e.g., 'spam' or 'not spam'). Regression is used to predict a continuous numerical value (e.g., the price of a stock)." },
+    { id: "ml_7", deckId: "machine_learning_algorithms", front: "What is a Random Forest, and why is it often better than a single Decision Tree?", back: "A Random Forest is an ensemble learning method that builds multiple decision trees during training and outputs the mode of the classes (classification) or the mean prediction (regression) of the individual trees. It is generally better because it reduces overfitting by averaging the results of many decorrelated trees, leading to higher accuracy and better generalization." },
+    { id: "ml_8", deckId: "machine_learning_algorithms", front: "What is the Bias-Variance Tradeoff?", back: "The Bias-Variance Tradeoff is a fundamental concept in machine learning. Bias is the error from overly simplistic assumptions in the learning algorithm (underfitting), while Variance is the error from being too sensitive to small fluctuations in the training data (overfitting). The tradeoff is that decreasing one tends to increase the other, and the goal is to find a balance that minimizes the total error." },
+    { id: "ml_9", deckId: "machine_learning_algorithms", front: "How does the K-Nearest Neighbors (KNN) algorithm work?", back: "KNN is a simple, 'lazy' supervised learning algorithm. For a new data point, it finds the K closest data points in the training set (the 'neighbors'). For classification, it assigns the new point the most common class among its neighbors. For regression, it assigns the average of the values of its neighbors." },
+    { id: "ml_10", deckId: "machine_learning_algorithms", front: "What are Precision and Recall, and when would you prefer one over the other?", back: "Precision measures the accuracy of positive predictions (of all positive predictions, how many were actually correct?). Recall measures the model's ability to find all actual positives (of all actual positives, how many did the model find?). You would prefer Precision when the cost of a false positive is high (e.g., spam detection). You would prefer Recall when the cost of a false negative is high (e.g., medical disease diagnosis)." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "Logistic Regression is a statistical model primarily used for which type of machine learning task?",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "Regression",
+            "Clustering",
+            "Classification",
+            "Dimensionality Reduction"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Classification"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "To reduce the dimensionality of a dataset while preserving as much variance as possible, which algorithm is most suitable?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "K-Means Clustering",
+            "Linear Regression",
+            "Principal Component Analysis (PCA)",
+            "K-Nearest Neighbors (KNN)"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "Principal Component Analysis (PCA)"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "A model that performs poorly on the training data and also poorly on the test data is likely suffering from:",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "Low bias",
+            "High variance",
+            "Overfitting",
+            "High bias (underfitting)"
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "High bias (underfitting)"
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "Which of the following is an example of an 'ensemble' learning method?",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Support Vector Machine (SVM)",
+            "Logistic Regression",
+            "Random Forest",
+            "K-Means Clustering"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "Random Forest"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "Mean Squared Error (MSE) is a common metric used to evaluate the performance of which type of model?",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "Classification",
+            "Regression",
+            "Clustering",
+            "Association Rule"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "Regression"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "Which algorithm explicitly finds the optimal hyperplane to separate data points into classes?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "K-Nearest Neighbors (KNN)",
+            "Decision Tree",
+            "Support Vector Machine (SVM)",
+            "Naive Bayes"
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "Support Vector Machine (SVM)"
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "In a medical screening test where it is critical to identify all individuals with a disease, even at the cost of misidentifying some healthy individuals, which metric should be prioritized?",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "Accuracy",
+            "Precision",
+            "Recall",
+            "F1-Score"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "Recall"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "Which of these is known as a 'lazy learning' algorithm because it doesn't build a model until a prediction is needed?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "Decision Tree",
+            "Support Vector Machine (SVM)",
+            "K-Nearest Neighbors (KNN)",
+            "Logistic Regression"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "K-Nearest Neighbors (KNN)"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "Regularization techniques like L1 (Lasso) and L2 (Ridge) are primarily used in models like linear regression to:",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "Increase the model's bias.",
+            "Speed up the training process.",
+            "Prevent overfitting by penalizing large coefficients.",
+            "Improve the model's performance on the training set."
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "Prevent overfitting by penalizing large coefficients."
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "The 'K' in the K-Means Clustering algorithm refers to:",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "The number of iterations the algorithm runs.",
+            "The number of data points in the dataset.",
+            "The number of features for each data point.",
+            "The number of clusters to be created."
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "The number of clusters to be created."
     }
 ];
 
-function GeneralQuestions() {
+function MachineLearning() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "machine_learning_algorithms",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "DataScience"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "machine_learning_algorithms_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "DataScience"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default MachineLearning;

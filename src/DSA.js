@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import './DSA.css';
+import './Core.css';
 import { useAuth } from './AuthContext';
 
 // Define the main category title as a constant to ensure consistency.

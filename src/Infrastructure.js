@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "iac_1", deckId: "infrastructure_as_code", front: "What is Infrastructure as Code (IaC)?", back: "Infrastructure as Code (IaC) is the practice of managing and provisioning computing infrastructure (like networks, virtual machines, and load balancers) through machine-readable definition files, rather than through physical hardware configuration or interactive configuration tools. This allows for automation, versioning, and repeatability." },
+    { id: "iac_2", deckId: "infrastructure_as_code", front: "Explain the difference between a declarative and an imperative approach to IaC.", back: "Declarative (What): You define the desired end state of the system, and the IaC tool is responsible for figuring out how to achieve that state. (Example: Terraform, CloudFormation).\nImperative (How): You write scripts that specify the exact steps needed to achieve the desired configuration. (Example: A traditional shell script)." },
+    { id: "iac_3", deckId: "infrastructure_as_code", front: "What is 'idempotency' in the context of IaC?", back: "Idempotency is the property that an operation can be applied multiple times without changing the result beyond the initial application. In IaC, this means running the same configuration script multiple times will always result in the same defined infrastructure state, ensuring consistency and preventing unintended changes." },
+    { id: "iac_4", deckId: "infrastructure_as_code", front: "What is Terraform, and what is its main advantage over a tool like AWS CloudFormation?", back: "Terraform is an open-source IaC tool created by HashiCorp. Its main advantage over a cloud-specific tool like AWS CloudFormation is that it is cloud-agnostic. It uses 'providers' to manage resources on multiple cloud platforms (like AWS, Azure, and GCP) and other services using a single, consistent workflow." },
+    { id: "iac_5", deckId: "infrastructure_as_code", front: "What is the purpose of the terraform.tfstate file?", back: "The Terraform state file (terraform.tfstate) is a crucial file that Terraform uses to store the state of the managed infrastructure. It maps the resources defined in your configuration files to the real-world resources that have been created, tracks metadata, and helps improve performance by caching resource attributes." },
+    { id: "iac_6", deckId: "infrastructure_as_code", front: "What is the difference between terraform plan and terraform apply?", back: "terraform plan is a dry run command. It creates an execution plan by comparing the desired state in your configuration files with the current state in the .tfstate file and shows you what changes (creations, updates, or destructions) will be made.\nterraform apply is the command that executes the plan, applying the proposed changes to create or modify the infrastructure." },
+    { id: "iac_7", deckId: "infrastructure_as_code", front: "What is 'configuration drift' and how does IaC help prevent it?", back: "Configuration drift is what happens when the actual configuration of your infrastructure diverges from the intended, defined configuration over time, often due to manual changes. IaC helps prevent this by providing a single source of truth; you can periodically run your IaC tool to detect and correct any drift, realigning the live environment with the code." },
+    { id: "iac_8", deckId: "infrastructure_as_code", front: "What is the primary difference between a provisioning tool (like Terraform) and a configuration management tool (like Ansible)?", back: "Provisioning tools (like Terraform) are used to create the foundational infrastructure itself (e.g., servers, VPCs, databases). Configuration management tools (like Ansible, Chef, Puppet) are typically used to install and manage software and configure the state of systems after they have been provisioned." },
+    { id: "iac_9", deckId: "infrastructure_as_code", front: "What is a 'provider' in Terraform?", back: "A provider in Terraform is a plugin that is responsible for understanding API interactions and exposing resources for a specific service. For example, the AWS provider allows Terraform to interact with AWS APIs to manage resources like EC2 instances and S3 buckets." },
+    { id: "iac_10", deckId: "infrastructure_as_code", front: "What is an AWS CloudFormation 'Stack'?", back: "A CloudFormation Stack is a collection of AWS resources that you can manage as a single unit. You create, update, and delete a collection of resources by creating, updating, and deleting stacks. All the resources in a stack are defined by the stack's CloudFormation template." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "The practice of managing and provisioning infrastructure through version-controlled, machine-readable definition files is known as:",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "Continuous Integration",
+            "Manual Configuration",
+            "Infrastructure as Code (IaC)",
+            "Agile Development"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Infrastructure as Code (IaC)"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "A tool that requires you to specify the desired end state of your infrastructure, without defining the explicit steps to get there, is using which approach?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "Procedural",
+            "Imperative",
+            "Declarative",
+            "Object-Oriented"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "Declarative"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "Which of the following is a popular cloud-agnostic (multi-cloud) IaC provisioning tool?",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "AWS CloudFormation",
+            "Azure Resource Manager",
+            "Terraform",
+            "Google Cloud Deployment Manager"
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "Terraform"
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "In Terraform, what is the first command you should run when starting with a new or existing configuration directory?",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "terraform apply",
+            "terraform plan",
+            "terraform init",
+            "terraform validate"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "terraform init"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "The property of an operation that ensures it can be applied multiple times without changing the result beyond the initial application is called:",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "Scalability",
+            "Idempotency",
+            "Availability",
+            "Durability"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "Idempotency"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "The JSON or YAML files used to define a collection of AWS resources that are provisioned together are the core of which AWS service?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "AWS EC2",
+            "AWS Lambda",
+            "AWS CloudFormation",
+            "AWS IAM"
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "AWS CloudFormation"
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "Which IaC tool is primarily used for configuration management (not provisioning) and is known for its agentless, imperative approach using YAML 'playbooks'?",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "Terraform",
+            "Ansible",
+            "Packer",
+            "Vagrant"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "Ansible"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "Terraform's configuration files are written using which language?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "YAML",
+            "JSON",
+            "HCL (HashiCorp Configuration Language)",
+            "Python"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "HCL (HashiCorp Configuration Language)"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "What is the primary purpose of the terraform plan command?",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "To immediately create the infrastructure.",
+            "To destroy all managed infrastructure.",
+            "To show a preview of the changes Terraform will make before you apply them.",
+            "To initialize the backend and download providers."
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "To show a preview of the changes Terraform will make before you apply them."
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "When the actual, live state of your infrastructure differs from the state defined in your version-controlled code, this is known as:",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "A merge conflict",
+            "A syntax error",
+            "Configuration Drift",
+            "A race condition"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "Configuration Drift"
     }
 ];
 
-function GeneralQuestions() {
+function Infrastructure() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -179,7 +179,7 @@ function GeneralQuestions() {
 
                 if (userProfile && userProfile.editedDecks) {
     const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
         if (deckEdits && deckEdits[q.id]) {
             return { ...q, back: deckEdits[q.id] };
         }
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "infrastructure_as_code",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "Infrastructure"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "infrastructure_as_code",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "Infrastructure"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default Infrastructure;

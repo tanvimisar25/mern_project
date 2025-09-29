@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "js_1", deckId: "javascript_fundamentals", front: "What is the difference between == and === in JavaScript?", back: "The == operator performs a loose equality comparison, which means it will try to coerce the operands to the same type before comparing them (e.g., 5 == '5' is true). The === operator performs strict equality, meaning it compares both the value and the type without any type coercion (e.g., 5 === '5' is false)." },
+    { id: "js_2", deckId: "javascript_fundamentals", front: "Explain what 'hoisting' is in JavaScript.", back: "Hoisting is JavaScript's default behavior of moving all declarations to the top of their current scope before code execution. This means you can use a variable or function before it's declared. However, only the declarations are hoisted, not the initializations. For variables declared with var, they are initialized with undefined." },
+    { id: "js_3", deckId: "javascript_fundamentals", front: "What is a closure in JavaScript?", back: "A closure is a feature where an inner function has access to the variables and parameters of its outer (enclosing) function, even after the outer function has finished executing. This allows for creating private variables and stateful functions." },
+    { id: "js_4", deckId: "javascript_fundamentals", front: "Describe the difference between var, let, and const.", back: "var: Has function scope, is hoisted, and can be re-declared and updated.\nlet: Has block scope ({}), is hoisted but not initialized (creating a 'temporal dead zone'), and can be updated but not re-declared.\nconst: Has block scope, is hoisted but not initialized, and cannot be updated or re-declared after assignment." },
+    { id: "js_5", deckId: "javascript_fundamentals", front: "What is the Event Loop and how does it work?", back: "The Event Loop is a concurrency model that allows JavaScript, a single-threaded language, to handle asynchronous operations. It continuously checks the Call Stack and the Callback Queue. If the Call Stack is empty, it takes the first event from the queue and pushes it onto the stack to be executed." },
+    { id: "js_6", deckId: "javascript_fundamentals", front: "Explain what a Promise is and its three states.", back: "A Promise is an object representing the eventual completion or failure of an asynchronous operation. Its three states are:\nPending: The initial state; neither fulfilled nor rejected.\nFulfilled: The operation completed successfully.\nRejected: The operation failed." },
+    { id: "js_7", deckId: "javascript_fundamentals", front: "What is the difference between localStorage and sessionStorage?", back: "Both are web storage APIs, but localStorage persists data even after the browser is closed and reopened, with no expiration time. sessionStorage stores data only for the duration of the page session; the data is cleared when the tab or browser is closed." },
+    { id: "js_8", deckId: "javascript_fundamentals", front: "How does the 'this' keyword work, and how is it different in arrow functions?", back: "In a regular function, the value of 'this' is determined by how the function is called (the call-site). In an arrow function, 'this' is lexically scoped, meaning it inherits the 'this' value from its surrounding (enclosing) scope at the time of its creation." },
+    { id: "js_9", deckId: "javascript_fundamentals", front: "What is the DOM (Document Object Model)?", back: "The DOM is a programming interface for web documents. It represents the page's structure as a tree of objects, where each object corresponds to a part of the document (like an element or a text node). JavaScript can use the DOM to manipulate the content, structure, and style of a webpage." },
+    { id: "js_10", deckId: "javascript_fundamentals", front: "Explain what async/await is.", back: "async/await is syntactic sugar built on top of Promises that makes asynchronous code look and behave more like synchronous code, making it easier to read and write. The async keyword makes a function return a Promise, and the await keyword pauses the function's execution until the awaited Promise is settled." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "Due to hoisting, what will be logged to the console in the following code? console.log(myVar); var myVar = 10;",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "10",
+            "ReferenceError",
+            "null",
+            "undefined"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "undefined"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "Which of the following has function-level scope rather than block-level scope?",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "let",
+            "const",
+            "var",
+            "Both let and const"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "var"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "A JavaScript closure gives a function access to what?",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "The global scope only.",
+            "The scope of the function in which it was defined.",
+            "The scope of the function that calls it.",
+            "The browser's window object exclusively."
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "The scope of the function in which it was defined."
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "When an asynchronous operation (like setTimeout) completes, where is its callback function placed before execution?",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "The Call Stack",
+            "The Callback Queue (or Task Queue)",
+            "The Heap",
+            "The Microtask Queue"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "The Callback Queue (or Task Queue)"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "When a Promise is successfully fulfilled, which of the following methods will be executed?",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            ".then()",
+            ".catch()",
+            ".finally()",
+            ".error()"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: ".then()"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "What is the primary benefit of using async/await?",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "It makes asynchronous operations run faster.",
+            "It allows you to write asynchronous code that looks synchronous and is easier to read.",
+            "It is the only way to handle multiple asynchronous operations.",
+            "It removes the need for the Event Loop."
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "It allows you to write asynchronous code that looks synchronous and is easier to read."
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "What is 'event bubbling' in the context of the DOM?",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "An event is captured from the top-most ancestor down to the target element.",
+            "An event is triggered on the target element and then propagates up through its ancestors.",
+            "Only the event on the specific target element is fired.",
+            "All events of the same type fire simultaneously."
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "An event is triggered on the target element and then propagates up through its ancestors."
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "Which browser storage would you use if you need the data to be available even after the user closes and reopens the browser?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "sessionStorage",
+            "Cookies",
+            "localStorage",
+            "A JavaScript variable"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "localStorage"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "How does an arrow function (=>) determine the value of its this context?",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "It is determined by how the function is called.",
+            "It is always bound to the global window object.",
+            "It lexically inherits this from its parent scope.",
+            "It does not have a this context."
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "It lexically inherits this from its parent scope."
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "What will be the result of '5' === 5?",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "true",
+            "false",
+            "undefined",
+            "TypeError"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "false"
     }
 ];
 
-function GeneralQuestions() {
+function JS() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "javascript_fundamentals",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "WebDev"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "javascript_fundamentals",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "WebDev"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default JS;

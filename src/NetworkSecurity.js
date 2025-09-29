@@ -22,122 +22,122 @@ const ICONS = {
 };
 
 const initialFlashcardQuestions = [
-    { id: "gq_1", deckId: "general_hr", front: "Tell me about yourself.", back: "I am a passionate and results-oriented professional with a proven track record of developing user-friendly web applications. I thrive in collaborative environments and I'm always eager to learn new technologies." },
-    { id: "gq_2", deckId: "general_hr", front: "What are your greatest strengths?", back: "My greatest strengths are my adaptability and problem-solving skills. I can quickly learn new frameworks and effectively debug complex issues to ensure project deadlines are met." },
-    { id: "gq_3", deckId: "general_hr", front: "What are your weaknesses?", back: "I used to focus too much on minor details, but I've learned to prioritize tasks for the bigger picture. This helps me deliver high-impact work more efficiently." },
-    { id: "gq_4", deckId: "general_hr", front: "Why do you want to work for this company?", back: "I'm impressed with this company's innovation in the tech space and its commitment to a positive work culture. I believe my skills in React and UI development would be a great asset to your team." },
-    { id: "gq_5", deckId: "general_hr", front: "Where do you see yourself in 5 years?", back: "In five years, I aim to be a senior developer, mentoring junior team members and taking the lead on challenging projects. I am eager to grow with a company that invests in its employees." },
-    { id: "gq_6", deckId: "general_hr", front: "Why should we hire you?", back: "You should hire me because my skills in front-end development align perfectly with this role. My experience in building responsive and performant applications will allow me to contribute to your team from day one." },
-    { id: "gq_7", deckId: "general_hr", front: "What is your greatest professional achievement?", back: "My greatest achievement was leading the redesign of a client's e-commerce site, which resulted in a 20% increase in user engagement and a 15% boost in sales." },
-    { id: "gq_8", deckId: "general_hr", front: "How do you handle pressure?", back: "I stay calm under pressure by breaking down large tasks into smaller, manageable steps. Clear communication with my team is also key to managing expectations and resolving issues collaboratively." },
-    { id: "gq_9", deckId: "general_hr", front: "What are your salary expectations?", back: "Based on my experience and the market rate for this role, I am expecting a competitive salary. I am open to discussing a number that is fair for both parties." },
-    { id: "gq_10", deckId: "general_hr", front: "Do you have any questions for us?", back: "Yes, thank you. Could you describe the team's development process? What are the biggest challenges the team is currently facing, and what are the opportunities for professional growth here?" }
+    { id: "ns_1", deckId: "network_security_fundamentals", front: "What is the CIA Triad in cybersecurity?", back: "The CIA Triad is a foundational model that guides security policies. It stands for:\nConfidentiality: Ensuring that data is accessible only to authorized users. (Achieved via encryption, access controls).\nIntegrity: Maintaining the consistency, accuracy, and trustworthiness of data over its entire lifecycle. (Achieved via hashing, digital signatures).\nAvailability: Ensuring that systems and data are operational and accessible to authorized users when needed. (Achieved via redundancy, disaster recovery)." },
+    { id: "ns_2", deckId: "network_security_fundamentals", front: "What is the primary function of a firewall?", back: "A firewall is a network security device that monitors and filters incoming and outgoing network traffic based on a predefined set of security rules. It acts as a barrier between a trusted internal network and an untrusted external network (like the internet) to block malicious traffic." },
+    { id: "ns_3", deckId: "network_security_fundamentals", front: "Explain what a VPN (Virtual Private Network) is used for.", back: "A VPN is used to create a secure, encrypted connection over a public network, like the internet. It establishes a 'tunnel' that encrypts all the user's internet traffic, providing confidentiality and privacy by hiding their IP address and online activities from eavesdroppers." },
+    { id: "ns_4", deckId: "network_security_fundamentals", front: "What is the difference between an Intrusion Detection System (IDS) and an Intrusion Prevention System (IPS)?", back: "An IDS is a passive system that monitors network traffic for suspicious activity or policy violations and sends an alert when it detects a potential threat. It only detects and reports.\nAn IPS is an active system that sits in-line with traffic. It not only detects malicious activity but also takes automatic action to block or prevent it." },
+    { id: "ns_5", deckId: "network_security_fundamentals", front: "What security guarantee does HTTPS provide that HTTP does not?", back: "HTTPS (Hypertext Transfer Protocol Secure) uses encryption (via TLS/SSL protocols) to secure the communication between a client and a server. This provides confidentiality (preventing eavesdropping) and integrity (preventing data tampering) for the data in transit, which the standard HTTP protocol lacks." },
+    { id: "ns_6", deckId: "network_security_fundamentals", front: "Describe a Distributed Denial-of-Service (DDoS) attack.", back: "A DDoS attack is a malicious attempt to make an online service unavailable to legitimate users by overwhelming it with a flood of internet traffic from multiple sources. These sources are often a 'botnet' of compromised computers. The goal is to exhaust the target's resources, like bandwidth or server capacity." },
+    { id: "ns_7", deckId: "network_security_fundamentals", front: "What is a 'man-in-the-middle' (MitM) attack?", back: "A man-in-the-middle (MitM) attack is a form of eavesdropping where an attacker secretly relays and possibly alters the communication between two parties who believe they are directly communicating with each other. The attacker intercepts the entire conversation and can inject malicious data or steal sensitive information." },
+    { id: "ns_8", deckId: "network_security_fundamentals", front: "What is a DMZ (Demilitarized Zone) in the context of network security?", back: "A DMZ is a perimeter network that protects an organization's internal local-area network (LAN) from an untrusted network, usually the internet. It's a subnetwork that sits between the internal network and the internet, hosting external-facing services like web servers or email servers. This isolates them so that if a service in the DMZ is compromised, the internal network remains secure." },
+    { id: "ns_9", deckId: "network_security_fundamentals", front: "Explain the principle of 'least privilege.'", back: "The principle of least privilege is a security concept in which a user is given only the minimum levels of access—or permissions—needed to perform their job functions. This minimizes the potential damage that can be caused by a compromised user account or an insider threat." },
+    { id: "ns_10", deckId: "network_security_fundamentals", front: "What is phishing?", back: "Phishing is a type of social engineering attack where an attacker sends a fraudulent message (often an email) designed to trick a person into revealing sensitive information (like passwords or credit card numbers) or to deploy malicious software on the victim's machine." }
 ];
 
 const practiceTestQuestions = [
     {
-        question: "When an interviewer says, 'Tell me about yourself,' what is the best approach?",
+        question: "The 'A' in the CIA Triad of cybersecurity stands for:",
         options: [
-            "A detailed, 5-minute summary of your life story.", 
-            "A brief, professional summary of your skills and experience relevant to the job.", 
-            "Asking them to read your resume instead.", 
-            "Talking about your hobbies unrelated to work."
+            "Authentication",
+            "Authorization",
+            "Availability",
+            "Auditing"
         ],
-        correctAnswer: "A brief, professional summary of your skills and experience relevant to the job."
+        correctAnswer: "Availability"
     },
     {
-        question: "How should you answer 'What are your greatest strengths?' in an interview?",
+        question: "A security device that filters network traffic based on a set of predefined rules is called a:",
         options: [
-            "By listing generic strengths like 'hard-working' without context.",
-            "By highlighting skills relevant to the job, supported by examples.",
-            "By saying you don't have any weaknesses, only strengths.",
-            "By mentioning personal strengths that are not related to the job."
+            "Router",
+            "Switch",
+            "Firewall",
+            "Hub"
         ],
-        correctAnswer: "By highlighting skills relevant to the job, supported by examples."
+        correctAnswer: "Firewall"
     },
     {
-        question: "What is the most effective way to discuss your weaknesses?",
+        question: "Which protocol is most commonly used to provide a secure, encrypted command-line interface to a remote server?",
         options: [
-            "Claiming you have no weaknesses.",
-            "Disguising a strength as a weakness, like 'I'm a perfectionist'.",
-            "Mentioning a real weakness and explaining the steps you've taken to improve.",
-            "Mentioning a critical weakness that would make you unfit for the job."
+            "FTP",
+            "Telnet",
+            "SSH",
+            "HTTP"
         ],
-        correctAnswer: "Mention a real weakness and explaining the steps you've taken to improve."
+        correctAnswer: "SSH"
     },
     {
-        question: "A strong answer to 'Why do you want to work here?' primarily demonstrates what?",
+        question: "A system that can only monitor and alert on suspicious network activity but cannot take action to block it is a(n):",
         options: [
-            "That you are actively looking for any job.",
-            "That you've researched the company and see a mutual fit for your skills and goals.",
-            "That you only care about the salary and benefits.",
-            "That you haven't applied anywhere else."
+            "Intrusion Prevention System (IPS)",
+            "VPN Concentrator",
+            "Intrusion Detection System (IDS)",
+            "Stateful Firewall"
         ],
-        correctAnswer: "That you've researched the company and see a mutual fit for your skills and goals."
+        correctAnswer: "Intrusion Detection System (IDS)"
     },
     {
-        question: "What is an interviewer typically assessing with the 'Where do you see yourself in 5 years?' question?",
+        question: "An attack that overwhelms a server with traffic from many different compromised computers is known as:",
         options: [
-            "Your specific life plan, including personal goals.",
-            "Your career ambitions and whether they align with the company's growth opportunities.",
-            "Whether you plan to leave the company for a competitor soon.",
-            "Your ability to predict the future accurately."
+            "Phishing",
+            "Man-in-the-Middle",
+            "Distributed Denial-of-Service (DDoS)",
+            "SQL Injection"
         ],
-        correctAnswer: "Your career ambitions and whether they align with the company's growth opportunities."
+        correctAnswer: "Distributed Denial-of-Service (DDoS)"
     },
     {
-        question: "Your answer to 'Why should we hire you?' should be a concise summary of what?",
+        question: "The encryption protocol that secures communications for HTTPS is:",
         options: [
-            "A repetition of your entire resume.",
-            "How your skills and experience directly match the job description and will benefit the company.",
-            "Why you are better than other candidates you don't know.",
-            "Your personal need for the job."
+            "IPsec",
+            "WPA2",
+            "TLS/SSL",
+            "SSH"
         ],
-        correctAnswer: "How your skills and experience directly match the job description and will benefit the company."
+        correctAnswer: "TLS/SSL"
     },
     {
-        question: "What makes an answer about your greatest achievement most impactful?",
+        question: "The security principle of providing a user with only the minimum level of access necessary to perform their job is called:",
         options: [
-            "Describing a project without mentioning the outcome.",
-            "Using a specific example with a measurable, positive result (e.g., increased sales by 15%).",
-            "Talking about an achievement from your personal life.",
-            "Taking credit for the entire team's work."
+            "Defense in Depth",
+            "Zero Trust",
+            "Principle of Least Privilege",
+            "Access Control"
         ],
-        correctAnswer: "Using a specific example with a measurable, positive result (e.g., increased sales by 15%)."
+        correctAnswer: "Principle of Least Privilege"
     },
     {
-        question: "A good response about handling pressure should demonstrate what?",
+        question: "An email that appears to be from your bank and asks you to click a link to verify your password is a common form of what attack?",
         options: [
-            "That you never feel pressure or stress.",
-            "Positive coping strategies like prioritization, organization, and clear communication.",
-            "That you complain to coworkers to relieve stress.",
-            "That you avoid stressful situations altogether."
+            "DDoS",
+            "Phishing",
+            "Cross-Site Scripting (XSS)",
+            "Ransomware"
         ],
-        correctAnswer: "Positive coping strategies like prioritization, organization, and clear communication."
+        correctAnswer: "Phishing"
     },
     {
-        question: "When asked about salary expectations, it is best to:",
+        question: "In the OSI model, which layer is responsible for routing and forwarding IP packets between networks?",
         options: [
-            "Give a single, non-negotiable number.",
-            "Say 'I'll take whatever you're offering.'",
-            "Provide a well-researched range and express flexibility.",
-            "Avoid answering the question entirely."
+            "Layer 2 (Data Link)",
+            "Layer 7 (Application)",
+            "Layer 4 (Transport)",
+            "Layer 3 (Network)"
         ],
-        correctAnswer: "Provide a well-researched range and express flexibility."
+        correctAnswer: "Layer 3 (Network)"
     },
     {
-        question: "Asking thoughtful questions at the end of an interview primarily shows:",
+        question: "A VPN creates a secure, encrypted connection over a public network. This connection is often referred to as a:",
         options: [
-            "That you weren't paying attention during the interview.",
-            "You are only interested in vacation days and benefits.",
-            "That you have no questions, which is a sign of confidence.",
-            "Your genuine interest in the role and that you are evaluating the company as well."
+            "Tunnel",
+            "Pipe",
+            "Channel",
+            "DMZ"
         ],
-        correctAnswer: "Your genuine interest in the role and that you are evaluating the company as well."
+        correctAnswer: "Tunnel"
     }
 ];
 
-function GeneralQuestions() {
+function NetworkSecurity() {
     // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
     const { currentUser } = useAuth();
 
@@ -179,7 +179,7 @@ function GeneralQuestions() {
 
                 if (userProfile && userProfile.editedDecks) {
     const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "general_hr"
+        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
         if (deckEdits && deckEdits[q.id]) {
             return { ...q, back: deckEdits[q.id] };
         }
@@ -297,9 +297,9 @@ const handleAnswer = (isCorrect) => {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "general_hr",
+                    deckId: "network_security_fundamentals",
                     deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckCategory: "Network Security"
                 });
             }
 
@@ -446,9 +446,9 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "general_hr_test",
+                deckId: "network_security_fundamentals_test",
                 deckType: "Tests",
-                deckCategory: "Core"
+                deckCategory: "Network Security"
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -653,4 +653,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default GeneralQuestions;
+export default NetworkSecurity;
