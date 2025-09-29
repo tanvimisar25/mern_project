@@ -13,7 +13,6 @@ import Login from "./Login";
 import Signup from "./Signup";
 import MyDeck from "./MyDeck";
 import PracticeTest from "./PracticeTest";
-import DeckOwn from "./DeckOwn";
 import BehavioralQuestions from "./BehavioralQuestions";
 import Core from "./Core";
 
@@ -71,7 +70,6 @@ function App() {
                 <Route path="/dashboard" element={<Homepage2 />} />
                 <Route path="/mydecks" element={<MyDeck />} />
                 <Route path="/practicetests" element={<PracticeTest />} />
-                <Route path="/deckowns" element={<DeckOwn />} />
                 <Route path="/behavioralquestions" element={<BehavioralQuestions />} />
                 <Route path="/core" element={<Core />} />
               </Route>
