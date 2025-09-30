@@ -191,11 +191,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    /* padding: 1.5rem; */
     text-align: center;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
     box-sizing: border-box;
     border: 1px solid #E5E7EB;
+    overflow-wrap: break-word;
 }
 
 .card-front {
@@ -211,6 +212,7 @@ body {
     font-size: 1.25rem;
     font-weight: 500;
     color: #ffffff; /* Make text readable */
+    overflow-wrap: break-word;
 }
 
 @media (min-width: 768px) {

@@ -7,10 +7,10 @@ import "./Homepage2.css"; // Imports the separate CSS file
 function Homepage2() {
   // --- UPDATED: Chart data now has 4 categories ---
   const chartData = [
-    { name: "Completed Flashcards", value: 40, color: "#100a27" }, // Blue
-    { name: "Mastered Flashcards", value: 20, color: "#281d55ff" }, // Orange
-    { name: "Completed Tests", value: 25, color: "#635599ff" },      // Green
-    { name: "Mastered Tests", value: 15, color: "#9a8cd3ff" },      // Purple
+    { name: "Completed Flashcards", value: 40, color: "#002d46ff" }, // Blue
+    { name: "Mastered Flashcards", value: 20, color: "#00456aff" }, // Orange
+    { name: "Completed Tests", value: 25, color: "#005d90ff" },      // Green
+    { name: "Mastered Tests", value: 15, color: "#0072afff" },      // Purple
   ];
 
   const stats = {
