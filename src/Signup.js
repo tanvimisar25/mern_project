@@ -3,15 +3,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import "./Signup.css";
-// We no longer need to import Realm here, the context handles it!
 
+// ✅ Import useAuth from our custom AuthContext.
 import { useAuth } from "./AuthContext";
 
 function Signup() {
     const navigate = useNavigate();
-    // CHANGED: Get the new signUp function from our context
-    const { signUp } = useAuth();
+    // ✅ Get the 'signup' function from our context (note the lowercase 'u').
+    const { signup } = useAuth();
 
+    // --- State Management for Form Inputs ---
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    // --- State for UI Feedback ---
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -20,14 +27,8 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage(""); 
-        const formData = new FormData(e.target);
-        
-        const username = formData.get("username");
-        const email = formData.get("email");
-        const password = formData.get("password");
-        const confirmPassword = formData.get("confirmPassword");
 
-        // --- Validation Logic (Unchanged) ---
+        // --- Validation Logic (using state variables) ---
         if (!email.endsWith("@gmail.com") && !email.endsWith("@somaiya.edu")) {
             setErrorMessage("Please use a valid Gmail or Somaiya address.");
             return;
@@ -43,37 +44,32 @@ function Signup() {
         }
 
         try {
-            // --- THE MAIN CHANGE ---
-            // Replace the entire old signup flow with this single, powerful function call.
-            // This function now creates the auth user AND their database document at the same time.
-            await signUp(email, password, username);
+            // ✅ THIS IS THE KEY CHANGE: Call the signup function from our context.
+            // This function sends the data to our Node.js backend API.
+            await signup(username, email, password);
 
-            // The rest of the success flow is the same
+            // If signup is successful, show the popup.
             setShowSuccessPopup(true);
+            
+            // After 3 seconds, redirect to the login page to have the user log in.
             setTimeout(() => {
-                navigate("/dashboard");
+                navigate("/login"); 
             }, 3000); 
 
         } catch (error) {
             console.error("Error signing up:", error);
-            
-            // This error handling is still correct
-            if (error.error === 'name already in use') {
-                setErrorMessage("Email already in use.");
-            } else {
-                setErrorMessage("Failed to sign up. Please try again.");
-            }
+            // ✅ The error message from our backend is now in error.message.
+            setErrorMessage(error.message || "Failed to sign up. Please try again.");
         }
     };
 
     return (
-        // The JSX for your form is unchanged and will work perfectly.
         <div className="signup-page">
             {showSuccessPopup && (
                 <div className="popup-overlay">
                     <div className="popup-box">
                         <h2>Account Created!</h2>
-                        <p>Logging you in and preparing your dashboard...</p>
+                        <p>Redirecting you to the login page...</p>
                     </div>
                 </div>
             )}
@@ -81,16 +77,27 @@ function Signup() {
             <div className="signup-box">
                 <h2 className="signup-title">Sign Up</h2>
                 <form className="signup-form" onSubmit={handleSubmit}>
-                    <input type="text" placeholder="Username" name="username" required />
-                    <input type="email" placeholder="Email" name="email" required />
+                    <input 
+                        type="text" 
+                        placeholder="Username" 
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required 
+                    />
+                    <input 
+                        type="email" 
+                        placeholder="Email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required 
+                    />
                     <div className="password-wrapper">
                         <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
-                            name="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             required
-                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$"
-                            title="Must include uppercase, lowercase, a number, and be at least 6 characters."
                         />
                         <span className="toggle-eye" onClick={() => setShowPassword(!showPassword)}>
                             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
@@ -100,7 +107,8 @@ function Signup() {
                         <input
                             type={showConfirmPassword ? "text" : "password"}
                             placeholder="Confirm Password"
-                            name="confirmPassword"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                         />
                         <span className="toggle-eye" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>

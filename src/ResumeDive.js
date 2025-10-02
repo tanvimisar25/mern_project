@@ -1,9 +1,9 @@
-import React from 'react';
-import { useState, useEffect, useCallback } from 'react'; // This line might have been the issue
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import './Questions.css';
 
-// ✅ 1. IMPORT THE USEAUTH HOOK - This is the correct way to get user info.
+// ✅ 1. IMPORT FROM OUR CUSTOM AUTH CONTEXT
 import { useAuth } from './AuthContext'; 
 
 // --- Reusable Components & Data ---
@@ -21,130 +21,41 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
+// ✅ ADDED: Constants for consistency
+const MAIN_CATEGORY_TITLE = "Core Interview Questions";
+const SUB_CATEGORY_TITLE = "Resume & Project Deep Dive";
+
 const initialFlashcardQuestions = [
-    { id: "rd_1", deckId: "resume", front: "Can you walk me through your resume, highlighting the experience most relevant to this role?", back: "I started my journey at [Company/University], where I developed a strong foundation in [Skill]. My most relevant experience was on [Project Name], where I used [Technology relevant to the job] to achieve [Specific outcome], aligning directly with this position." },
-    { id: "rd_2", deckId: "resume", front: "Looking at [Project Name] on your resume, can you explain what the project was about and its main goal?", back: "[Project Name] was a [web/mobile/backend] application designed to solve [problem]. The goal was to [e.g., improve user engagement by 20%], achieved by implementing [key features]." },
-    { id: "rd_3", deckId: "resume", front: "What was your specific role and what were your key contributions to that project?", back: "I was the [Role, e.g., Front-End Developer] responsible for [main responsibility]. My contributions included building [feature], integrating the [API name] API, and writing unit tests that increased coverage by [percentage]." },
-    { id: "rd_4", deckId: "resume", front: "What was the biggest technical challenge you faced during this project, and how did you overcome it?", back: "The biggest challenge was [e.g., optimizing slow database queries]. I solved it by [action, e.g., indexing tables and adding caching], which led to a [result, e.g., 50% faster response time]." },
-    { id: "rd_5", deckId: "resume", front: "Why did you and your team choose [Specific Technology] for this project? What alternatives did you consider?", back: "We chose [Tech, e.g., React] for its component-based architecture and community support. We considered [Alternative, e.g., Angular], but avoided it due to its steeper learning curve." },
-    { id: "rd_6", deckId: "resume", front: "If you could go back and do this project again, what would you do differently?", back: "I would implement a stronger CI/CD pipeline from the start. We initially used manual deployments, which were slow and error-prone. Automating earlier would have saved time and reduced risks." },
-    { id: "rd_7", deckId: "resume", front: "How did you handle version control and collaboration with your team on this project?", back: "We used Git with GitFlow branching. I created pull requests for features, which were peer-reviewed before merging into the main branch, ensuring quality and collaboration." },
-    { id: "rd_8", deckId: "resume", front: "Can you explain the architecture of the application you built in [Project Name]?", back: "It was a three-tier architecture: front-end built with [Tech], communicating with a RESTful API on [Backend Tech], storing data in [Database] and hosted on [Cloud Platform]." },
-    { id: "rd_9", deckId: "resume", front: "What was the outcome or business impact of this project? How did you measure its success?", back: "The project increased [e.g., user sign-ups by 15%]. Success was measured with analytics tools like Google Analytics, tracking KPIs such as conversion rates." },
-    { id: "rd_10", deckId: "resume", front: "You've listed [Specific Skill, e.g., Docker] on your resume. Can you tell me about a time you used it?", back: "In my last project, I used Docker to containerize our Node.js app. I wrote a Dockerfile to define the environment, ensuring consistent development and deployment, saving hours in setup time." }
+    { id: "rd_1", deckId: "resume", title: SUB_CATEGORY_TITLE, front: "Can you walk me through your resume, highlighting the experience most relevant to this role?", back: "I started my journey at [Company/University], where I developed a strong foundation in [Skill]. My most relevant experience was on [Project Name], where I used [Technology relevant to the job] to achieve [Specific outcome], aligning directly with this position." },
+    { id: "rd_2", deckId: "resume", title: SUB_CATEGORY_TITLE, front: "Looking at [Project Name] on your resume, can you explain what the project was about and its main goal?", back: "[Project Name] was a [web/mobile/backend] application designed to solve [problem]. The goal was to [e.g., improve user engagement by 20%], achieved by implementing [key features]." },
+    { id: "rd_3", deckId: "resume", title: SUB_CATEGORY_TITLE, front: "What was your specific role and what were your key contributions to that project?", back: "I was the [Role, e.g., Front-End Developer] responsible for [main responsibility]. My contributions included building [feature], integrating the [API name] API, and writing unit tests that increased coverage by [percentage]." },
+    { id: "rd_4", deckId: "resume", title: SUB_CATEGORY_TITLE, front: "What was the biggest technical challenge you faced during this project, and how did you overcome it?", back: "The biggest challenge was [e.g., optimizing slow database queries]. I solved it by [action, e.g., indexing tables and adding caching], which led to a [result, e.g., 50% faster response time]." },
+    { id: "rd_5", deckId: "resume", title: SUB_CATEGORY_TITLE, front: "Why did you and your team choose [Specific Technology] for this project? What alternatives did you consider?", back: "We chose [Tech, e.g., React] for its component-based architecture and community support. We considered [Alternative, e.g., Angular], but avoided it due to its steeper learning curve." },
+    { id: "rd_6", deckId: "resume", title: SUB_CATEGORY_TITLE, front: "If you could go back and do this project again, what would you do differently?", back: "I would implement a stronger CI/CD pipeline from the start. We initially used manual deployments, which were slow and error-prone. Automating earlier would have saved time and reduced risks." },
+    { id: "rd_7", deckId: "resume", title: SUB_CATEGORY_TITLE, front: "How did you handle version control and collaboration with your team on this project?", back: "We used Git with GitFlow branching. I created pull requests for features, which were peer-reviewed before merging into the main branch, ensuring quality and collaboration." },
+    { id: "rd_8", deckId: "resume", title: SUB_CATEGORY_TITLE, front: "Can you explain the architecture of the application you built in [Project Name]?", back: "It was a three-tier architecture: front-end built with [Tech], communicating with a RESTful API on [Backend Tech], storing data in [Database] and hosted on [Cloud Platform]." },
+    { id: "rd_9", deckId: "resume", title: SUB_CATEGORY_TITLE, front: "What was the outcome or business impact of this project? How did you measure its success?", back: "The project increased [e.g., user sign-ups by 15%]. Success was measured with analytics tools like Google Analytics, tracking KPIs such as conversion rates." },
+    { id: "rd_10", deckId: "resume", title: SUB_CATEGORY_TITLE, front: "You've listed [Specific Skill, e.g., Docker] on your resume. Can you tell me about a time you used it?", back: "In my last project, I used Docker to containerize our Node.js app. I wrote a Dockerfile to define the environment, ensuring consistent development and deployment, saving hours in setup time." }
 ];
 
 const practiceTestQuestions = [
-    {
-    question: "When an interviewer asks you to 'walk through a project,' what is the MOST critical element to include in your explanation?",
-    options: [
-      "Every single line of code you wrote.",
-      "The names of all your team members.",
-      "Your specific contributions and the measurable results or impact of the project.",
-      "The project's budget and financial details."
-    ],
-    correctAnswer: "Your specific contributions and the measurable results or impact of the project."
-  },
-  {
-    question: "How should you describe a project that was a team effort?",
-    options: [
-      "Take credit for the entire project to look more capable.",
-      "Clearly state it was a team project, specify your exact role, and use 'I' when describing your own contributions.",
-      "Only mention what your teammates did.",
-      "Downplay your role to appear humble."
-    ],
-    correctAnswer: "Clearly state it was a team project, specify your exact role, and use 'I' when describing your own contributions."
-  },
-  {
-    question: "What is the BEST way to answer, 'Why did you choose this technology?'",
-    options: [
-      "Because it was the only one I knew.",
-      "It was my manager's decision, so I just followed it.",
-      "Explain the technical reasons, such as performance or scalability, and mention any trade-offs you considered.",
-      "It's the most popular technology, so we used it."
-    ],
-    correctAnswer: "Explain the technical reasons, such as performance or scalability, and mention any trade-offs you considered."
-  },
-  {
-    question: "If a project on your resume did not succeed or was never launched, how should you talk about it?",
-    options: [
-      "Avoid mentioning it or lie about its success.",
-      "Blame the company or your manager for the failure.",
-      "Be honest about the outcome, and focus on the technical skills you gained and the lessons you learned from the experience.",
-      "Describe the project as if it were a major success."
-    ],
-    correctAnswer: "Be honest about the outcome, and focus on the technical skills you gained and the lessons you learned from the experience."
-  },
-  {
-    question: "When explaining a technical challenge, which approach is most effective?",
-    options: [
-      "Using highly complex jargon to sound intelligent, even if the interviewer may not understand it.",
-      "Briefly stating the problem, the specific steps you took to solve it, and the positive result of your actions.",
-      "Complaining about how difficult the challenge was.",
-      "Giving a vague answer without providing any technical details."
-    ],
-    correctAnswer: "Briefly stating the problem, the specific steps you took to solve it, and the positive result of your actions."
-  },
-  {
-    question: "What is the main purpose of an interviewer asking deep-dive questions about your resume?",
-    options: [
-      "To catch you in a lie.",
-      "To verify that you have the skills you claim and to understand the depth of your experience.",
-      "To fill time during the interview.",
-      "To test your memory."
-    ],
-    correctAnswer: "To verify that you have the skills you claim and to understand the depth of your experience."
-  },
-  {
-    question: "If there's a short employment gap on your resume, how should you address it if asked?",
-    options: [
-      "Make up a job you didn't have.",
-      "Get defensive and refuse to answer.",
-      "Explain it briefly and positively, focusing on any productive activities like learning a new skill, personal projects, or travel.",
-      "Say it's a private matter."
-    ],
-    correctAnswer: "Explain it briefly and positively, focusing on any productive activities like learning a new skill, personal projects, or travel."
-  },
-  {
-    question: "When describing your achievements on your resume or in an interview, it is best to:",
-    options: [
-      "Use vague statements like 'was responsible for coding.'",
-      "Quantify your impact with numbers and metrics whenever possible (e.g., 'Reduced page load time by 30%').",
-      "Exaggerate the results to make them sound better.",
-      "Focus only on the tasks you performed, not the results."
-    ],
-    correctAnswer: "Quantify your impact with numbers and metrics whenever possible (e.g., 'Reduced page load time by 30%')."
-  },
-  {
-    question: "If an interviewer asks about a skill on your resume that you are not an expert in, what should you do?",
-    options: [
-      "Pretend to be an expert and hope they don't ask follow-up questions.",
-      "Be honest about your level of proficiency and give an example of how you have used it.",
-      "Say you listed it by mistake.",
-      "Quickly change the subject to a skill you are more comfortable with."
-    ],
-    correctAnswer: "Be honest about your level of proficiency and give an example of how you have used it."
-  },
-  {
-    question: "Before a deep-dive interview, what is the most crucial preparation step?",
-    options: [
-      "Memorize your entire resume word-for-word.",
-      "Review every project on your resume, recall specific details, and practice explaining your role, challenges, and outcomes for each.",
-      "Prepare excuses for any projects that didn't go well.",
-      "Search for the interviewer's social media profiles."
-    ],
-    correctAnswer: "Review every project on your resume, recall specific details, and practice explaining your role, challenges, and outcomes for each."
-  }
+    { question: "When an interviewer asks you to 'walk through a project,' what is the MOST critical element to include in your explanation?", options: ["Every single line of code you wrote.", "The names of all your team members.", "Your specific contributions and the measurable results or impact of the project.", "The project's budget and financial details."], correctAnswer: "Your specific contributions and the measurable results or impact of the project." },
+    { question: "How should you describe a project that was a team effort?", options: ["Take credit for the entire project to look more capable.", "Clearly state it was a team project, specify your exact role, and use 'I' when describing your own contributions.", "Only mention what your teammates did.", "Downplay your role to appear humble."], correctAnswer: "Clearly state it was a team project, specify your exact role, and use 'I' when describing your own contributions." },
+    { question: "What is the BEST way to answer, 'Why did you choose this technology?'", options: ["Because it was the only one I knew.", "It was my manager's decision, so I just followed it.", "Explain the technical reasons, such as performance or scalability, and mention any trade-offs you considered.", "It's the most popular technology, so we used it."], correctAnswer: "Explain the technical reasons, such as performance or scalability, and mention any trade-offs you considered." },
+    { question: "If a project on your resume did not succeed or was never launched, how should you talk about it?", options: ["Avoid mentioning it or lie about its success.", "Blame the company or your manager for the failure.", "Be honest about the outcome, and focus on the technical skills you gained and the lessons you learned from the experience.", "Describe the project as if it were a major success."], correctAnswer: "Be honest about the outcome, and focus on the technical skills you gained and the lessons you learned from the experience." },
+    { question: "When explaining a technical challenge, which approach is most effective?", options: ["Using highly complex jargon to sound intelligent, even if the interviewer may not understand it.", "Briefly stating the problem, the specific steps you took to solve it, and the positive result of your actions.", "Complaining about how difficult the challenge was.", "Giving a vague answer without providing any technical details."], correctAnswer: "Briefly stating the problem, the specific steps you took to solve it, and the positive result of your actions." },
+    { question: "What is the main purpose of an interviewer asking deep-dive questions about your resume?", options: ["To catch you in a lie.", "To verify that you have the skills you claim and to understand the depth of your experience.", "To fill time during the interview.", "To test your memory."], correctAnswer: "To verify that you have the skills you claim and to understand the depth of your experience." },
+    { question: "If there's a short employment gap on your resume, how should you address it if asked?", options: ["Make up a job you didn't have.", "Get defensive and refuse to answer.", "Explain it briefly and positively, focusing on any productive activities like learning a new skill, personal projects, or travel.", "Say it's a private matter."], correctAnswer: "Explain it briefly and positively, focusing on any productive activities like learning a new skill, personal projects, or travel." },
+    { question: "When describing your achievements on your resume or in an interview, it is best to:", options: ["Use vague statements like 'was responsible for coding.'", "Quantify your impact with numbers and metrics whenever possible (e.g., 'Reduced page load time by 30%').", "Exaggerate the results to make them sound better.", "Focus only on the tasks you performed, not the results."], correctAnswer: "Quantify your impact with numbers and metrics whenever possible (e.g., 'Reduced page load time by 30%')." },
+    { question: "If an interviewer asks about a skill on your resume that you are not an expert in, what should you do?", options: ["Pretend to be an expert and hope they don't ask follow-up questions.", "Be honest about your level of proficiency and give an example of how you have used it.", "Say you listed it by mistake.", "Quickly change the subject to a skill you are more comfortable with."], correctAnswer: "Be honest about your level of proficiency and give an example of how you have used it." },
+    { question: "Before a deep-dive interview, what is the most crucial preparation step?", options: ["Memorize your entire resume word-for-word.", "Review every project on your resume, recall specific details, and practice explaining your role, challenges, and outcomes for each.", "Prepare excuses for any projects that didn't go well.", "Search for the interviewer's social media profiles."], correctAnswer: "Review every project on your resume, recall specific details, and practice explaining your role, challenges, and outcomes for each." }
 ];
 
 function ResumeDive() {
-    // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
-    const { currentUser } = useAuth();
-
-    // --- State Management ---
+    const { currentUser, updateUserProfile } = useAuth();
     const [view, setView] = useState('options');
-    const [questions, setQuestions] = useState(null); 
-    const [isLoading, setIsLoading] = useState(true);
+    const [questions, setQuestions] = useState(initialFlashcardQuestions); 
+    const [isLoading, setIsLoading] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [animation, setAnimation] = useState('');
@@ -152,8 +63,6 @@ function ResumeDive() {
     const [isEditMode, setIsEditMode] = useState(false);
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
     const [changedAnswers, setChangedAnswers] = useState({});
-    
-    // (Practice test states are unchanged)
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
@@ -161,66 +70,23 @@ function ResumeDive() {
     const [timeLeft, setTimeLeft] = useState(60);
     const [testFinished, setTestFinished] = useState(false);
 
-    // --- Data Loading Effect ---
     useEffect(() => {
-        const loadUserQuestions = async () => {
-            setIsLoading(true);
-            if (!currentUser) {
-                // If no user is logged in, show the default questions
-                setQuestions(initialFlashcardQuestions);
-                setIsLoading(false);
-                return;
-            }
-            try {
-                // Get the user's data from their profile
-                const mongo = currentUser.mongoClient("mongodb-atlas");
-                const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-
-                if (userProfile && userProfile.editedDecks) {
-    const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "resume"
-        if (deckEdits && deckEdits[q.id]) {
-            return { ...q, back: deckEdits[q.id] };
+        setIsLoading(true);
+        if (currentUser && currentUser.editedCards) {
+            const userEdits = currentUser.editedCards;
+            const personalizedQuestions = initialFlashcardQuestions.map(q => {
+                const editedAnswer = userEdits[MAIN_CATEGORY_TITLE]?.[SUB_CATEGORY_TITLE]?.[q.id];
+                if (editedAnswer) {
+                    return { ...q, back: editedAnswer };
+                }
+                return q;
+            });
+            setQuestions(personalizedQuestions);
+        } else {
+            setQuestions(initialFlashcardQuestions);
         }
-        return q;
-    });
-    setQuestions(personalizedQuestions);
-} else {
-    setQuestions(initialFlashcardQuestions);
-}
-            } catch (error) {
-                console.error("Failed to load user data:", error);
-                setQuestions(initialFlashcardQuestions); // Fallback on error
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        if (currentUser) {
-        // If a user IS logged in, load their specific data.
-        loadUserQuestions();
-    } else {
-        // If NO user is logged in (i.e., on logout), reset the state.
-        // This "wipes the whiteboard clean" and prevents showing the previous user's data.
-        console.log("User logged out. Resetting component state.");
-        setQuestions(initialFlashcardQuestions);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
-        setCurrentIndex(0);
-        setIsFlipped(false);
-        setChangedAnswers({});
-        setIsLoading(false); // We aren't loading, so stop the loading indicator.
-    }
-}, [currentUser]);
-
-    // --- Other Effects (No changes) ---
-    useEffect(() => {
-        if (!isLoading) { // Prevent resetting index while loading new questions
-            setCurrentIndex(0);
-            setIsFlipped(false);
-            setAnimation('');
-        }
-    }, [questions, isLoading]);
+        setIsLoading(false);
+    }, [currentUser]);
     
     useEffect(() => {
         if (view !== 'practiceTest' || testFinished) return;
@@ -229,59 +95,48 @@ function ResumeDive() {
         return () => clearInterval(timerId);
     }, [timeLeft, view, testFinished]);
 
-    // ✅ REPLACE THIS ENTIRE FUNCTION IN BehavioralQuestions.js
+    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckTitle }) => {
+        if (!currentUser?.email) return;
 
-    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckId, deckType, deckCategory }) => {
-        if (!currentUser) return;
+        const percentage = totalQuestions > 0 ? finalScore / totalQuestions : 0;
+        const isMastered = percentage >= 0.9;
+        const deckType = deckTitle.includes("Test") ? "Tests" : "Flashcards";
 
-        const percentage = finalScore / totalQuestions;
-        const isMastered = percentage >= 0.9; // Mastery threshold: 90%
+        const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
+        const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
+        
+        if (isMastered) {
+            updatedMastered[deckType] = updatedMastered[deckType] || {};
+            updatedMastered[deckType][deckTitle] = true;
+            if (updatedCompleted[deckType]?.[deckTitle]) {
+                delete updatedCompleted[deckType][deckTitle];
+                if (Object.keys(updatedCompleted[deckType]).length === 0) delete updatedCompleted[deckType];
+            }
+        } else {
+            updatedCompleted[deckType] = updatedCompleted[deckType] || {};
+            updatedCompleted[deckType][deckTitle] = true;
+            if (updatedMastered[deckType]?.[deckTitle]) {
+                delete updatedMastered[deckType][deckTitle];
+                if (Object.keys(updatedMastered[deckType]).length === 0) delete updatedMastered[deckType];
+            }
+        }
 
         try {
-            const mongo = currentUser.mongoClient("mongodb-atlas");
-            const usersCollection = mongo.db("prepdeck").collection("user");
-
-            let updateOperation;
-
-            if (isMastered) {
-                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
-                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
-                updateOperation = {
-                    $addToSet: { [masteredPath]: deckId }, // Add to mastered list
-                    $pull: { [completedPath]: deckId }      // Remove from completed list
-                };
-                console.log(`Deck '${deckId}' mastered! Moving to Mastered list.`);
-            } else {
-                // --- THIS IS THE FIX ---
-                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
-                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
-                updateOperation = {
-                    $addToSet: { [completedPath]: deckId }, // Add to completed list
-                    $pull: { [masteredPath]: deckId }       // AND REMOVE from mastered list
-                };
-                console.log(`Score for '${deckId}' was below 90%. Moving to Completed and removing from Mastered.`);
-            }
-
-            await usersCollection.updateOne({ "auth_id": currentUser.id }, updateOperation);
-
+            await updateUserProfile(currentUser.email, {
+                completedDecks: updatedCompleted,
+                masteredDecks: updatedMastered
+            });
         } catch (error) {
             console.error("Failed to update user deck progress:", error);
         }
-    }, [currentUser]);
+    }, [currentUser, updateUserProfile]);
 
-    // --- Handlers ---
     const handleFlip = () => !animation && setIsFlipped(!isFlipped);
     
-    // This is the only function you need to replace in your BehavioralQuestions.js file
-
-// Replace the existing handleAnswer function with this one
-
-const handleAnswer = (isCorrect) => {
+    const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
-        
         const currentQ = questions[currentIndex];
         setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left'); 
-        
         setRoundResults(prev => ({
             correct: isCorrect ? [...prev.correct, currentQ] : prev.correct,
             incorrect: !isCorrect ? [...prev.incorrect, currentQ] : prev.incorrect,
@@ -292,17 +147,13 @@ const handleAnswer = (isCorrect) => {
             const newWrongCount = score.wrong + (!isCorrect ? 1 : 0);
             setScore({ correct: newCorrectCount, wrong: newWrongCount });
             
-            // Check if this was the last question
             if (currentIndex + 1 === questions.length) {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "resume",
-                    deckType: "Flashcards",
-                    deckCategory: "Core"
+                    deckTitle: SUB_CATEGORY_TITLE,
                 });
             }
-
             setCurrentIndex(prev => prev + 1);
             setIsFlipped(false);
             setAnimation(''); 
@@ -312,58 +163,17 @@ const handleAnswer = (isCorrect) => {
     const handleShuffle = () => {
         if (!questions) return;
         setQuestions(prev => [...prev].sort(() => Math.random() - 0.5));
+        handleReset();
+    };
+
+    const handleReset = () => {
         setCurrentIndex(0);
+        setIsFlipped(false);
         setScore({ correct: 0, wrong: 0 });
         setRoundResults({ correct: [], incorrect: [] });
+        setAnimation('reset');
+        setTimeout(() => setAnimation(''), 300);
     };
-
-// This is the only function you need to replace in your BehavioralQuestions.js file
-
-const handleReset = () => {
-    setIsLoading(true); // Show loading feedback while we re-fetch
-
-    // THIS IS THE FIX:
-    // This is the exact same, correct data-loading logic from your useEffect hook.
-    // By re-using it here, we ensure that restarting the deck always fetches
-    // the latest saved answers from your 'editedDecks' object in the database.
-    const loadData = async () => {
-        if (currentUser) {
-            try {
-                const mongo = currentUser.mongoClient("mongodb-atlas");
-                const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-
-                const userEdits = userProfile?.editedDecks || {};
-                const personalizedQuestions = initialFlashcardQuestions.map(q => {
-                    const deckId = q.deckId;
-                    const cardId = q.id;
-                    if (userEdits[deckId] && userEdits[deckId][cardId]) {
-                        return { ...q, back: userEdits[deckId][cardId] };
-                    }
-                    return q;
-                });
-                setQuestions(personalizedQuestions);
-            } catch (error) {
-                console.error("Failed to re-load user data on reset:", error);
-                setQuestions(initialFlashcardQuestions); // Fallback on error
-            }
-        } else {
-            // If logged out, just reset to the default questions
-            setQuestions(initialFlashcardQuestions);
-        }
-        setIsLoading(false);
-    };
-
-    loadData(); // Execute the data-loading function
-
-    // Reset all the progress states
-    setCurrentIndex(0);
-    setIsFlipped(false);
-    setScore({ correct: 0, wrong: 0 });
-    setRoundResults({ correct: [], incorrect: [] });
-    setAnimation('reset');
-    setTimeout(() => setAnimation(''), 300);
-};
 
     const handleAnswerChange = (index, newAnswer) => {
         const updatedQuestions = [...questions];
@@ -375,69 +185,41 @@ const handleReset = () => {
 
     const startPracticeRound = () => {
         setQuestions(roundResults.incorrect);
-        setCurrentIndex(0);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
+        handleReset();
     };
 
-    // In BehavioralQuestions.js, replace your entire handleSaveChanges function with this one.
+    const handleSaveChanges = async () => {
+        if (!currentUser?.email || Object.keys(changedAnswers).length === 0) {
+            setIsEditMode(false);
+            return;
+        }
+        const updatedEditedCards = JSON.parse(JSON.stringify(currentUser.editedCards || {}));
 
-const handleSaveChanges = async () => {
-    // For debugging, let's see which user is saving.
-    console.log("Attempting to save changes for user:", currentUser);
-
-    
-    if (Object.keys(changedAnswers).length === 0) {
-        setIsEditMode(false);
-        return;
-    }
-    try {
-        const mongo = currentUser.mongoClient("mongodb-atlas");
-        const usersCollection = mongo.db("prepdeck").collection("user");
-        
-        const updates = {};
         Object.keys(changedAnswers).forEach(cardId => {
             const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
             if (originalCard) {
-                updates[`editedDecks.${originalCard.deckId}.${cardId}`] = changedAnswers[cardId];
+                updatedEditedCards[MAIN_CATEGORY_TITLE] = updatedEditedCards[MAIN_CATEGORY_TITLE] || {};
+                updatedEditedCards[MAIN_CATEGORY_TITLE][SUB_CATEGORY_TITLE] = updatedEditedCards[MAIN_CATEGORY_TITLE][SUB_CATEGORY_TITLE] || {};
+                updatedEditedCards[MAIN_CATEGORY_TITLE][SUB_CATEGORY_TITLE][cardId] = changedAnswers[cardId];
             }
         });
 
-        console.log("Sending these updates to the database:", updates);
-
-        // --- ✅ THIS IS THE FIX ---
-        // We are simplifying the query to ONLY use currentUser.id.
-        // This makes it consistent with how users are created and prevents the bug.
-        const result = await usersCollection.updateOne(
-            { "auth_id": currentUser.id }, // The corrected, reliable query
-            { $set: updates }
-        );
-
-        console.log("MongoDB update result:", result);
-
-        // Check if the update actually found a user to modify.
-        if (result.matchedCount === 0) {
-            alert("Error: Could not find your user profile to save the changes.");
-        } 
-        
-        setChangedAnswers({});
-        setIsEditMode(false);
-    } catch (error) {
-        console.error("Failed to save edited cards:", error);
-        alert("An error occurred while saving your changes. Please check the console.");
-    }
-};
+        try {
+            await updateUserProfile(currentUser.email, { editedCards: updatedEditedCards });
+            setChangedAnswers({});
+            setIsEditMode(false);
+        } catch (error) {
+            console.error("Failed to save edited cards:", error);
+            alert("An error occurred while saving your changes.");
+        }
+    };
     
-    // Practice Test handlers are unchanged
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
-    // Replace the existing handleNextQuestion function with this one
-
-const handleNextQuestion = () => {
+    
+    const handleNextQuestion = () => {
         const isCorrect = selectedAnswer === practiceTestQuestions[ptCurrentIndex].correctAnswer;
         const newPtScore = ptScore + (isCorrect ? 1 : 0);
-        
         if (isCorrect) setPtScore(newPtScore);
-        
         setUserAnswers(prev => [...prev, { question: practiceTestQuestions[ptCurrentIndex].question, selected: selectedAnswer, correct: practiceTestQuestions[ptCurrentIndex].correctAnswer, isCorrect }]);
         setSelectedAnswer(null);
 
@@ -446,9 +228,7 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "resume_test",
-                deckType: "Tests",
-                deckCategory: "Core"
+                deckTitle: `${SUB_CATEGORY_TITLE} Test`,
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -464,25 +244,26 @@ const handleNextQuestion = () => {
         setTimeLeft(60);
         setTestFinished(false);
     };
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
-    // --- Render Logic ---
     if (isLoading || !questions) {
         return <div className="loading-fullscreen">Loading Questions...</div>;
     }
     
     const currentQuestion = questions[currentIndex];
 
+    // --- (The rest of the rendering JSX is unchanged) ---
     if (view === 'options') {
         return (
             <div className="app-container">
                 <div className="start-options-container">
                     <div className="start-screen">
-                        <h1> Prep Flashcards</h1>
+                        <h1>Prep Flashcards</h1>
                         <p>Use these cards to practice your responses.</p>
                         <button onClick={() => setView('flashcards')} className="start-button">Start Flashcards</button>
                     </div>

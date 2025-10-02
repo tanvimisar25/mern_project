@@ -204,6 +204,7 @@ body {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-on-card);
+    padding: 20px;
 }
 
 .card-back {
@@ -213,11 +214,13 @@ body {
     font-weight: 500;
     color: #ffffff; /* Make text readable */
     overflow-wrap: break-word;
+    padding: 20px;
+
 }
 
 @media (min-width: 768px) {
-    .card-front { font-size: 1.875rem; }
-    .card-back { font-size: 1.5rem; }
+    .card-front { font-size: 1.85rem; }
+    .card-back { font-size: 1.7rem; }
 }
 
 

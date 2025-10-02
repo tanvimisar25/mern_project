@@ -1,8 +1,7 @@
 import React from "react";
-// ✅ 1. Necessary imports are already here
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
 
-// ✅ 2. Import AuthProvider and useAuth
+// ✅ THIS IS THE ONLY LINE THAT CHANGES
 import { AuthProvider, useAuth } from "./AuthContext";
 
 // Import all your page and layout components
@@ -34,18 +33,16 @@ import Stats from "./Stats";
 import DeepLearning from "./DeepLearning";
 import CloudComputing from "./CloudComputing";
 import CloudPlatforms from "./CloudPlatforms";
-import Containerization  from "./Containerization";
+import Containerization from "./Containerization";
 import Pipelines from "./Pipelines";
 import Infrastructure from "./Infrastructure";
 import CyberSecurity from "./CyberSecurity";
 import NetworkSecurity from "./NetworkSecurity";
 import AppSecurity from "./AppSecurity";
-import Cryptography  from "./Cryptography";
+import Cryptography from "./Cryptography";
 import EthicalHacking from "./EthicalHacking";
 
-
-
-// This is your existing ProtectedRoute component
+// This is your existing ProtectedRoute component. It now works with your new AuthContext.
 const ProtectedRoute = () => {
   const { currentUser } = useAuth();
 
@@ -58,9 +55,7 @@ const ProtectedRoute = () => {
   return <Outlet />;
 };
 
-// ✅ 3. CREATE THE NEW PUBLICROUTE COMPONENT
-// This component does the opposite of ProtectedRoute.
-// It keeps logged-in users away from public-only pages.
+// This component also works with your new AuthContext.
 const PublicRoute = () => {
     const { currentUser } = useAuth();
 
@@ -84,8 +79,6 @@ function App() {
             <Route element={<SidebarLayout />}>
               
               {/* --- Public Routes --- */}
-              {/* ✅ 4. WRAP PUBLIC ROUTES WITH THE NEW GUARD */}
-              {/* This ensures logged-in users can't see the public homepage, login, or signup pages. */}
               <Route element={<PublicRoute />}>
                 <Route path="/" element={<Homepage />} />
                 <Route path="/login" element={<Login />} />
@@ -93,7 +86,6 @@ function App() {
               </Route>
 
               {/* --- Protected Routes --- */}
-              {/* This section remains the same. */}
               <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard" element={<Homepage2 />} />
                 <Route path="/mydecks" element={<MyDeck />} />

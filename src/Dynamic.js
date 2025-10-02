@@ -1,9 +1,9 @@
-import React from 'react';
-import { useState, useEffect, useCallback } from 'react'; // This line might have been the issue
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import './Questions.css';
 
-// ✅ 1. IMPORT THE USEAUTH HOOK - This is the correct way to get user info.
+// ✅ 1. IMPORT FROM OUR CUSTOM AUTH CONTEXT
 import { useAuth } from './AuthContext'; 
 
 // --- Reusable Components & Data ---
@@ -21,111 +21,41 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
+// ✅ ADDED: Constants for consistency
+const MAIN_CATEGORY_TITLE = "Data Structure and Algorithm";
+const SUB_CATEGORY_TITLE = "Dynamic Programming & Recursion";
+
 const initialFlashcardQuestions = [
-  { id: "dpr_1", deckId: "dypr", front: "What is recursion, and what are its two most important components?", back: "Recursion is a problem-solving technique where a function calls itself to solve smaller instances of the same problem. Its two essential components are the base case, which stops recursion, and the recursive step, which moves the problem closer to the base case." },
-  { id: "dpr_2", deckId: "dypr", front: "What are 'overlapping subproblems,' a key property for dynamic programming?", back: "Overlapping subproblems occur when a recursive algorithm computes the same subproblem multiple times. Dynamic programming solves this by computing each subproblem only once and storing its result in a lookup table for future use." },
-  { id: "dpr_3", deckId: "dypr", front: "What is 'optimal substructure,' the second key property for dynamic programming?", back: "A problem has optimal substructure if the optimal solution to the overall problem can be constructed from the optimal solutions of its subproblems, allowing a larger problem to be solved by first solving smaller parts." },
-  { id: "dpr_4", deckId: "dypr", front: "Explain the difference between Memoization and Tabulation in dynamic programming.", back: "Memoization is a top-down approach using recursion with a cache to store subproblem results. Tabulation is a bottom-up approach solving smallest subproblems first and building up the solution iteratively in a table." },
-  { id: "dpr_5", deckId: "dypr", front: "How can you solve the Fibonacci sequence using memoization?", back: "Write a recursive function and use a cache (array or map). Before computing fib(n), check the cache. If present, return it; if not, compute recursively, store in cache, and return. This avoids exponential work." },
-  { id: "dpr_6", deckId: "dypr", front: "What is the 0/1 Knapsack problem?", back: "Given items with weights and values and a knapsack with max weight, determine which items to include to maximize value. Each item can be taken whole or left behind (0/1 choice)." },
-  { id: "dpr_7", deckId: "dypr", front: "What is a common risk when using deep recursion?", back: "Stack overflow error. Each recursive call adds a frame to the call stack. If recursion goes too deep without a base case, memory is exhausted and the program crashes." },
-  { id: "dpr_8", deckId: "dypr", front: "How would you approach the 'Climbing Stairs' problem using dynamic programming?", back: "Number of ways to reach stair n = ways to reach n-1 (1 step) + ways to reach n-2 (2 steps). This is like Fibonacci and can be solved bottom-up using an array to store results." },
-  { id: "dpr_9", deckId: "dypr", front: "Describe the Longest Common Subsequence (LCS) problem.", back: "Find the longest subsequence common to two sequences. Elements must appear in order but not necessarily contiguous. Typically solved with a 2D DP table storing lengths of common subsequences for all prefixes." },
-  { id: "dpr_10", deckId: "dypr", front: "Can every recursive solution be converted into an iterative one?", back: "Yes. Any recursive solution can be rewritten iteratively using an explicit stack to mimic the call stack. Iterative solutions often avoid stack overflow and can be more performant." }
+    { id: "dpr_1", deckId: "dypr", title: SUB_CATEGORY_TITLE, front: "What is recursion, and what are its two most important components?", back: "Recursion is a problem-solving technique where a function calls itself to solve smaller instances of the same problem. Its two essential components are the base case, which stops recursion, and the recursive step, which moves the problem closer to the base case." },
+    { id: "dpr_2", deckId: "dypr", title: SUB_CATEGORY_TITLE, front: "What are 'overlapping subproblems,' a key property for dynamic programming?", back: "Overlapping subproblems occur when a recursive algorithm computes the same subproblem multiple times. Dynamic programming solves this by computing each subproblem only once and storing its result in a lookup table for future use." },
+    { id: "dpr_3", deckId: "dypr", title: SUB_CATEGORY_TITLE, front: "What is 'optimal substructure,' the second key property for dynamic programming?", back: "A problem has optimal substructure if the optimal solution to the overall problem can be constructed from the optimal solutions of its subproblems, allowing a larger problem to be solved by first solving smaller parts." },
+    { id: "dpr_4", deckId: "dypr", title: SUB_CATEGORY_TITLE, front: "Explain the difference between Memoization and Tabulation in dynamic programming.", back: "Memoization is a top-down approach using recursion with a cache to store subproblem results. Tabulation is a bottom-up approach solving smallest subproblems first and building up the solution iteratively in a table." },
+    { id: "dpr_5", deckId: "dypr", title: SUB_CATEGORY_TITLE, front: "How can you solve the Fibonacci sequence using memoization?", back: "Write a recursive function and use a cache (array or map). Before computing fib(n), check the cache. If present, return it; if not, compute recursively, store in cache, and return. This avoids exponential work." },
+    { id: "dpr_6", deckId: "dypr", title: SUB_CATEGORY_TITLE, front: "What is the 0/1 Knapsack problem?", back: "Given items with weights and values and a knapsack with max weight, determine which items to include to maximize value. Each item can be taken whole or left behind (0/1 choice)." },
+    { id: "dpr_7", deckId: "dypr", title: SUB_CATEGORY_TITLE, front: "What is a common risk when using deep recursion?", back: "Stack overflow error. Each recursive call adds a frame to the call stack. If recursion goes too deep without a base case, memory is exhausted and the program crashes." },
+    { id: "dpr_8", deckId: "dypr", title: SUB_CATEGORY_TITLE, front: "How would you approach the 'Climbing Stairs' problem using dynamic programming?", back: "Number of ways to reach stair n = ways to reach n-1 (1 step) + ways to reach n-2 (2 steps). This is like Fibonacci and can be solved bottom-up using an array to store results." },
+    { id: "dpr_9", deckId: "dypr", title: SUB_CATEGORY_TITLE, front: "Describe the Longest Common Subsequence (LCS) problem.", back: "Find the longest subsequence common to two sequences. Elements must appear in order but not necessarily contiguous. Typically solved with a 2D DP table storing lengths of common subsequences for all prefixes." },
+    { id: "dpr_10", deckId: "dypr", title: SUB_CATEGORY_TITLE, front: "Can every recursive solution be converted into an iterative one?", back: "Yes. Any recursive solution can be rewritten iteratively using an explicit stack to mimic the call stack. Iterative solutions often avoid stack overflow and can be more performant." }
 ];
 
 const practiceTestQuestions = [
-  {
-    question: "What is the primary purpose of a 'base case' in a recursive function?",
-    options: [
-      "To start the recursive calls.",
-      "To ensure the function runs at least once.",
-      "To provide a stopping condition to prevent infinite recursion.",
-      "To handle the most complex part of the problem."
-    ],
-    correctAnswer: "To provide a stopping condition to prevent infinite recursion."
-  },
-  {
-    question: "Dynamic Programming is applicable to problems that exhibit which two key properties?",
-    options: [
-      "Greedy choice and backtracking.",
-      "Divide and conquer.",
-      "Overlapping subproblems and optimal substructure.",
-      "Random access and constant time complexity."
-    ],
-    correctAnswer: "Overlapping subproblems and optimal substructure."
-  },
-  {
-    question: "A naive recursive solution for the Nth Fibonacci number has what time complexity?",
-    options: ["O(n)", "O(log n)", "O(n^2)", "O(2^n)"],
-    correctAnswer: "O(2^n)"
-  },
-  {
-    question: "The bottom-up (iterative) approach in Dynamic Programming, which typically fills a table, is known as:",
-    options: ["Memoization", "Recursion", "Tabulation", "Backtracking"],
-    correctAnswer: "Tabulation"
-  },
-  {
-    question: "A dynamic programming solution (using memoization or tabulation) improves the Fibonacci problem's time complexity to:",
-    options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
-    correctAnswer: "O(n)"
-  },
-  {
-    question: "The top-down approach in Dynamic Programming, which uses recursion and caching, is also known as:",
-    options: ["Greedy Algorithm", "Tabulation", "Memoization", "Divide and Conquer"],
-    correctAnswer: "Memoization"
-  },
-  {
-    question: "Which of the following problems is a classic example of the Dynamic Programming paradigm?",
-    options: [
-      "Sorting an array using Merge Sort.",
-      "Finding the shortest path in an unweighted graph using BFS.",
-      "The 0/1 Knapsack problem.",
-      "Searching for an element in a Binary Search Tree."
-    ],
-    correctAnswer: "The 0/1 Knapsack problem."
-  },
-  {
-    question: "What is the most likely cause of a 'stack overflow' error?",
-    options: [
-      "An array that is too large.",
-      "A recursive function that lacks a proper base case or takes too long to reach it.",
-      "A loop that runs indefinitely.",
-      "Insufficient RAM to store program variables."
-    ],
-    correctAnswer: "A recursive function that lacks a proper base case or takes too long to reach it."
-  },
-  {
-    question: "In the bottom-up (tabulation) approach for DP, the solution is built by solving:",
-    options: [
-      "The largest subproblems first.",
-      "Subproblems in a random order.",
-      "The smallest subproblems first and using their results to solve bigger ones.",
-      "Only the subproblems that are directly requested."
-    ],
-    correctAnswer: "The smallest subproblems first and using their results to solve bigger ones."
-  },
-  {
-    question: "Which statement best describes the space complexity of a memoized (top-down) DP solution?",
-    options: [
-      "It is always O(1).",
-      "It is proportional to the depth of the recursion plus the space needed for the cache.",
-      "It is always greater than the tabulated (bottom-up) approach.",
-      "It does not require any extra space."
-    ],
-    correctAnswer: "It is proportional to the depth of the recursion plus the space needed for the cache."
-  }
+    { question: "What is the primary purpose of a 'base case' in a recursive function?", options: ["To start the recursive calls.", "To ensure the function runs at least once.", "To provide a stopping condition to prevent infinite recursion.", "To handle the most complex part of the problem."], correctAnswer: "To provide a stopping condition to prevent infinite recursion." },
+    { question: "Dynamic Programming is applicable to problems that exhibit which two key properties?", options: ["Greedy choice and backtracking.", "Divide and conquer.", "Overlapping subproblems and optimal substructure.", "Random access and constant time complexity."], correctAnswer: "Overlapping subproblems and optimal substructure." },
+    { question: "A naive recursive solution for the Nth Fibonacci number has what time complexity?", options: ["O(n)", "O(log n)", "O(n^2)", "O(2^n)"], correctAnswer: "O(2^n)" },
+    { question: "The bottom-up (iterative) approach in Dynamic Programming, which typically fills a table, is known as:", options: ["Memoization", "Recursion", "Tabulation", "Backtracking"], correctAnswer: "Tabulation" },
+    { question: "A dynamic programming solution (using memoization or tabulation) improves the Fibonacci problem's time complexity to:", options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"], correctAnswer: "O(n)" },
+    { question: "The top-down approach in Dynamic Programming, which uses recursion and caching, is also known as:", options: ["Greedy Algorithm", "Tabulation", "Memoization", "Divide and Conquer"], correctAnswer: "Memoization" },
+    { question: "Which of the following problems is a classic example of the Dynamic Programming paradigm?", options: ["Sorting an array using Merge Sort.", "Finding the shortest path in an unweighted graph using BFS.", "The 0/1 Knapsack problem.", "Searching for an element in a Binary Search Tree."], correctAnswer: "The 0/1 Knapsack problem." },
+    { question: "What is the most likely cause of a 'stack overflow' error?", options: ["An array that is too large.", "A recursive function that lacks a proper base case or takes too long to reach it.", "A loop that runs indefinitely.", "Insufficient RAM to store program variables."], correctAnswer: "A recursive function that lacks a proper base case or takes too long to reach it." },
+    { question: "In the bottom-up (tabulation) approach for DP, the solution is built by solving:", options: ["The largest subproblems first.", "Subproblems in a random order.", "The smallest subproblems first and using their results to solve bigger ones.", "Only the subproblems that are directly requested."], correctAnswer: "The smallest subproblems first and using their results to solve bigger ones." },
+    { question: "Which statement best describes the space complexity of a memoized (top-down) DP solution?", options: ["It is always O(1).", "It is proportional to the depth of the recursion plus the space needed for the cache.", "It is always greater than the tabulated (bottom-up) approach.", "It does not require any extra space."], correctAnswer: "It is proportional to the depth of the recursion plus the space needed for the cache." }
 ];
 
-
 function Dynamic() {
-    // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
-    const { currentUser } = useAuth();
-
-    // --- State Management ---
+    const { currentUser, updateUserProfile } = useAuth();
     const [view, setView] = useState('options');
-    const [questions, setQuestions] = useState(null); 
-    const [isLoading, setIsLoading] = useState(true);
+    const [questions, setQuestions] = useState(initialFlashcardQuestions); 
+    const [isLoading, setIsLoading] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [animation, setAnimation] = useState('');
@@ -133,8 +63,6 @@ function Dynamic() {
     const [isEditMode, setIsEditMode] = useState(false);
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
     const [changedAnswers, setChangedAnswers] = useState({});
-    
-    // (Practice test states are unchanged)
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
@@ -142,66 +70,23 @@ function Dynamic() {
     const [timeLeft, setTimeLeft] = useState(60);
     const [testFinished, setTestFinished] = useState(false);
 
-    // --- Data Loading Effect ---
     useEffect(() => {
-        const loadUserQuestions = async () => {
-            setIsLoading(true);
-            if (!currentUser) {
-                // If no user is logged in, show the default questions
-                setQuestions(initialFlashcardQuestions);
-                setIsLoading(false);
-                return;
-            }
-            try {
-                // Get the user's data from their profile
-                const mongo = currentUser.mongoClient("mongodb-atlas");
-                const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-
-                if (userProfile && userProfile.editedDecks) {
-    const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "dypr"
-        if (deckEdits && deckEdits[q.id]) {
-            return { ...q, back: deckEdits[q.id] };
+        setIsLoading(true);
+        if (currentUser && currentUser.editedCards) {
+            const userEdits = currentUser.editedCards;
+            const personalizedQuestions = initialFlashcardQuestions.map(q => {
+                const editedAnswer = userEdits[MAIN_CATEGORY_TITLE]?.[SUB_CATEGORY_TITLE]?.[q.id];
+                if (editedAnswer) {
+                    return { ...q, back: editedAnswer };
+                }
+                return q;
+            });
+            setQuestions(personalizedQuestions);
+        } else {
+            setQuestions(initialFlashcardQuestions);
         }
-        return q;
-    });
-    setQuestions(personalizedQuestions);
-} else {
-    setQuestions(initialFlashcardQuestions);
-}
-            } catch (error) {
-                console.error("Failed to load user data:", error);
-                setQuestions(initialFlashcardQuestions); // Fallback on error
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        if (currentUser) {
-        // If a user IS logged in, load their specific data.
-        loadUserQuestions();
-    } else {
-        // If NO user is logged in (i.e., on logout), reset the state.
-        // This "wipes the whiteboard clean" and prevents showing the previous user's data.
-        console.log("User logged out. Resetting component state.");
-        setQuestions(initialFlashcardQuestions);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
-        setCurrentIndex(0);
-        setIsFlipped(false);
-        setChangedAnswers({});
-        setIsLoading(false); // We aren't loading, so stop the loading indicator.
-    }
-}, [currentUser]);
-
-    // --- Other Effects (No changes) ---
-    useEffect(() => {
-        if (!isLoading) { // Prevent resetting index while loading new questions
-            setCurrentIndex(0);
-            setIsFlipped(false);
-            setAnimation('');
-        }
-    }, [questions, isLoading]);
+        setIsLoading(false);
+    }, [currentUser]);
     
     useEffect(() => {
         if (view !== 'practiceTest' || testFinished) return;
@@ -210,59 +95,48 @@ function Dynamic() {
         return () => clearInterval(timerId);
     }, [timeLeft, view, testFinished]);
 
-    // ✅ REPLACE THIS ENTIRE FUNCTION IN BehavioralQuestions.js
+    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckTitle }) => {
+        if (!currentUser?.email) return;
 
-    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckId, deckType, deckCategory }) => {
-        if (!currentUser) return;
+        const percentage = totalQuestions > 0 ? finalScore / totalQuestions : 0;
+        const isMastered = percentage >= 0.9;
+        const deckType = deckTitle.includes("Test") ? "Tests" : "Flashcards";
 
-        const percentage = finalScore / totalQuestions;
-        const isMastered = percentage >= 0.9; // Mastery threshold: 90%
+        const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
+        const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
+        
+        if (isMastered) {
+            updatedMastered[deckType] = updatedMastered[deckType] || {};
+            updatedMastered[deckType][deckTitle] = true;
+            if (updatedCompleted[deckType]?.[deckTitle]) {
+                delete updatedCompleted[deckType][deckTitle];
+                if (Object.keys(updatedCompleted[deckType]).length === 0) delete updatedCompleted[deckType];
+            }
+        } else {
+            updatedCompleted[deckType] = updatedCompleted[deckType] || {};
+            updatedCompleted[deckType][deckTitle] = true;
+            if (updatedMastered[deckType]?.[deckTitle]) {
+                delete updatedMastered[deckType][deckTitle];
+                if (Object.keys(updatedMastered[deckType]).length === 0) delete updatedMastered[deckType];
+            }
+        }
 
         try {
-            const mongo = currentUser.mongoClient("mongodb-atlas");
-            const usersCollection = mongo.db("prepdeck").collection("user");
-
-            let updateOperation;
-
-            if (isMastered) {
-                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
-                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
-                updateOperation = {
-                    $addToSet: { [masteredPath]: deckId }, // Add to mastered list
-                    $pull: { [completedPath]: deckId }      // Remove from completed list
-                };
-                console.log(`Deck '${deckId}' mastered! Moving to Mastered list.`);
-            } else {
-                // --- THIS IS THE FIX ---
-                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
-                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
-                updateOperation = {
-                    $addToSet: { [completedPath]: deckId }, // Add to completed list
-                    $pull: { [masteredPath]: deckId }       // AND REMOVE from mastered list
-                };
-                console.log(`Score for '${deckId}' was below 90%. Moving to Completed and removing from Mastered.`);
-            }
-
-            await usersCollection.updateOne({ "auth_id": currentUser.id }, updateOperation);
-
+            await updateUserProfile(currentUser.email, {
+                completedDecks: updatedCompleted,
+                masteredDecks: updatedMastered
+            });
         } catch (error) {
             console.error("Failed to update user deck progress:", error);
         }
-    }, [currentUser]);
+    }, [currentUser, updateUserProfile]);
 
-    // --- Handlers ---
     const handleFlip = () => !animation && setIsFlipped(!isFlipped);
     
-    // This is the only function you need to replace in your BehavioralQuestions.js file
-
-// Replace the existing handleAnswer function with this one
-
-const handleAnswer = (isCorrect) => {
+    const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
-        
         const currentQ = questions[currentIndex];
         setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left'); 
-        
         setRoundResults(prev => ({
             correct: isCorrect ? [...prev.correct, currentQ] : prev.correct,
             incorrect: !isCorrect ? [...prev.incorrect, currentQ] : prev.incorrect,
@@ -273,17 +147,13 @@ const handleAnswer = (isCorrect) => {
             const newWrongCount = score.wrong + (!isCorrect ? 1 : 0);
             setScore({ correct: newCorrectCount, wrong: newWrongCount });
             
-            // Check if this was the last question
             if (currentIndex + 1 === questions.length) {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "dypr",
-                    deckType: "Flashcards",
-                    deckCategory: "DSA"
+                    deckTitle: SUB_CATEGORY_TITLE,
                 });
             }
-
             setCurrentIndex(prev => prev + 1);
             setIsFlipped(false);
             setAnimation(''); 
@@ -293,58 +163,17 @@ const handleAnswer = (isCorrect) => {
     const handleShuffle = () => {
         if (!questions) return;
         setQuestions(prev => [...prev].sort(() => Math.random() - 0.5));
+        handleReset();
+    };
+
+    const handleReset = () => {
         setCurrentIndex(0);
+        setIsFlipped(false);
         setScore({ correct: 0, wrong: 0 });
         setRoundResults({ correct: [], incorrect: [] });
+        setAnimation('reset');
+        setTimeout(() => setAnimation(''), 300);
     };
-
-// This is the only function you need to replace in your BehavioralQuestions.js file
-
-const handleReset = () => {
-    setIsLoading(true); // Show loading feedback while we re-fetch
-
-    // THIS IS THE FIX:
-    // This is the exact same, correct data-loading logic from your useEffect hook.
-    // By re-using it here, we ensure that restarting the deck always fetches
-    // the latest saved answers from your 'editedDecks' object in the database.
-    const loadData = async () => {
-        if (currentUser) {
-            try {
-                const mongo = currentUser.mongoClient("mongodb-atlas");
-                const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-
-                const userEdits = userProfile?.editedDecks || {};
-                const personalizedQuestions = initialFlashcardQuestions.map(q => {
-                    const deckId = q.deckId;
-                    const cardId = q.id;
-                    if (userEdits[deckId] && userEdits[deckId][cardId]) {
-                        return { ...q, back: userEdits[deckId][cardId] };
-                    }
-                    return q;
-                });
-                setQuestions(personalizedQuestions);
-            } catch (error) {
-                console.error("Failed to re-load user data on reset:", error);
-                setQuestions(initialFlashcardQuestions); // Fallback on error
-            }
-        } else {
-            // If logged out, just reset to the default questions
-            setQuestions(initialFlashcardQuestions);
-        }
-        setIsLoading(false);
-    };
-
-    loadData(); // Execute the data-loading function
-
-    // Reset all the progress states
-    setCurrentIndex(0);
-    setIsFlipped(false);
-    setScore({ correct: 0, wrong: 0 });
-    setRoundResults({ correct: [], incorrect: [] });
-    setAnimation('reset');
-    setTimeout(() => setAnimation(''), 300);
-};
 
     const handleAnswerChange = (index, newAnswer) => {
         const updatedQuestions = [...questions];
@@ -356,69 +185,41 @@ const handleReset = () => {
 
     const startPracticeRound = () => {
         setQuestions(roundResults.incorrect);
-        setCurrentIndex(0);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
+        handleReset();
     };
 
-    // In BehavioralQuestions.js, replace your entire handleSaveChanges function with this one.
+    const handleSaveChanges = async () => {
+        if (!currentUser?.email || Object.keys(changedAnswers).length === 0) {
+            setIsEditMode(false);
+            return;
+        }
+        const updatedEditedCards = JSON.parse(JSON.stringify(currentUser.editedCards || {}));
 
-const handleSaveChanges = async () => {
-    // For debugging, let's see which user is saving.
-    console.log("Attempting to save changes for user:", currentUser);
-
-    
-    if (Object.keys(changedAnswers).length === 0) {
-        setIsEditMode(false);
-        return;
-    }
-    try {
-        const mongo = currentUser.mongoClient("mongodb-atlas");
-        const usersCollection = mongo.db("prepdeck").collection("user");
-        
-        const updates = {};
         Object.keys(changedAnswers).forEach(cardId => {
             const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
             if (originalCard) {
-                updates[`editedDecks.${originalCard.deckId}.${cardId}`] = changedAnswers[cardId];
+                updatedEditedCards[MAIN_CATEGORY_TITLE] = updatedEditedCards[MAIN_CATEGORY_TITLE] || {};
+                updatedEditedCards[MAIN_CATEGORY_TITLE][SUB_CATEGORY_TITLE] = updatedEditedCards[MAIN_CATEGORY_TITLE][SUB_CATEGORY_TITLE] || {};
+                updatedEditedCards[MAIN_CATEGORY_TITLE][SUB_CATEGORY_TITLE][cardId] = changedAnswers[cardId];
             }
         });
 
-        console.log("Sending these updates to the database:", updates);
-
-        // --- ✅ THIS IS THE FIX ---
-        // We are simplifying the query to ONLY use currentUser.id.
-        // This makes it consistent with how users are created and prevents the bug.
-        const result = await usersCollection.updateOne(
-            { "auth_id": currentUser.id }, // The corrected, reliable query
-            { $set: updates }
-        );
-
-        console.log("MongoDB update result:", result);
-
-        // Check if the update actually found a user to modify.
-        if (result.matchedCount === 0) {
-            alert("Error: Could not find your user profile to save the changes.");
-        } 
-        
-        setChangedAnswers({});
-        setIsEditMode(false);
-    } catch (error) {
-        console.error("Failed to save edited cards:", error);
-        alert("An error occurred while saving your changes. Please check the console.");
-    }
-};
+        try {
+            await updateUserProfile(currentUser.email, { editedCards: updatedEditedCards });
+            setChangedAnswers({});
+            setIsEditMode(false);
+        } catch (error) {
+            console.error("Failed to save edited cards:", error);
+            alert("An error occurred while saving your changes.");
+        }
+    };
     
-    // Practice Test handlers are unchanged
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
-    // Replace the existing handleNextQuestion function with this one
-
-const handleNextQuestion = () => {
+    
+    const handleNextQuestion = () => {
         const isCorrect = selectedAnswer === practiceTestQuestions[ptCurrentIndex].correctAnswer;
         const newPtScore = ptScore + (isCorrect ? 1 : 0);
-        
         if (isCorrect) setPtScore(newPtScore);
-        
         setUserAnswers(prev => [...prev, { question: practiceTestQuestions[ptCurrentIndex].question, selected: selectedAnswer, correct: practiceTestQuestions[ptCurrentIndex].correctAnswer, isCorrect }]);
         setSelectedAnswer(null);
 
@@ -427,9 +228,7 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "dypr_test",
-                deckType: "Tests",
-                deckCategory: "DSA"
+                deckTitle: `${SUB_CATEGORY_TITLE} Test`,
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -445,25 +244,26 @@ const handleNextQuestion = () => {
         setTimeLeft(60);
         setTestFinished(false);
     };
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
-    // --- Render Logic ---
     if (isLoading || !questions) {
         return <div className="loading-fullscreen">Loading Questions...</div>;
     }
     
     const currentQuestion = questions[currentIndex];
 
+    // --- (The rest of the rendering JSX is unchanged) ---
     if (view === 'options') {
         return (
             <div className="app-container">
                 <div className="start-options-container">
                     <div className="start-screen">
-                        <h1> Prep Flashcards</h1>
+                        <h1>Prep Flashcards</h1>
                         <p>Use these cards to practice your responses.</p>
                         <button onClick={() => setView('flashcards')} className="start-button">Start Flashcards</button>
                     </div>
@@ -635,3 +435,4 @@ const handleNextQuestion = () => {
 }
 
 export default Dynamic;
+

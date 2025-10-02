@@ -1,9 +1,9 @@
-import React from 'react';
-import { useState, useEffect, useCallback } from 'react'; // This line might have been the issue
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import './Questions.css';
 
-// ✅ 1. IMPORT THE USEAUTH HOOK - This is the correct way to get user info.
+// ✅ 1. IMPORT FROM OUR CUSTOM AUTH CONTEXT
 import { useAuth } from './AuthContext'; 
 
 // --- Reusable Components & Data ---
@@ -21,80 +21,41 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
+// ✅ ADDED: Constants for consistency
+const MAIN_CATEGORY_TITLE = "Data Structure and Algorithm";
+const SUB_CATEGORY_TITLE = "Trees & Graphs";
+
 const initialFlashcardQuestions = [
-  { id: "tg_1", deckId: "trgr", front: "What is the main difference between a Tree and a Graph?", back: "A tree is a specific type of graph that is acyclic (has no cycles) and connected. A graph is a more general structure consisting of vertices (nodes) and edges, which can have cycles and may not be connected." },
-  { id: "tg_2", deckId: "trgr", front: "Explain Breadth-First Search (BFS) for traversing a graph.", back: "BFS explores a graph level by level. It starts at a source node, explores all its immediate neighbors, and then for each of those neighbors, explores their unexplored neighbors, and so on. It uses a queue data structure to keep track of the nodes to visit next." },
-  { id: "tg_3", deckId: "trgr", front: "Explain Depth-First Search (DFS) for traversing a graph.", back: "DFS explores a graph by going as deep as possible down one path before backtracking. It starts at a source node, explores one of its neighbors, then that neighbor's neighbor, and so on, until it hits a dead end. Then it backtracks to explore other unvisited paths. It typically uses recursion (the call stack) or an explicit stack." },
-  { id: "tg_4", deckId: "trgr", front: "What is a Binary Search Tree (BST) and its primary property?", back: "A Binary Search Tree is a binary tree where for each node, all values in its left subtree are less than the node's value, and all values in its right subtree are greater than the node's value. This property allows for efficient searching, insertion, and deletion operations." },
-  { id: "tg_5", deckId: "trgr", front: "Describe the three main depth-first traversals of a binary tree.", back: "In-order: Traverses the left subtree, visits the root, then traverses the right subtree. Pre-order: Visits the root, traverses the left subtree, then traverses the right subtree. Post-order: Traverses the left subtree, traverses the right subtree, then visits the root." },
-  { id: "tg_6", deckId: "trgr", front: "How would you find the lowest common ancestor (LCA) of two nodes in a Binary Search Tree?", back: "Starting from the root, if both nodes' values are smaller than the current node's value, move to the left child. If both are larger, move to the right child. The first node you encounter where one value is smaller and the other is larger (or one is equal) is the LCA, as it's the point where their paths diverge." },
-  { id: "tg_7", deckId: "trgr", front: "How can you detect a cycle in a directed graph?", back: "Using DFS. Maintain two sets: a visiting set (nodes in current recursion path) and a visited set (nodes fully explored). If you encounter a node already in the visiting set during traversal, a cycle is detected." },
-  { id: "tg_8", deckId: "trgr", front: "What does it mean for a binary tree to be 'balanced'?", back: "A binary tree is balanced if, for every node, the height difference between its left and right subtrees is at most 1. This ensures operations like search, insert, and delete have O(log n) worst-case time complexity." },
-  { id: "tg_9", deckId: "trgr", front: "How does level-order traversal of a binary tree work?", back: "Level-order traversal visits nodes level by level, from left to right. Implemented using a queue: add root to queue, dequeue a node, process it, enqueue its left and right children, repeat until queue is empty." },
-  { id: "tg_10", deckId: "trgr", front: "What is the difference between a directed and an undirected graph?", back: "In an undirected graph, edges are bidirectional. In a directed graph, edges have a direction, so an edge from A to B does not imply an edge from B to A." }
+    { id: "tg_1", deckId: "trgr", title: SUB_CATEGORY_TITLE, front: "What is the difference between a Tree and a Graph?", back: "A tree is a special type of graph that is acyclic and connected. A graph can have cycles and multiple disconnected components." },
+    { id: "tg_2", deckId: "trgr", title: SUB_CATEGORY_TITLE, front: "Explain the difference between BFS and DFS.", back: "BFS (Breadth-First Search) explores neighbor nodes first, using a queue. DFS (Depth-First Search) explores as far as possible along each branch before backtracking, using a stack or recursion." },
+    { id: "tg_3", deckId: "trgr", title: SUB_CATEGORY_TITLE, front: "What are the three main types of Binary Tree Traversal?", back: "In-order (Left, Root, Right), Pre-order (Root, Left, Right), and Post-order (Left, Right, Root)." },
+    { id: "tg_4", deckId: "trgr", title: SUB_CATEGORY_TITLE, front: "What is a Binary Search Tree (BST)? What is its main property?", back: "A BST is a binary tree where for each node, all values in its left subtree are less than the node's value, and all values in its right subtree are greater." },
+    { id: "tg_5", deckId: "trgr", title: SUB_CATEGORY_TITLE, front: "What is a Trie (Prefix Tree) and what is it used for?", back: "A Trie is a tree-like data structure used for efficient retrieval of keys in a dataset of strings. It's commonly used for autocomplete and spell-checking features." },
+    { id: "tg_6", deckId: "trgr", title: SUB_CATEGORY_TITLE, front: "Explain Dijkstra's algorithm.", back: "Dijkstra's is a greedy algorithm that finds the shortest path between nodes in a weighted graph. It maintains a set of unvisited nodes and iteratively selects the one with the smallest distance." },
+    { id: "tg_7", deckId: "trgr", title: SUB_CATEGORY_TITLE, front: "What is an Adjacency List representation of a graph?", back: "An array of lists where the size of the array is the number of vertices. Each entry `array[i]` is a list of vertices adjacent to vertex `i`." },
+    { id: "tg_8", deckId: "trgr", title: SUB_CATEGORY_TITLE, front: "What is a heap? What is a min-heap vs a max-heap?", back: "A heap is a specialized tree-based data structure satisfying the heap property. In a max-heap, the parent node is always greater than or equal to its children. In a min-heap, it's always less than or equal to." },
+    { id: "tg_9", deckId: "trgr", title: SUB_CATEGORY_TITLE, front: "How do you find the Lowest Common Ancestor (LCA) of two nodes in a BST?", back: "Starting from the root, if both nodes are smaller, move to the left child. If both are larger, move to the right. The first node where they split (or one is the node itself) is the LCA." },
+    { id: "tg_10", deckId: "trgr", title: SUB_CATEGORY_TITLE, front: "What does it mean for a graph to be 'undirected' vs 'directed'?", back: "In an undirected graph, edges have no orientation (if A is connected to B, B is connected to A). In a directed graph, edges have a direction (A can point to B without B pointing to A)." }
 ];
 
 const practiceTestQuestions = [
-  {
-    question: "What is the average time complexity for searching for a value in a balanced Binary Search Tree?",
-    options: ["O(n)", "O(log n)", "O(1)", "O(n log n)"],
-    correctAnswer: "O(log n)"
-  },
-  {
-    question: "Which data structure is typically used to implement a Breadth-First Search (BFS)?",
-    options: ["Stack", "Queue", "Array", "Hash Map"],
-    correctAnswer: "Queue"
-  },
-  {
-    question: "Performing an in-order traversal on a Binary Search Tree (BST) will result in what sequence?",
-    options: ["Nodes in reverse sorted order.", "Nodes in a random order.", "Nodes in ascending sorted order.", "Nodes in the order they were inserted."],
-    correctAnswer: "Nodes in ascending sorted order."
-  },
-  {
-    question: "A recursive implementation of Depth-First Search (DFS) implicitly uses which data structure?",
-    options: ["The call stack", "A queue", "A min-heap", "An adjacency list"],
-    correctAnswer: "The call stack"
-  },
-  {
-    question: "Which algorithm is best suited for finding the shortest path between two nodes in an unweighted graph?",
-    options: ["Depth-First Search (DFS)", "Dijkstra's Algorithm", "Breadth-First Search (BFS)", "Bellman-Ford Algorithm"],
-    correctAnswer: "Breadth-First Search (BFS)"
-  },
-  {
-    question: "What is a node with no children in a tree called?",
-    options: ["Root node", "Parent node", "Sibling node", "Leaf node"],
-    correctAnswer: "Leaf node"
-  },
-  {
-    question: "In a post-order traversal of a binary tree, when is the root node visited?",
-    options: ["First", "Last", "Second", "Between the left and right children"],
-    correctAnswer: "Last"
-  },
-  {
-    question: "A graph that is connected and has no cycles is called a:",
-    options: ["Complete Graph", "Directed Acyclic Graph (DAG)", "Tree", "Bipartite Graph"],
-    correctAnswer: "Tree"
-  },
-  {
-    question: "What does an adjacency list represent in the context of graphs?",
-    options: ["The number of edges in the graph.", "A list where each index i stores a collection of vertices adjacent to vertex i.", "The total number of vertices in the graph.", "A 2D matrix representing the connections between vertices."],
-    correctAnswer: "A list where each index i stores a collection of vertices adjacent to vertex i."
-  },
-  {
-    question: "What is the maximum number of nodes in a perfect binary tree of height h (where the root is at height 0)?",
-    options: ["h + 1", "2^h", "2^(h+1) - 1", "h^2"],
-    correctAnswer: "2^(h+1) - 1"
-  }
+    { question: "For a balanced Binary Search Tree, what is the average time complexity for search, insert, and delete operations?", options: ["O(n)", "O(log n)", "O(1)", "O(n^2)"], correctAnswer: "O(log n)" },
+    { question: "Which traversal of a Binary Search Tree will result in the nodes being visited in ascending order?", options: ["Pre-order", "Post-order", "Level-order", "In-order"], correctAnswer: "In-order" },
+    { question: "Which data structure is typically used to implement a Breadth-First Search (BFS)?", options: ["Stack", "Queue", "HashMap", "Array"], correctAnswer: "Queue" },
+    { question: "Dijkstra's algorithm is used to find the shortest path in which type of graph?", options: ["Unweighted graphs only", "Graphs with negative weight edges", "Directed Acyclic Graphs (DAGs)", "Weighted graphs with non-negative edges"], correctAnswer: "Weighted graphs with non-negative edges" },
+    { question: "What is the maximum number of nodes in a binary tree of height 'h'? (Root is at height 0)", options: ["2^h", "h+1", "2^(h+1) - 1", "h^2"], correctAnswer: "2^(h+1) - 1" },
+    { question: "Which graph representation is more space-efficient for a sparse graph (a graph with few edges)?", options: ["Adjacency Matrix", "Adjacency List", "Incidence Matrix", "Both are equally efficient"], correctAnswer: "Adjacency List" },
+    { question: "A graph is considered 'cyclic' if:", options: ["It has more vertices than edges.", "It is not connected.", "There is at least one path that starts and ends on the same vertex.", "All vertices have a degree of 2."], correctAnswer: "There is at least one path that starts and ends on the same vertex." },
+    { question: "In a max-heap, where is the largest element always located?", options: ["At the leftmost leaf node", "In the middle of the array representation", "At the root node", "At the rightmost leaf node"], correctAnswer: "At the root node" },
+    { question: "Which of the following is NOT a tree?", options: ["A Binary Search Tree", "A linked list with a cycle", "A Trie", "A heap"], correctAnswer: "A linked list with a cycle" },
+    { question: "Topological Sort is an algorithm that can be used on which type of graph?", options: ["Undirected cyclic graphs", "Directed Acyclic Graphs (DAGs)", "Complete graphs", "Unweighted graphs"], correctAnswer: "Directed Acyclic Graphs (DAGs)" }
 ];
 
 function TreeGraph() {
-    // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
-    const { currentUser } = useAuth();
-
-    // --- State Management ---
+    const { currentUser, updateUserProfile } = useAuth();
     const [view, setView] = useState('options');
-    const [questions, setQuestions] = useState(null); 
-    const [isLoading, setIsLoading] = useState(true);
+    const [questions, setQuestions] = useState(initialFlashcardQuestions); 
+    const [isLoading, setIsLoading] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [animation, setAnimation] = useState('');
@@ -102,8 +63,6 @@ function TreeGraph() {
     const [isEditMode, setIsEditMode] = useState(false);
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
     const [changedAnswers, setChangedAnswers] = useState({});
-    
-    // (Practice test states are unchanged)
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
@@ -111,66 +70,23 @@ function TreeGraph() {
     const [timeLeft, setTimeLeft] = useState(60);
     const [testFinished, setTestFinished] = useState(false);
 
-    // --- Data Loading Effect ---
     useEffect(() => {
-        const loadUserQuestions = async () => {
-            setIsLoading(true);
-            if (!currentUser) {
-                // If no user is logged in, show the default questions
-                setQuestions(initialFlashcardQuestions);
-                setIsLoading(false);
-                return;
-            }
-            try {
-                // Get the user's data from their profile
-                const mongo = currentUser.mongoClient("mongodb-atlas");
-                const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-
-                if (userProfile && userProfile.editedDecks) {
-    const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "trgr"
-        if (deckEdits && deckEdits[q.id]) {
-            return { ...q, back: deckEdits[q.id] };
+        setIsLoading(true);
+        if (currentUser && currentUser.editedCards) {
+            const userEdits = currentUser.editedCards;
+            const personalizedQuestions = initialFlashcardQuestions.map(q => {
+                const editedAnswer = userEdits[MAIN_CATEGORY_TITLE]?.[SUB_CATEGORY_TITLE]?.[q.id];
+                if (editedAnswer) {
+                    return { ...q, back: editedAnswer };
+                }
+                return q;
+            });
+            setQuestions(personalizedQuestions);
+        } else {
+            setQuestions(initialFlashcardQuestions);
         }
-        return q;
-    });
-    setQuestions(personalizedQuestions);
-} else {
-    setQuestions(initialFlashcardQuestions);
-}
-            } catch (error) {
-                console.error("Failed to load user data:", error);
-                setQuestions(initialFlashcardQuestions); // Fallback on error
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        if (currentUser) {
-        // If a user IS logged in, load their specific data.
-        loadUserQuestions();
-    } else {
-        // If NO user is logged in (i.e., on logout), reset the state.
-        // This "wipes the whiteboard clean" and prevents showing the previous user's data.
-        console.log("User logged out. Resetting component state.");
-        setQuestions(initialFlashcardQuestions);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
-        setCurrentIndex(0);
-        setIsFlipped(false);
-        setChangedAnswers({});
-        setIsLoading(false); // We aren't loading, so stop the loading indicator.
-    }
-}, [currentUser]);
-
-    // --- Other Effects (No changes) ---
-    useEffect(() => {
-        if (!isLoading) { // Prevent resetting index while loading new questions
-            setCurrentIndex(0);
-            setIsFlipped(false);
-            setAnimation('');
-        }
-    }, [questions, isLoading]);
+        setIsLoading(false);
+    }, [currentUser]);
     
     useEffect(() => {
         if (view !== 'practiceTest' || testFinished) return;
@@ -179,59 +95,48 @@ function TreeGraph() {
         return () => clearInterval(timerId);
     }, [timeLeft, view, testFinished]);
 
-    // ✅ REPLACE THIS ENTIRE FUNCTION IN BehavioralQuestions.js
+    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckTitle }) => {
+        if (!currentUser?.email) return;
 
-    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckId, deckType, deckCategory }) => {
-        if (!currentUser) return;
+        const percentage = totalQuestions > 0 ? finalScore / totalQuestions : 0;
+        const isMastered = percentage >= 0.9;
+        const deckType = deckTitle.includes("Test") ? "Tests" : "Flashcards";
 
-        const percentage = finalScore / totalQuestions;
-        const isMastered = percentage >= 0.9; // Mastery threshold: 90%
+        const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
+        const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
+        
+        if (isMastered) {
+            updatedMastered[deckType] = updatedMastered[deckType] || {};
+            updatedMastered[deckType][deckTitle] = true;
+            if (updatedCompleted[deckType]?.[deckTitle]) {
+                delete updatedCompleted[deckType][deckTitle];
+                if (Object.keys(updatedCompleted[deckType]).length === 0) delete updatedCompleted[deckType];
+            }
+        } else {
+            updatedCompleted[deckType] = updatedCompleted[deckType] || {};
+            updatedCompleted[deckType][deckTitle] = true;
+            if (updatedMastered[deckType]?.[deckTitle]) {
+                delete updatedMastered[deckType][deckTitle];
+                if (Object.keys(updatedMastered[deckType]).length === 0) delete updatedMastered[deckType];
+            }
+        }
 
         try {
-            const mongo = currentUser.mongoClient("mongodb-atlas");
-            const usersCollection = mongo.db("prepdeck").collection("user");
-
-            let updateOperation;
-
-            if (isMastered) {
-                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
-                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
-                updateOperation = {
-                    $addToSet: { [masteredPath]: deckId }, // Add to mastered list
-                    $pull: { [completedPath]: deckId }      // Remove from completed list
-                };
-                console.log(`Deck '${deckId}' mastered! Moving to Mastered list.`);
-            } else {
-                // --- THIS IS THE FIX ---
-                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
-                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
-                updateOperation = {
-                    $addToSet: { [completedPath]: deckId }, // Add to completed list
-                    $pull: { [masteredPath]: deckId }       // AND REMOVE from mastered list
-                };
-                console.log(`Score for '${deckId}' was below 90%. Moving to Completed and removing from Mastered.`);
-            }
-
-            await usersCollection.updateOne({ "auth_id": currentUser.id }, updateOperation);
-
+            await updateUserProfile(currentUser.email, {
+                completedDecks: updatedCompleted,
+                masteredDecks: updatedMastered
+            });
         } catch (error) {
             console.error("Failed to update user deck progress:", error);
         }
-    }, [currentUser]);
+    }, [currentUser, updateUserProfile]);
 
-    // --- Handlers ---
     const handleFlip = () => !animation && setIsFlipped(!isFlipped);
     
-    // This is the only function you need to replace in your BehavioralQuestions.js file
-
-// Replace the existing handleAnswer function with this one
-
-const handleAnswer = (isCorrect) => {
+    const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
-        
         const currentQ = questions[currentIndex];
         setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left'); 
-        
         setRoundResults(prev => ({
             correct: isCorrect ? [...prev.correct, currentQ] : prev.correct,
             incorrect: !isCorrect ? [...prev.incorrect, currentQ] : prev.incorrect,
@@ -242,17 +147,13 @@ const handleAnswer = (isCorrect) => {
             const newWrongCount = score.wrong + (!isCorrect ? 1 : 0);
             setScore({ correct: newCorrectCount, wrong: newWrongCount });
             
-            // Check if this was the last question
             if (currentIndex + 1 === questions.length) {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "trgr",
-                    deckType: "Flashcards",
-                    deckCategory: "DSA"
+                    deckTitle: SUB_CATEGORY_TITLE,
                 });
             }
-
             setCurrentIndex(prev => prev + 1);
             setIsFlipped(false);
             setAnimation(''); 
@@ -262,58 +163,17 @@ const handleAnswer = (isCorrect) => {
     const handleShuffle = () => {
         if (!questions) return;
         setQuestions(prev => [...prev].sort(() => Math.random() - 0.5));
+        handleReset();
+    };
+
+    const handleReset = () => {
         setCurrentIndex(0);
+        setIsFlipped(false);
         setScore({ correct: 0, wrong: 0 });
         setRoundResults({ correct: [], incorrect: [] });
+        setAnimation('reset');
+        setTimeout(() => setAnimation(''), 300);
     };
-
-// This is the only function you need to replace in your BehavioralQuestions.js file
-
-const handleReset = () => {
-    setIsLoading(true); // Show loading feedback while we re-fetch
-
-    // THIS IS THE FIX:
-    // This is the exact same, correct data-loading logic from your useEffect hook.
-    // By re-using it here, we ensure that restarting the deck always fetches
-    // the latest saved answers from your 'editedDecks' object in the database.
-    const loadData = async () => {
-        if (currentUser) {
-            try {
-                const mongo = currentUser.mongoClient("mongodb-atlas");
-                const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-
-                const userEdits = userProfile?.editedDecks || {};
-                const personalizedQuestions = initialFlashcardQuestions.map(q => {
-                    const deckId = q.deckId;
-                    const cardId = q.id;
-                    if (userEdits[deckId] && userEdits[deckId][cardId]) {
-                        return { ...q, back: userEdits[deckId][cardId] };
-                    }
-                    return q;
-                });
-                setQuestions(personalizedQuestions);
-            } catch (error) {
-                console.error("Failed to re-load user data on reset:", error);
-                setQuestions(initialFlashcardQuestions); // Fallback on error
-            }
-        } else {
-            // If logged out, just reset to the default questions
-            setQuestions(initialFlashcardQuestions);
-        }
-        setIsLoading(false);
-    };
-
-    loadData(); // Execute the data-loading function
-
-    // Reset all the progress states
-    setCurrentIndex(0);
-    setIsFlipped(false);
-    setScore({ correct: 0, wrong: 0 });
-    setRoundResults({ correct: [], incorrect: [] });
-    setAnimation('reset');
-    setTimeout(() => setAnimation(''), 300);
-};
 
     const handleAnswerChange = (index, newAnswer) => {
         const updatedQuestions = [...questions];
@@ -325,69 +185,41 @@ const handleReset = () => {
 
     const startPracticeRound = () => {
         setQuestions(roundResults.incorrect);
-        setCurrentIndex(0);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
+        handleReset();
     };
 
-    // In BehavioralQuestions.js, replace your entire handleSaveChanges function with this one.
+    const handleSaveChanges = async () => {
+        if (!currentUser?.email || Object.keys(changedAnswers).length === 0) {
+            setIsEditMode(false);
+            return;
+        }
+        const updatedEditedCards = JSON.parse(JSON.stringify(currentUser.editedCards || {}));
 
-const handleSaveChanges = async () => {
-    // For debugging, let's see which user is saving.
-    console.log("Attempting to save changes for user:", currentUser);
-
-    
-    if (Object.keys(changedAnswers).length === 0) {
-        setIsEditMode(false);
-        return;
-    }
-    try {
-        const mongo = currentUser.mongoClient("mongodb-atlas");
-        const usersCollection = mongo.db("prepdeck").collection("user");
-        
-        const updates = {};
         Object.keys(changedAnswers).forEach(cardId => {
             const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
             if (originalCard) {
-                updates[`editedDecks.${originalCard.deckId}.${cardId}`] = changedAnswers[cardId];
+                updatedEditedCards[MAIN_CATEGORY_TITLE] = updatedEditedCards[MAIN_CATEGORY_TITLE] || {};
+                updatedEditedCards[MAIN_CATEGORY_TITLE][SUB_CATEGORY_TITLE] = updatedEditedCards[MAIN_CATEGORY_TITLE][SUB_CATEGORY_TITLE] || {};
+                updatedEditedCards[MAIN_CATEGORY_TITLE][SUB_CATEGORY_TITLE][cardId] = changedAnswers[cardId];
             }
         });
 
-        console.log("Sending these updates to the database:", updates);
-
-        // --- ✅ THIS IS THE FIX ---
-        // We are simplifying the query to ONLY use currentUser.id.
-        // This makes it consistent with how users are created and prevents the bug.
-        const result = await usersCollection.updateOne(
-            { "auth_id": currentUser.id }, // The corrected, reliable query
-            { $set: updates }
-        );
-
-        console.log("MongoDB update result:", result);
-
-        // Check if the update actually found a user to modify.
-        if (result.matchedCount === 0) {
-            alert("Error: Could not find your user profile to save the changes.");
-        } 
-        
-        setChangedAnswers({});
-        setIsEditMode(false);
-    } catch (error) {
-        console.error("Failed to save edited cards:", error);
-        alert("An error occurred while saving your changes. Please check the console.");
-    }
-};
+        try {
+            await updateUserProfile(currentUser.email, { editedCards: updatedEditedCards });
+            setChangedAnswers({});
+            setIsEditMode(false);
+        } catch (error) {
+            console.error("Failed to save edited cards:", error);
+            alert("An error occurred while saving your changes.");
+        }
+    };
     
-    // Practice Test handlers are unchanged
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
-    // Replace the existing handleNextQuestion function with this one
-
-const handleNextQuestion = () => {
+    
+    const handleNextQuestion = () => {
         const isCorrect = selectedAnswer === practiceTestQuestions[ptCurrentIndex].correctAnswer;
         const newPtScore = ptScore + (isCorrect ? 1 : 0);
-        
         if (isCorrect) setPtScore(newPtScore);
-        
         setUserAnswers(prev => [...prev, { question: practiceTestQuestions[ptCurrentIndex].question, selected: selectedAnswer, correct: practiceTestQuestions[ptCurrentIndex].correctAnswer, isCorrect }]);
         setSelectedAnswer(null);
 
@@ -396,9 +228,7 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "trgr_test",
-                deckType: "Tests",
-                deckCategory: "DSA"
+                deckTitle: `${SUB_CATEGORY_TITLE} Test`,
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -414,25 +244,26 @@ const handleNextQuestion = () => {
         setTimeLeft(60);
         setTestFinished(false);
     };
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
-    // --- Render Logic ---
     if (isLoading || !questions) {
         return <div className="loading-fullscreen">Loading Questions...</div>;
     }
     
     const currentQuestion = questions[currentIndex];
 
+    // --- (The rest of the rendering JSX is unchanged) ---
     if (view === 'options') {
         return (
             <div className="app-container">
                 <div className="start-options-container">
                     <div className="start-screen">
-                        <h1> Prep Flashcards</h1>
+                        <h1>Prep Flashcards</h1>
                         <p>Use these cards to practice your responses.</p>
                         <button onClick={() => setView('flashcards')} className="start-button">Start Flashcards</button>
                     </div>
