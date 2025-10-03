@@ -30,15 +30,15 @@ body {
     box-sizing: border-box;
     /* Add padding to prevent content from starting at the very edge */
     padding-bottom: -50px;
-    margin-left: 100px;
+    margin-left: 20px;
+      transition: margin-left 0.3s ease-in-out; /* ✅ ADD THIS LINE */
+
 }
 
 .flashcard-container {
-    width: 100%;
-    max-width: 900px;
+    width: 1000px;
     display: flex;
     flex-direction: column;
-    height: 100%;
 }
 
 /* --- Start Screen --- */
@@ -110,10 +110,19 @@ body {
 }
 
 .header {
-    justify-content: space-between; 
+    justify-content: center; 
+    gap: 30rem;
+    margin-left: -20px;
+    padding-top: 0;
+
 }
 .footer {
     justify-content: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+
+
 }
 
 .header-button {
@@ -154,13 +163,15 @@ body {
 
 /* --- Main Content & Card --- */
 .main-content {
-    flex-grow: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    flex-direction: column;      /* Ensures content flows downwards */
     perspective: 1000px;
     width: 100%;
     margin-left: -20px;
+    padding-top: -2rem; /* ✅ Add some space from the top */
+
 }
 
 .card {
@@ -227,11 +238,13 @@ body {
 /* --- Controls --- */
 .controls {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 10rem;
     align-items: center;
     width: 100%;
     padding: 1rem;
     box-sizing: border-box;
+    margin-left: -15px;
 }
 
 .control-button {
@@ -328,7 +341,6 @@ body {
     max-width: 800px;
     padding: 1rem;
     box-sizing: border-box;
-    margin-left: 80px;
 }
 
 /* This new, combined rule applies the same style to both containers */
@@ -597,7 +609,9 @@ align-items: center;
     margin-top: -100px;
     margin-bottom: -10px;
     box-sizing: border-box;
-    margin-left: 100px;
+    margin-left: 20px;
+      transition: margin-left 0.3s ease-in-out; /* ✅ ADD THIS LINE */
+
 }
 
 .pt-back-homepage {
@@ -738,14 +752,18 @@ align-items: center;
 }
 
 .pt-results-screen {
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
     padding: 2rem;
+    padding-top: 10px;
     border-radius: 1rem;
     text-align: center;
     width: 100%;
     max-width: 800px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    margin-top: 100px;
+    margin-top: 30px;
+    height: 100%;
 }
 
 .pt-results-screen h1 {
@@ -768,9 +786,10 @@ align-items: center;
 }
 
 .pt-start-button {
-    background-color: transparent;
-    color: var(--color-blue);
-    border: 2px solid var(--color-blue);
+    /* These styles are copied from your main .start-button */
+    background-color: var(--bg-card-front);
+    color: #FFFFFF;
+    border: none;
     padding: 0.75rem 2rem;
     font-size: 1.1rem;
     font-weight: 700;
@@ -781,8 +800,10 @@ align-items: center;
 }
 
 .pt-start-button:hover {
-    background-color: rgba(59, 130, 246, 0.1);
-    color: var(--color-blue);
+    /* This hover effect matches your other main buttons */
+    background-color: var(--bg-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
 }
 
 .pt-result-item {
@@ -813,4 +834,11 @@ align-items: center;
 .pt-correct-answer {
     font-style: italic;
     color: #374151;
+}
+
+/* ✅ ADD THIS NEW RULE AT THE END OF THE FILE */
+/* This rule pulls the content back to control the movement on hover */
+.sidebar:hover ~ .main-content1 .app-container,
+.sidebar:hover ~ .main-content1 .pt-app-container {
+    margin-left: -150px; 
 }

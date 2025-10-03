@@ -1,0 +1,59 @@
+/* src/components/StatusModal.css */
+
+.status-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(10, 25, 47, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.status-modal-content {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 350px;
+  width: 90%;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-modal-title {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.status-modal-message {
+  font-size: 1rem;
+  color: #4b5563;
+  line-height: 1.5;
+  margin: 0 0 0.5rem 0;
+}
+
+/* Icon Styles */
+.status-icon {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 1rem;
+}
+
+.status-icon.success {
+  fill: #2ecc71; /* Green */
+}
+
+.status-icon.error {
+  fill: #e74c3c; /* Red */
+}

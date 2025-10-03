@@ -52,7 +52,7 @@ const practiceTestQuestions = [
 ];
 
 function TreeGraph() {
-    const { currentUser, updateUserProfile } = useAuth();
+    const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
     const [view, setView] = useState('options');
     const [questions, setQuestions] = useState(initialFlashcardQuestions); 
     const [isLoading, setIsLoading] = useState(false);
@@ -95,41 +95,55 @@ function TreeGraph() {
         return () => clearInterval(timerId);
     }, [timeLeft, view, testFinished]);
 
+// ✅ UPDATED: Now uses updateUserProfile from AuthContext
     const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckTitle }) => {
-        if (!currentUser?.email) return;
+    if (!currentUser?.email) return;
 
-        const percentage = totalQuestions > 0 ? finalScore / totalQuestions : 0;
-        const isMastered = percentage >= 0.9;
-        const deckType = deckTitle.includes("Test") ? "Tests" : "Flashcards";
-
-        const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
-        const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
-        
-        if (isMastered) {
-            updatedMastered[deckType] = updatedMastered[deckType] || {};
-            updatedMastered[deckType][deckTitle] = true;
-            if (updatedCompleted[deckType]?.[deckTitle]) {
-                delete updatedCompleted[deckType][deckTitle];
-                if (Object.keys(updatedCompleted[deckType]).length === 0) delete updatedCompleted[deckType];
-            }
-        } else {
-            updatedCompleted[deckType] = updatedCompleted[deckType] || {};
-            updatedCompleted[deckType][deckTitle] = true;
-            if (updatedMastered[deckType]?.[deckTitle]) {
-                delete updatedMastered[deckType][deckTitle];
-                if (Object.keys(updatedMastered[deckType]).length === 0) delete updatedMastered[deckType];
-            }
+    // ... (all the logic for preparing deck data remains the same) ...
+    const percentage = totalQuestions > 0 ? finalScore / totalQuestions : 0;
+    const isMastered = percentage >= 0.9;
+    const deckType = deckTitle.endsWith(" Test") ? "Tests" : "Flashcards";
+    const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
+    const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
+    
+    if (isMastered) {
+        updatedMastered[deckType] = updatedMastered[deckType] || {};
+        updatedMastered[deckType][deckTitle] = true;
+        if (updatedCompleted[deckType]?.[deckTitle]) {
+            delete updatedCompleted[deckType][deckTitle];
         }
-
-        try {
-            await updateUserProfile(currentUser.email, {
-                completedDecks: updatedCompleted,
-                masteredDecks: updatedMastered
-            });
-        } catch (error) {
-            console.error("Failed to update user deck progress:", error);
+    } else {
+        updatedCompleted[deckType] = updatedCompleted[deckType] || {};
+        updatedCompleted[deckType][deckTitle] = true;
+        if (updatedMastered[deckType]?.[deckTitle]) {
+            delete updatedMastered[deckType][deckTitle];
         }
-    }, [currentUser, updateUserProfile]);
+    }
+
+    try {
+        // Update completed/mastered decks
+        await updateUserProfile(currentUser.email, {
+            completedDecks: updatedCompleted,
+            masteredDecks: updatedMastered
+        });
+
+        // Update accuracy stats
+        await fetch(`http://localhost:5000/api/user/${currentUser.email}/stats`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                correct: finalScore,
+                total: totalQuestions
+            })
+        });
+
+        // ✅ FIXED: Call the correct function from your AuthContext
+        await fetchUserProfile(currentUser.email);
+
+    } catch (error) {
+        console.error("Failed to update user progress:", error);
+    }
+}, [currentUser, updateUserProfile, fetchUserProfile]); 
 
     const handleFlip = () => !animation && setIsFlipped(!isFlipped);
     
@@ -147,7 +161,7 @@ function TreeGraph() {
             const newWrongCount = score.wrong + (!isCorrect ? 1 : 0);
             setScore({ correct: newCorrectCount, wrong: newWrongCount });
             
-            if (currentIndex + 1 === questions.length) {
+        if (currentIndex + 1 === questions.length && questions.length === initialFlashcardQuestions.length) {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,

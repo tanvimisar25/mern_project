@@ -10,10 +10,16 @@
 .core-main-content {
   width: 100%;
   max-width: 900px;
+  min-width: 900px; /* ✅ ADD THIS LINE */
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 100px;
+  margin-left: -10px;
+  transition: margin-left 0.3s ease-in-out;
+}
+.sidebar:hover ~ .main-content1 .core-main-content {
+    /* This negative margin counteracts the big push from the main layout */
+    margin-left: -200px;
 }
 
 /* --- Page Header --- */
@@ -139,3 +145,4 @@
   stroke: #ef444471;
   fill: #ef4444; /* Fills the heart with red */
 }
+

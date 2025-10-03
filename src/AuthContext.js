@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // --- Core Authentication Functions (Unchanged) ---
-
   const signup = async (username, email, password) => {
     try {
       const response = await axios.post(`${API_URL}/signup`, {
@@ -35,7 +34,6 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      console.log('Signup successful:', response.data);
       return response.data;
     } catch (error) {
       console.error('Signup error:', error.response.data.message);
@@ -45,11 +43,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/login`, {
-        email,
-        password,
-      });
-
+      const response = await axios.post(`${API_URL}/login`, { email, password });
       if (response.data && response.data.user) {
         const user = response.data.user;
         setCurrentUser(user);
@@ -67,13 +61,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
-  // --- ✅ NEW FUNCTIONS FOR MANAGING USER PROFILE DATA ---
+  // --- User Profile Management Functions ---
 
-  // Fetches the most up-to-date user profile from the backend
   const fetchUserProfile = async (email) => {
     try {
         const response = await axios.get(`${API_URL}/user/${email}`);
-        // Update the user in our context and localStorage with the fresh data
         setCurrentUser(response.data);
         localStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
@@ -83,31 +75,60 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Sends updated data (like a new todo list) to the backend to be saved
   const updateUserProfile = async (email, dataToUpdate) => {
     try {
         await axios.put(`${API_URL}/user/${email}`, dataToUpdate);
-        // After a successful update, we re-fetch the profile to ensure our
-        // frontend state is perfectly in sync with the database.
-        return await fetchUserProfile(email);
+        return await fetchUserProfile(email); // Re-fetch after update
     } catch (error) {
         console.error("Failed to update user profile", error);
         throw error;
     }
   };
 
+  // ✅ 1. ADD THIS NEW, CONSOLIDATED FUNCTION
+  // This function will handle both deck progress and accuracy stats in one go.
+  const updateUserProgress = async (email, deckData, statsData) => {
+    try {
+      // First, update the completed/mastered decks
+      await axios.put(`${API_URL}/user/${email}`, deckData);
 
-  // The value provided to the context consumers
+      // Second, update the accuracy stats
+      await axios.post(`${API_URL}/user/${email}/stats`, statsData);
+
+      // Finally, fetch the fresh user profile to update the entire app
+      return await fetchUserProfile(email);
+    } catch (error) {
+      console.error("Failed to update user progress", error);
+      throw error;
+    }
+  };
+
+  // ✅ 1. ADD THE NEW RESET FUNCTION
+  const resetUserProgress = async (email) => {
+    try {
+      // Call the new backend endpoint
+      await axios.post(`${API_URL}/user/${email}/reset`);
+      
+      // After a successful reset, re-fetch the profile to update the app
+      return await fetchUserProfile(email);
+    } catch (error) {
+      console.error("Failed to reset user progress", error);
+      throw error;
+    }
+  };
+
   const value = {
     currentUser,
     login,
     signup,
     logout,
-    fetchUserProfile, // <-- ✅ Add the new function here
-    updateUserProfile, // <-- ✅ And here
+    fetchUserProfile,
+    updateUserProfile,
+    updateUserProgress,
+    resetUserProgress, // ✅ 2. EXPORT THE NEW FUNCTION
   };
 
-  // Don't render the app until we've checked for a logged-in user
+
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}

@@ -1,4 +1,16 @@
 /* === MY DECKS PAGE SPECIFIC STYLES === */
+/* --- Add this block to the top of mydecks.css --- */
+
+/* This hides the scrollbar on most browsers */
+body {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* This hides the scrollbar on Webkit browsers like Chrome, Safari, and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
 
 .my-decks-layout {
     display: flex;
@@ -46,6 +58,7 @@
     padding: 24px;
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.08);
+    margin-left: -20px;
 }
 
 .progress-overview-card h3 {
@@ -207,6 +220,8 @@
     display: flex;
     align-items: flex-start;
     position: sticky;
+    margin-right: -20px;
+
 }
 
 .todo-list-card {
@@ -224,7 +239,8 @@
 
 .todo-list-card h3 {
     margin-top: 0;
-    font-size: 20px;
+    margin-bottom: 5px;
+    font-size: 28px;
     font-weight: 600;
     color: white;
 }
@@ -322,4 +338,9 @@
 .trash-icon {
     width: 18px;
     height: 18px;
+}
+
+/* Add this new rule to the end of your mydecks.css file */
+.main-content1.sidebar-is-hovered .center-content {
+    margin-left: -180px; /* Adjust this value for the perfect spacing */
 }

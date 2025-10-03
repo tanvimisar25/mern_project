@@ -1,12 +1,11 @@
-import React from 'react';
-import { useState, useEffect, useCallback } from 'react'; // This line might have been the issue
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import './Questions.css';
 
-// ✅ 1. IMPORT THE USEAUTH HOOK - This is the correct way to get user info.
-import { useAuth } from './AuthContext'; 
+import { useAuth } from './AuthContext';
 
-// --- Reusable Components & Data ---
+// --- (Reusable Components & Data) ---
 const Icon = ({ path, className = "icon" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d={path} />
@@ -21,17 +20,21 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
+// ✅ ADDED: Main and sub-category titles for the new data structure
+const MAIN_CATEGORY_TITLE = "Cybersecurity";
+const SUB_CATEGORY_TITLE = "Network Security Fundamentals";
+
 const initialFlashcardQuestions = [
-    { id: "ns_1", deckId: "network_security_fundamentals", front: "What is the CIA Triad in cybersecurity?", back: "The The CIA Triad is a fundamental model guiding cybersecurity. Confidentiality ensures that data is accessed only by authorized users, using methods like encryption and access controls. Integrity maintains the accuracy and trustworthiness of data throughout its lifecycle, often via hashing and digital signatures. Availability ensures systems and data are accessible to authorized users when needed." },
-    { id: "ns_2", deckId: "network_security_fundamentals", front: "What is the primary function of a firewall?", back: "A firewall is a network security device that monitors and filters incoming and outgoing network traffic based on a predefined set of security rules. It acts as a barrier between a trusted internal network and an untrusted external network (like the internet) to block malicious traffic." },
-    { id: "ns_3", deckId: "network_security_fundamentals", front: "Explain what a VPN (Virtual Private Network) is used for.", back: "A VPN is used to create a secure, encrypted connection over a public network, like the internet. It establishes a 'tunnel' that encrypts all the user's internet traffic, providing confidentiality and privacy by hiding their IP address and online activities from eavesdroppers." },
-    { id: "ns_4", deckId: "network_security_fundamentals", front: "What is the difference between an Intrusion Detection System (IDS) and an Intrusion Prevention System (IPS)?", back: "An IDS is a passive system that monitors network traffic for suspicious activity or policy violations and sends an alert when it detects a potential threat. It only detects and reports.\nAn IPS is an active system that sits in-line with traffic. It not only detects malicious activity but also takes automatic action to block or prevent it." },
-    { id: "ns_5", deckId: "network_security_fundamentals", front: "What security guarantee does HTTPS provide that HTTP does not?", back: "HTTPS (Hypertext Transfer Protocol Secure) uses encryption (via TLS/SSL protocols) to secure the communication between a client and a server. This provides confidentiality (preventing eavesdropping) and integrity (preventing data tampering) for the data in transit, which the standard HTTP protocol lacks." },
-    { id: "ns_6", deckId: "network_security_fundamentals", front: "Describe a Distributed Denial-of-Service (DDoS) attack.", back: "A DDoS attack is a malicious attempt to make an online service unavailable to legitimate users by overwhelming it with a flood of internet traffic from multiple sources. These sources are often a 'botnet' of compromised computers. The goal is to exhaust the target's resources, like bandwidth or server capacity." },
-    { id: "ns_7", deckId: "network_security_fundamentals", front: "What is a 'man-in-the-middle' (MitM) attack?", back: "A man-in-the-middle (MitM) attack is a form of eavesdropping where an attacker secretly relays and possibly alters the communication between two parties who believe they are directly communicating with each other. The attacker intercepts the entire conversation and can inject malicious data or steal sensitive information." },
-    { id: "ns_8", deckId: "network_security_fundamentals", front: "What is a DMZ (Demilitarized Zone) in the context of network security?", back: "A DMZ is a perimeter network that protects an organization's internal local-area network (LAN) from an untrusted network, usually the internet. It's a subnetwork that sits between the internal network and the internet, hosting external-facing services like web servers or email servers. This isolates them so that if a service in the DMZ is compromised, the internal network remains secure." },
-    { id: "ns_9", deckId: "network_security_fundamentals", front: "Explain the principle of 'least privilege.'", back: "The principle of least privilege is a security concept in which a user is given only the minimum levels of access—or permissions—needed to perform their job functions. This minimizes the potential damage that can be caused by a compromised user account or an insider threat." },
-    { id: "ns_10", deckId: "network_security_fundamentals", front: "What is phishing?", back: "Phishing is a type of social engineering attack where an attacker sends a fraudulent message (often an email) designed to trick a person into revealing sensitive information (like passwords or credit card numbers) or to deploy malicious software on the victim's machine." }
+    { id: "ns_1", deckId: "network_security_fundamentals", title: SUB_CATEGORY_TITLE, front: "What is the CIA Triad in cybersecurity?", back: "The The CIA Triad is a fundamental model guiding cybersecurity. Confidentiality ensures that data is accessed only by authorized users, using methods like encryption and access controls. Integrity maintains the accuracy and trustworthiness of data throughout its lifecycle, often via hashing and digital signatures. Availability ensures systems and data are accessible to authorized users when needed." },
+    { id: "ns_2", deckId: "network_security_fundamentals", title: SUB_CATEGORY_TITLE, front: "What is the primary function of a firewall?", back: "A firewall is a network security device that monitors and filters incoming and outgoing network traffic based on a predefined set of security rules. It acts as a barrier between a trusted internal network and an untrusted external network (like the internet) to block malicious traffic." },
+    { id: "ns_3", deckId: "network_security_fundamentals", title: SUB_CATEGORY_TITLE, front: "Explain what a VPN (Virtual Private Network) is used for.", back: "A VPN is used to create a secure, encrypted connection over a public network, like the internet. It establishes a 'tunnel' that encrypts all the user's internet traffic, providing confidentiality and privacy by hiding their IP address and online activities from eavesdroppers." },
+    { id: "ns_4", deckId: "network_security_fundamentals", title: SUB_CATEGORY_TITLE, front: "What is the difference between an Intrusion Detection System (IDS) and an Intrusion Prevention System (IPS)?", back: "An IDS is a passive system that monitors network traffic for suspicious activity or policy violations and sends an alert when it detects a potential threat. It only detects and reports.\nAn IPS is an active system that sits in-line with traffic. It not only detects malicious activity but also takes automatic action to block or prevent it." },
+    { id: "ns_5", deckId: "network_security_fundamentals", title: SUB_CATEGORY_TITLE, front: "What security guarantee does HTTPS provide that HTTP does not?", back: "HTTPS (Hypertext Transfer Protocol Secure) uses encryption (via TLS/SSL protocols) to secure the communication between a client and a server. This provides confidentiality (preventing eavesdropping) and integrity (preventing data tampering) for the data in transit, which the standard HTTP protocol lacks." },
+    { id: "ns_6", deckId: "network_security_fundamentals", title: SUB_CATEGORY_TITLE, front: "Describe a Distributed Denial-of-Service (DDoS) attack.", back: "A DDoS attack is a malicious attempt to make an online service unavailable to legitimate users by overwhelming it with a flood of internet traffic from multiple sources. These sources are often a 'botnet' of compromised computers. The goal is to exhaust the target's resources, like bandwidth or server capacity." },
+    { id: "ns_7", deckId: "network_security_fundamentals", title: SUB_CATEGORY_TITLE, front: "What is a 'man-in-the-middle' (MitM) attack?", back: "A man-in-the-middle (MitM) attack is a form of eavesdropping where an attacker secretly relays and possibly alters the communication between two parties who believe they are directly communicating with each other. The attacker intercepts the entire conversation and can inject malicious data or steal sensitive information." },
+    { id: "ns_8", deckId: "network_security_fundamentals", title: SUB_CATEGORY_TITLE, front: "What is a DMZ (Demilitarized Zone) in the context of network security?", back: "A DMZ is a perimeter network that protects an organization's internal local-area network (LAN) from an untrusted network, usually the internet. It's a subnetwork that sits between the internal network and the internet, hosting external-facing services like web servers or email servers. This isolates them so that if a service in the DMZ is compromised, the internal network remains secure." },
+    { id: "ns_9", deckId: "network_security_fundamentals", title: SUB_CATEGORY_TITLE, front: "Explain the principle of 'least privilege.'", back: "The principle of least privilege is a security concept in which a user is given only the minimum levels of access—or permissions—needed to perform their job functions. This minimizes the potential damage that can be caused by a compromised user account or an insider threat." },
+    { id: "ns_10", deckId: "network_security_fundamentals", title: SUB_CATEGORY_TITLE, front: "What is phishing?", back: "Phishing is a type of social engineering attack where an attacker sends a fraudulent message (often an email) designed to trick a person into revealing sensitive information (like passwords or credit card numbers) or to deploy malicious software on the victim's machine." }
 ];
 
 const practiceTestQuestions = [
@@ -138,13 +141,10 @@ const practiceTestQuestions = [
 ];
 
 function NetworkSecurity() {
-    // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
-    const { currentUser } = useAuth();
-
-    // --- State Management ---
+    const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
     const [view, setView] = useState('options');
-    const [questions, setQuestions] = useState(null); 
-    const [isLoading, setIsLoading] = useState(true);
+    const [questions, setQuestions] = useState(initialFlashcardQuestions);
+    const [isLoading, setIsLoading] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [animation, setAnimation] = useState('');
@@ -152,8 +152,6 @@ function NetworkSecurity() {
     const [isEditMode, setIsEditMode] = useState(false);
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
     const [changedAnswers, setChangedAnswers] = useState({});
-    
-    // (Practice test states are unchanged)
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
@@ -161,67 +159,26 @@ function NetworkSecurity() {
     const [timeLeft, setTimeLeft] = useState(60);
     const [testFinished, setTestFinished] = useState(false);
 
-    // --- Data Loading Effect ---
+    // ✅ UPDATED: useEffect now reads from the new nested structure
     useEffect(() => {
-        const loadUserQuestions = async () => {
-            setIsLoading(true);
-            if (!currentUser) {
-                // If no user is logged in, show the default questions
-                setQuestions(initialFlashcardQuestions);
-                setIsLoading(false);
-                return;
-            }
-            try {
-                // Get the user's data from their profile
-                const mongo = currentUser.mongoClient("mongodb-atlas");
-                const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-
-                if (userProfile && userProfile.editedDecks) {
-    const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
-        if (deckEdits && deckEdits[q.id]) {
-            return { ...q, back: deckEdits[q.id] };
+        setIsLoading(true);
+        if (currentUser && currentUser.editedCards) {
+            const userEdits = currentUser.editedCards;
+            const personalizedQuestions = initialFlashcardQuestions.map(q => {
+                const subCategoryTitle = q.title;
+                const editedAnswer = userEdits[MAIN_CATEGORY_TITLE]?.[subCategoryTitle]?.[q.id];
+                if (editedAnswer) {
+                    return { ...q, back: editedAnswer };
+                }
+                return q;
+            });
+            setQuestions(personalizedQuestions);
+        } else {
+            setQuestions(initialFlashcardQuestions);
         }
-        return q;
-    });
-    setQuestions(personalizedQuestions);
-} else {
-    setQuestions(initialFlashcardQuestions);
-}
-            } catch (error) {
-                console.error("Failed to load user data:", error);
-                setQuestions(initialFlashcardQuestions); // Fallback on error
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        if (currentUser) {
-        // If a user IS logged in, load their specific data.
-        loadUserQuestions();
-    } else {
-        // If NO user is logged in (i.e., on logout), reset the state.
-        // This "wipes the whiteboard clean" and prevents showing the previous user's data.
-        console.log("User logged out. Resetting component state.");
-        setQuestions(initialFlashcardQuestions);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
-        setCurrentIndex(0);
-        setIsFlipped(false);
-        setChangedAnswers({});
-        setIsLoading(false); // We aren't loading, so stop the loading indicator.
-    }
-}, [currentUser]);
+        setIsLoading(false);
+    }, [currentUser]);
 
-    // --- Other Effects (No changes) ---
-    useEffect(() => {
-        if (!isLoading) { // Prevent resetting index while loading new questions
-            setCurrentIndex(0);
-            setIsFlipped(false);
-            setAnimation('');
-        }
-    }, [questions, isLoading]);
-    
     useEffect(() => {
         if (view !== 'practiceTest' || testFinished) return;
         if (timeLeft === 0) { setTestFinished(true); return; }
@@ -229,59 +186,64 @@ function NetworkSecurity() {
         return () => clearInterval(timerId);
     }, [timeLeft, view, testFinished]);
 
-    // ✅ REPLACE THIS ENTIRE FUNCTION IN BehavioralQuestions.js
+// ✅ UPDATED: Now uses updateUserProfile from AuthContext
+    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckTitle }) => {
+    if (!currentUser?.email) return;
 
-    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckId, deckType, deckCategory }) => {
-        if (!currentUser) return;
-
-        const percentage = finalScore / totalQuestions;
-        const isMastered = percentage >= 0.9; // Mastery threshold: 90%
-
-        try {
-            const mongo = currentUser.mongoClient("mongodb-atlas");
-            const usersCollection = mongo.db("prepdeck").collection("user");
-
-            let updateOperation;
-
-            if (isMastered) {
-                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
-                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
-                updateOperation = {
-                    $addToSet: { [masteredPath]: deckId }, // Add to mastered list
-                    $pull: { [completedPath]: deckId }      // Remove from completed list
-                };
-                console.log(`Deck '${deckId}' mastered! Moving to Mastered list.`);
-            } else {
-                // --- THIS IS THE FIX ---
-                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
-                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
-                updateOperation = {
-                    $addToSet: { [completedPath]: deckId }, // Add to completed list
-                    $pull: { [masteredPath]: deckId }       // AND REMOVE from mastered list
-                };
-                console.log(`Score for '${deckId}' was below 90%. Moving to Completed and removing from Mastered.`);
-            }
-
-            await usersCollection.updateOne({ "auth_id": currentUser.id }, updateOperation);
-
-        } catch (error) {
-            console.error("Failed to update user deck progress:", error);
-        }
-    }, [currentUser]);
-
-    // --- Handlers ---
-    const handleFlip = () => !animation && setIsFlipped(!isFlipped);
+    // ... (all the logic for preparing deck data remains the same) ...
+    const percentage = totalQuestions > 0 ? finalScore / totalQuestions : 0;
+    const isMastered = percentage >= 0.9;
+    const deckType = deckTitle.endsWith(" Test") ? "Tests" : "Flashcards";
+    const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
+    const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
     
-    // This is the only function you need to replace in your BehavioralQuestions.js file
+    if (isMastered) {
+        updatedMastered[deckType] = updatedMastered[deckType] || {};
+        updatedMastered[deckType][deckTitle] = true;
+        if (updatedCompleted[deckType]?.[deckTitle]) {
+            delete updatedCompleted[deckType][deckTitle];
+        }
+    } else {
+        updatedCompleted[deckType] = updatedCompleted[deckType] || {};
+        updatedCompleted[deckType][deckTitle] = true;
+        if (updatedMastered[deckType]?.[deckTitle]) {
+            delete updatedMastered[deckType][deckTitle];
+        }
+    }
 
-// Replace the existing handleAnswer function with this one
+    try {
+        // Update completed/mastered decks
+        await updateUserProfile(currentUser.email, {
+            completedDecks: updatedCompleted,
+            masteredDecks: updatedMastered
+        });
 
-const handleAnswer = (isCorrect) => {
+        // Update accuracy stats
+        await fetch(`http://localhost:5000/api/user/${currentUser.email}/stats`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                correct: finalScore,
+                total: totalQuestions
+            })
+        });
+
+        // ✅ FIXED: Call the correct function from your AuthContext
+        await fetchUserProfile(currentUser.email);
+
+    } catch (error) {
+        console.error("Failed to update user progress:", error);
+    }
+}, [currentUser, updateUserProfile, fetchUserProfile]); 
+
+
+    const handleFlip = () => !animation && setIsFlipped(!isFlipped);
+
+    // ✅ FIXED: Now includes the check to prevent firing on practice rounds
+    const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
-        
         const currentQ = questions[currentIndex];
-        setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left'); 
-        
+        setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left');
         setRoundResults(prev => ({
             correct: isCorrect ? [...prev.correct, currentQ] : prev.correct,
             incorrect: !isCorrect ? [...prev.incorrect, currentQ] : prev.incorrect,
@@ -291,79 +253,37 @@ const handleAnswer = (isCorrect) => {
             const newCorrectCount = score.correct + (isCorrect ? 1 : 0);
             const newWrongCount = score.wrong + (!isCorrect ? 1 : 0);
             setScore({ correct: newCorrectCount, wrong: newWrongCount });
-            
-            // Check if this was the last question
-            if (currentIndex + 1 === questions.length) {
+
+            // Only update progress if the user has just finished the FULL deck.
+            if (currentIndex + 1 === questions.length && questions.length === initialFlashcardQuestions.length) {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "network_security_fundamentals",
-                    deckType: "Flashcards",
-                    deckCategory: "Network Security"
+                    deckTitle: SUB_CATEGORY_TITLE,
                 });
             }
 
             setCurrentIndex(prev => prev + 1);
             setIsFlipped(false);
-            setAnimation(''); 
+            setAnimation('');
         }, 500);
     };
 
     const handleShuffle = () => {
         if (!questions) return;
         setQuestions(prev => [...prev].sort(() => Math.random() - 0.5));
+        handleReset();
+    };
+    
+    // ✅ UPDATED: Simplified reset function
+    const handleReset = () => {
         setCurrentIndex(0);
+        setIsFlipped(false);
         setScore({ correct: 0, wrong: 0 });
         setRoundResults({ correct: [], incorrect: [] });
+        setAnimation('reset');
+        setTimeout(() => setAnimation(''), 300);
     };
-
-// This is the only function you need to replace in your BehavioralQuestions.js file
-
-const handleReset = () => {
-    setIsLoading(true); // Show loading feedback while we re-fetch
-
-    // THIS IS THE FIX:
-    // This is the exact same, correct data-loading logic from your useEffect hook.
-    // By re-using it here, we ensure that restarting the deck always fetches
-    // the latest saved answers from your 'editedDecks' object in the database.
-    const loadData = async () => {
-        if (currentUser) {
-            try {
-                const mongo = currentUser.mongoClient("mongodb-atlas");
-                const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-
-                const userEdits = userProfile?.editedDecks || {};
-                const personalizedQuestions = initialFlashcardQuestions.map(q => {
-                    const deckId = q.deckId;
-                    const cardId = q.id;
-                    if (userEdits[deckId] && userEdits[deckId][cardId]) {
-                        return { ...q, back: userEdits[deckId][cardId] };
-                    }
-                    return q;
-                });
-                setQuestions(personalizedQuestions);
-            } catch (error) {
-                console.error("Failed to re-load user data on reset:", error);
-                setQuestions(initialFlashcardQuestions); // Fallback on error
-            }
-        } else {
-            // If logged out, just reset to the default questions
-            setQuestions(initialFlashcardQuestions);
-        }
-        setIsLoading(false);
-    };
-
-    loadData(); // Execute the data-loading function
-
-    // Reset all the progress states
-    setCurrentIndex(0);
-    setIsFlipped(false);
-    setScore({ correct: 0, wrong: 0 });
-    setRoundResults({ correct: [], incorrect: [] });
-    setAnimation('reset');
-    setTimeout(() => setAnimation(''), 300);
-};
 
     const handleAnswerChange = (index, newAnswer) => {
         const updatedQuestions = [...questions];
@@ -375,69 +295,45 @@ const handleReset = () => {
 
     const startPracticeRound = () => {
         setQuestions(roundResults.incorrect);
-        setCurrentIndex(0);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
+        handleReset();
     };
 
-    // In BehavioralQuestions.js, replace your entire handleSaveChanges function with this one.
+    // ✅ UPDATED: handleSaveChanges now builds the nested object structure
+    const handleSaveChanges = async () => {
+        if (!currentUser?.email || Object.keys(changedAnswers).length === 0) {
+            setIsEditMode(false);
+            return;
+        }
+        const updatedEditedCards = JSON.parse(JSON.stringify(currentUser.editedCards || {}));
 
-const handleSaveChanges = async () => {
-    // For debugging, let's see which user is saving.
-    console.log("Attempting to save changes for user:", currentUser);
-
-    
-    if (Object.keys(changedAnswers).length === 0) {
-        setIsEditMode(false);
-        return;
-    }
-    try {
-        const mongo = currentUser.mongoClient("mongodb-atlas");
-        const usersCollection = mongo.db("prepdeck").collection("user");
-        
-        const updates = {};
         Object.keys(changedAnswers).forEach(cardId => {
             const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
             if (originalCard) {
-                updates[`editedDecks.${originalCard.deckId}.${cardId}`] = changedAnswers[cardId];
+                const subCategoryTitle = originalCard.title;
+                // Ensure nested structure exists
+                updatedEditedCards[MAIN_CATEGORY_TITLE] = updatedEditedCards[MAIN_CATEGORY_TITLE] || {};
+                updatedEditedCards[MAIN_CATEGORY_TITLE][subCategoryTitle] = updatedEditedCards[MAIN_CATEGORY_TITLE][subCategoryTitle] || {};
+                // Set the new answer
+                updatedEditedCards[MAIN_CATEGORY_TITLE][subCategoryTitle][cardId] = changedAnswers[cardId];
             }
         });
 
-        console.log("Sending these updates to the database:", updates);
+        try {
+            await updateUserProfile(currentUser.email, { editedCards: updatedEditedCards });
+            setChangedAnswers({});
+            setIsEditMode(false);
+        } catch (error) {
+            console.error("Failed to save edited cards:", error);
+            alert("An error occurred while saving your changes.");
+        }
+    };
 
-        // --- ✅ THIS IS THE FIX ---
-        // We are simplifying the query to ONLY use currentUser.id.
-        // This makes it consistent with how users are created and prevents the bug.
-        const result = await usersCollection.updateOne(
-            { "auth_id": currentUser.id }, // The corrected, reliable query
-            { $set: updates }
-        );
-
-        console.log("MongoDB update result:", result);
-
-        // Check if the update actually found a user to modify.
-        if (result.matchedCount === 0) {
-            alert("Error: Could not find your user profile to save the changes.");
-        } 
-        
-        setChangedAnswers({});
-        setIsEditMode(false);
-    } catch (error) {
-        console.error("Failed to save edited cards:", error);
-        alert("An error occurred while saving your changes. Please check the console.");
-    }
-};
-    
-    // Practice Test handlers are unchanged
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
-    // Replace the existing handleNextQuestion function with this one
 
-const handleNextQuestion = () => {
+    const handleNextQuestion = () => {
         const isCorrect = selectedAnswer === practiceTestQuestions[ptCurrentIndex].correctAnswer;
         const newPtScore = ptScore + (isCorrect ? 1 : 0);
-        
         if (isCorrect) setPtScore(newPtScore);
-        
         setUserAnswers(prev => [...prev, { question: practiceTestQuestions[ptCurrentIndex].question, selected: selectedAnswer, correct: practiceTestQuestions[ptCurrentIndex].correctAnswer, isCorrect }]);
         setSelectedAnswer(null);
 
@@ -446,9 +342,7 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "network_security_fundamentals_test",
-                deckType: "Tests",
-                deckCategory: "Network Security"
+                deckTitle: `${SUB_CATEGORY_TITLE} Test`,
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -464,25 +358,26 @@ const handleNextQuestion = () => {
         setTimeLeft(60);
         setTestFinished(false);
     };
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
-    // --- Render Logic ---
     if (isLoading || !questions) {
         return <div className="loading-fullscreen">Loading Questions...</div>;
     }
-    
+
     const currentQuestion = questions[currentIndex];
 
+    // --- (The rest of the rendering JSX is unchanged) ---
     if (view === 'options') {
         return (
             <div className="app-container">
                 <div className="start-options-container">
                     <div className="start-screen">
-                        <h1> Prep Flashcards</h1>
+                        <h1>Prep Flashcards</h1>
                         <p>Use these cards to practice your responses.</p>
                         <button onClick={() => setView('flashcards')} className="start-button">Start Flashcards</button>
                     </div>
@@ -573,32 +468,32 @@ const handleNextQuestion = () => {
 
         return (
             <div className="app-container">
-                 <div className="flashcard-container">
-                     <header className="header">
-                         <button className="header-button" onClick={handleReset} title="Restart"><Icon path={ICONS.undo} /></button>
-                         <button className="header-button" onClick={() => setIsEditMode(true)} title="Edit"><Icon path={ICONS.edit} /></button>
-                     </header>
-                     <main className="main-content">
-                         <div className={`card ${isFlipped ? 'is-flipped' : ''} ${animation}`} onClick={handleFlip}>
-                             <div className="card-face card-front"><p>{currentQuestion?.front}</p></div>
-                             <div className="card-face card-back"><p>{currentQuestion?.back}</p></div>
-                         </div>
-                     </main>
-                     <div className="controls">
-                         <button className="control-button wrong-button" onClick={() => handleAnswer(false)}><Icon path={ICONS.x} className="icon large-icon" /></button>
-                         <div className="progress-text">
-                             <span>{currentIndex + 1} / {questions.length}</span>
-                             <div className="score-tracker">
-                                 <span className="score-item score-wrong"><Icon path={ICONS.x} className="icon score-icon" /> {score.wrong}</span>
-                                 <span className="score-item score-correct"><Icon path={ICONS.check} className="icon score-icon" /> {score.correct}</span>
-                             </div>
-                         </div>
-                         <button className="control-button correct-button" onClick={() => handleAnswer(true)}><Icon path={ICONS.check} className="icon large-icon" /></button>
-                     </div>
-                     <footer className="footer">
-                         <div className="footer-buttons"><button onClick={handleShuffle} title="Shuffle"><Icon path={ICONS.shuffle}/></button></div>
-                     </footer>
-                 </div>
+                <div className="flashcard-container">
+                    <header className="header">
+                        <button className="header-button" onClick={handleReset} title="Restart"><Icon path={ICONS.undo} /></button>
+                        <button className="header-button" onClick={() => setIsEditMode(true)} title="Edit"><Icon path={ICONS.edit} /></button>
+                    </header>
+                    <main className="main-content">
+                        <div className={`card ${isFlipped ? 'is-flipped' : ''} ${animation}`} onClick={handleFlip}>
+                            <div className="card-face card-front"><p>{currentQuestion?.front}</p></div>
+                            <div className="card-face card-back"><p>{currentQuestion?.back}</p></div>
+                        </div>
+                    </main>
+                    <div className="controls">
+                        <button className="control-button wrong-button" onClick={() => handleAnswer(false)}><Icon path={ICONS.x} className="icon large-icon" /></button>
+                        <div className="progress-text">
+                            <span>{currentIndex + 1} / {questions.length}</span>
+                            <div className="score-tracker">
+                                <span className="score-item score-wrong"><Icon path={ICONS.x} className="icon score-icon" /> {score.wrong}</span>
+                                <span className="score-item score-correct"><Icon path={ICONS.check} className="icon score-icon" /> {score.correct}</span>
+                            </div>
+                        </div>
+                        <button className="control-button correct-button" onClick={() => handleAnswer(true)}><Icon path={ICONS.check} className="icon large-icon" /></button>
+                    </div>
+                    <footer className="footer">
+                        <div className="footer-buttons"><button onClick={handleShuffle} title="Shuffle"><Icon path={ICONS.shuffle} /></button></div>
+                    </footer>
+                </div>
             </div>
         );
     }
@@ -653,4 +548,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default NetworkSecurity;
+export default NetworkSecurity; 

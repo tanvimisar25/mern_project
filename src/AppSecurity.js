@@ -1,12 +1,11 @@
-import React from 'react';
-import { useState, useEffect, useCallback } from 'react'; // This line might have been the issue
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import './Questions.css';
 
-// ✅ 1. IMPORT THE USEAUTH HOOK - This is the correct way to get user info.
-import { useAuth } from './AuthContext'; 
+import { useAuth } from './AuthContext';
 
-// --- Reusable Components & Data ---
+// --- (Reusable Components & Data) ---
 const Icon = ({ path, className = "icon" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d={path} />
@@ -21,17 +20,21 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
+// ✅ ADDED: Main and sub-category titles for the new data structure
+const MAIN_CATEGORY_TITLE = "Cybersecurity";
+const SUB_CATEGORY_TITLE = "Application Security";
+
 const initialFlashcardQuestions = [
-    { id: "as_1", deckId: "application_security", front: "What is the OWASP Top 10?", back: "The OWASP (Open Web Application Security Project) Top 10 is a standard awareness document for developers and web application security professionals. It represents a broad consensus about the most critical security risks to web applications, updated every few years to reflect the changing threat landscape." },
-    { id: "as_2", deckId: "application_security", front: "What is an SQL Injection (SQLi) attack?", back: "SQL Injection is a type of injection attack where an attacker inserts malicious SQL code into a query. If the application does not properly sanitize the user input, the malicious query can be executed against the database, allowing the attacker to bypass authentication, access, modify, or delete data." },
-    { id: "as_3", deckId: "application_security", front: "How can you prevent SQL Injection?", back: "The primary defense is to use parameterized queries (also known as prepared statements). This practice separates the SQL query's structure from the user-supplied data, ensuring that the input is always treated as data and never as executable code. Input validation and using Object-Relational Mapping (ORM) tools also help." },
-    { id: "as_4", deckId: "application_security", front: "What is Cross-Site Scripting (XSS)? Explain one type.", back: "Cross-Site Scripting (XSS) is a vulnerability where an attacker injects malicious scripts (usually JavaScript) into a web page viewed by other users.\nStored XSS: The malicious script is permanently stored on the target server (e.g., in a database via a comment field) and is served to every user who views the page." },
-    { id: "as_5", deckId: "application_security", front: "What is 'Broken Access Control'? Give an example.", back: "Broken Access Control refers to flaws in how an application enforces restrictions on what authenticated users are allowed to do. An example is Insecure Direct Object Reference (IDOR), where a user can change a parameter in a URL (like ?invoiceId=100) to access another user's data (?invoiceId=101) without proper authorization checks." },
-    { id: "as_6", deckId: "application_security", front: "Explain 'Security Misconfiguration.'", back: "Security Misconfiguration occurs when an application or its underlying infrastructure is not configured securely. This is a very common risk and can include things like leaving default usernames and passwords, having unnecessary ports open, displaying overly verbose error messages that leak information, or having misconfigured cloud services (like a publicly open S3 bucket)." },
-    { id: "as_7", deckId: "application_security", front: "What does 'Vulnerable and Outdated Components' refer to?", back: "This risk involves using components—such as libraries, frameworks, and other software modules—that are unsupported, out of date, or have known security vulnerabilities. Attackers can exploit these known flaws to take control of a system or steal data. A famous example is the Log4Shell vulnerability in the Log4j library." },
-    { id: "as_8", deckId: "application_security", front: "What is Server-Side Request Forgery (SSRF)?", back: "SSRF is a vulnerability where an attacker can force a server-side application to make HTTP requests to an arbitrary domain of the attacker's choosing. This can be exploited to pivot and attack internal systems that are normally protected behind a firewall and inaccessible from the external network." },
-    { id: "as_9", deckId: "application_security", front: "What is a common example of 'Identification and Authentication Failures'?", back: "This category, formerly known as Broken Authentication, covers failures in how an application manages user identity and sessions. A common example is allowing credential stuffing, where an attacker uses lists of compromised usernames and passwords to try and log into the system. Other examples include not enforcing strong password policies or improper session management." },
-    { id: "as_10", deckId: "application_security", front: "What is a Content Security Policy (CSP)?", back: "A Content Security Policy (CSP) is an added layer of security, implemented via an HTTP response header, that helps to detect and mitigate certain types of attacks, particularly Cross-Site Scripting (XSS). It allows you to specify a whitelist of trusted sources from which a browser is allowed to load resources like scripts, styles, and images." }
+    { id: "as_1", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What is the OWASP Top 10?", back: "The OWASP (Open Web Application Security Project) Top 10 is a standard awareness document for developers and web application security professionals. It represents a broad consensus about the most critical security risks to web applications, updated every few years to reflect the changing threat landscape." },
+    { id: "as_2", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What is an SQL Injection (SQLi) attack?", back: "SQL Injection is a type of injection attack where an attacker inserts malicious SQL code into a query. If the application does not properly sanitize the user input, the malicious query can be executed against the database, allowing the attacker to bypass authentication, access, modify, or delete data." },
+    { id: "as_3", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "How can you prevent SQL Injection?", back: "The primary defense is to use parameterized queries (also known as prepared statements). This practice separates the SQL query's structure from the user-supplied data, ensuring that the input is always treated as data and never as executable code. Input validation and using Object-Relational Mapping (ORM) tools also help." },
+    { id: "as_4", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What is Cross-Site Scripting (XSS)? Explain one type.", back: "Cross-Site Scripting (XSS) is a vulnerability where an attacker injects malicious scripts (usually JavaScript) into a web page viewed by other users.\nStored XSS: The malicious script is permanently stored on the target server (e.g., in a database via a comment field) and is served to every user who views the page." },
+    { id: "as_5", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What is 'Broken Access Control'? Give an example.", back: "Broken Access Control refers to flaws in how an application enforces restrictions on what authenticated users are allowed to do. An example is Insecure Direct Object Reference (IDOR), where a user can change a parameter in a URL (like ?invoiceId=100) to access another user's data (?invoiceId=101) without proper authorization checks." },
+    { id: "as_6", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "Explain 'Security Misconfiguration.'", back: "Security Misconfiguration occurs when an application or its underlying infrastructure is not configured securely. This is a very common risk and can include things like leaving default usernames and passwords, having unnecessary ports open, displaying overly verbose error messages that leak information, or having misconfigured cloud services (like a publicly open S3 bucket)." },
+    { id: "as_7", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What does 'Vulnerable and Outdated Components' refer to?", back: "This risk involves using components—such as libraries, frameworks, and other software modules—that are unsupported, out of date, or have known security vulnerabilities. Attackers can exploit these known flaws to take control of a system or steal data. A famous example is the Log4Shell vulnerability in the Log4j library." },
+    { id: "as_8", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What is Server-Side Request Forgery (SSRF)?", back: "SSRF is a vulnerability where an attacker can force a server-side application to make HTTP requests to an arbitrary domain of the attacker's choosing. This can be exploited to pivot and attack internal systems that are normally protected behind a firewall and inaccessible from the external network." },
+    { id: "as_9", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What is a common example of 'Identification and Authentication Failures'?", back: "This category, formerly known as Broken Authentication, covers failures in how an application manages user identity and sessions. A common example is allowing credential stuffing, where an attacker uses lists of compromised usernames and passwords to try and log into the system. Other examples include not enforcing strong password policies or improper session management." },
+    { id: "as_10", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What is a Content Security Policy (CSP)?", back: "A Content Security Policy (CSP) is an added layer of security, implemented via an HTTP response header, that helps to detect and mitigate certain types of attacks, particularly Cross-Site Scripting (XSS). It allows you to specify a whitelist of trusted sources from which a browser is allowed to load resources like scripts, styles, and images." }
 ];
 
 const practiceTestQuestions = [
@@ -136,14 +139,12 @@ const practiceTestQuestions = [
         correctAnswer: "A09: Security Logging and Monitoring Failures"
     }
 ];
-function AppSecurity() {
-    // ✅ 2. GET THE LOGGED-IN USER FROM THE CENTRAL AUTH CONTEXT
-    const { currentUser } = useAuth();
 
-    // --- State Management ---
+function AppSecurity() {
+const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
     const [view, setView] = useState('options');
-    const [questions, setQuestions] = useState(null); 
-    const [isLoading, setIsLoading] = useState(true);
+    const [questions, setQuestions] = useState(initialFlashcardQuestions);
+    const [isLoading, setIsLoading] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [animation, setAnimation] = useState('');
@@ -151,8 +152,6 @@ function AppSecurity() {
     const [isEditMode, setIsEditMode] = useState(false);
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
     const [changedAnswers, setChangedAnswers] = useState({});
-    
-    // (Practice test states are unchanged)
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
@@ -160,67 +159,26 @@ function AppSecurity() {
     const [timeLeft, setTimeLeft] = useState(60);
     const [testFinished, setTestFinished] = useState(false);
 
-    // --- Data Loading Effect ---
+    // ✅ UPDATED: useEffect now reads from the new nested structure
     useEffect(() => {
-        const loadUserQuestions = async () => {
-            setIsLoading(true);
-            if (!currentUser) {
-                // If no user is logged in, show the default questions
-                setQuestions(initialFlashcardQuestions);
-                setIsLoading(false);
-                return;
-            }
-            try {
-                // Get the user's data from their profile
-                const mongo = currentUser.mongoClient("mongodb-atlas");
-                const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-
-                if (userProfile && userProfile.editedDecks) {
-    const personalizedQuestions = initialFlashcardQuestions.map(q => {
-        const deckEdits = userProfile.editedDecks[q.deckId];  // e.g., "behave"
-        if (deckEdits && deckEdits[q.id]) {
-            return { ...q, back: deckEdits[q.id] };
+        setIsLoading(true);
+        if (currentUser && currentUser.editedCards) {
+            const userEdits = currentUser.editedCards;
+            const personalizedQuestions = initialFlashcardQuestions.map(q => {
+                const subCategoryTitle = q.title;
+                const editedAnswer = userEdits[MAIN_CATEGORY_TITLE]?.[subCategoryTitle]?.[q.id];
+                if (editedAnswer) {
+                    return { ...q, back: editedAnswer };
+                }
+                return q;
+            });
+            setQuestions(personalizedQuestions);
+        } else {
+            setQuestions(initialFlashcardQuestions);
         }
-        return q;
-    });
-    setQuestions(personalizedQuestions);
-} else {
-    setQuestions(initialFlashcardQuestions);
-}
-            } catch (error) {
-                console.error("Failed to load user data:", error);
-                setQuestions(initialFlashcardQuestions); // Fallback on error
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        if (currentUser) {
-        // If a user IS logged in, load their specific data.
-        loadUserQuestions();
-    } else {
-        // If NO user is logged in (i.e., on logout), reset the state.
-        // This "wipes the whiteboard clean" and prevents showing the previous user's data.
-        console.log("User logged out. Resetting component state.");
-        setQuestions(initialFlashcardQuestions);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
-        setCurrentIndex(0);
-        setIsFlipped(false);
-        setChangedAnswers({});
-        setIsLoading(false); // We aren't loading, so stop the loading indicator.
-    }
-}, [currentUser]);
+        setIsLoading(false);
+    }, [currentUser]);
 
-    // --- Other Effects (No changes) ---
-    useEffect(() => {
-        if (!isLoading) { // Prevent resetting index while loading new questions
-            setCurrentIndex(0);
-            setIsFlipped(false);
-            setAnimation('');
-        }
-    }, [questions, isLoading]);
-    
     useEffect(() => {
         if (view !== 'practiceTest' || testFinished) return;
         if (timeLeft === 0) { setTestFinished(true); return; }
@@ -228,59 +186,63 @@ function AppSecurity() {
         return () => clearInterval(timerId);
     }, [timeLeft, view, testFinished]);
 
-    // ✅ REPLACE THIS ENTIRE FUNCTION IN BehavioralQuestions.js
+    // ✅ UPDATED: Now uses updateUserProfile from AuthContext
+    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckTitle }) => {
+    if (!currentUser?.email) return;
 
-    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckId, deckType, deckCategory }) => {
-        if (!currentUser) return;
-
-        const percentage = finalScore / totalQuestions;
-        const isMastered = percentage >= 0.9; // Mastery threshold: 90%
-
-        try {
-            const mongo = currentUser.mongoClient("mongodb-atlas");
-            const usersCollection = mongo.db("prepdeck").collection("user");
-
-            let updateOperation;
-
-            if (isMastered) {
-                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
-                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
-                updateOperation = {
-                    $addToSet: { [masteredPath]: deckId }, // Add to mastered list
-                    $pull: { [completedPath]: deckId }      // Remove from completed list
-                };
-                console.log(`Deck '${deckId}' mastered! Moving to Mastered list.`);
-            } else {
-                // --- THIS IS THE FIX ---
-                const completedPath = `completedDecks.${deckType}.${deckCategory}`;
-                const masteredPath = `masteredDecks.${deckType}.${deckCategory}`;
-                updateOperation = {
-                    $addToSet: { [completedPath]: deckId }, // Add to completed list
-                    $pull: { [masteredPath]: deckId }       // AND REMOVE from mastered list
-                };
-                console.log(`Score for '${deckId}' was below 90%. Moving to Completed and removing from Mastered.`);
-            }
-
-            await usersCollection.updateOne({ "auth_id": currentUser.id }, updateOperation);
-
-        } catch (error) {
-            console.error("Failed to update user deck progress:", error);
-        }
-    }, [currentUser]);
-
-    // --- Handlers ---
-    const handleFlip = () => !animation && setIsFlipped(!isFlipped);
+    // ... (all the logic for preparing deck data remains the same) ...
+    const percentage = totalQuestions > 0 ? finalScore / totalQuestions : 0;
+    const isMastered = percentage >= 0.9;
+    const deckType = deckTitle.endsWith(" Test") ? "Tests" : "Flashcards";
+    const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
+    const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
     
-    // This is the only function you need to replace in your BehavioralQuestions.js file
+    if (isMastered) {
+        updatedMastered[deckType] = updatedMastered[deckType] || {};
+        updatedMastered[deckType][deckTitle] = true;
+        if (updatedCompleted[deckType]?.[deckTitle]) {
+            delete updatedCompleted[deckType][deckTitle];
+        }
+    } else {
+        updatedCompleted[deckType] = updatedCompleted[deckType] || {};
+        updatedCompleted[deckType][deckTitle] = true;
+        if (updatedMastered[deckType]?.[deckTitle]) {
+            delete updatedMastered[deckType][deckTitle];
+        }
+    }
 
-// Replace the existing handleAnswer function with this one
+    try {
+        // Update completed/mastered decks
+        await updateUserProfile(currentUser.email, {
+            completedDecks: updatedCompleted,
+            masteredDecks: updatedMastered
+        });
 
-const handleAnswer = (isCorrect) => {
+        // Update accuracy stats
+        await fetch(`http://localhost:5000/api/user/${currentUser.email}/stats`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                correct: finalScore,
+                total: totalQuestions
+            })
+        });
+
+        // ✅ FIXED: Call the correct function from your AuthContext
+        await fetchUserProfile(currentUser.email);
+
+    } catch (error) {
+        console.error("Failed to update user progress:", error);
+    }
+}, [currentUser, updateUserProfile, fetchUserProfile]); 
+
+    const handleFlip = () => !animation && setIsFlipped(!isFlipped);
+
+    // ✅ FIXED: Now includes the check to prevent firing on practice rounds
+    const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
-        
         const currentQ = questions[currentIndex];
-        setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left'); 
-        
+        setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left');
         setRoundResults(prev => ({
             correct: isCorrect ? [...prev.correct, currentQ] : prev.correct,
             incorrect: !isCorrect ? [...prev.incorrect, currentQ] : prev.incorrect,
@@ -290,79 +252,37 @@ const handleAnswer = (isCorrect) => {
             const newCorrectCount = score.correct + (isCorrect ? 1 : 0);
             const newWrongCount = score.wrong + (!isCorrect ? 1 : 0);
             setScore({ correct: newCorrectCount, wrong: newWrongCount });
-            
-            // Check if this was the last question
-            if (currentIndex + 1 === questions.length) {
+
+            // Only update progress if the user has just finished the FULL deck.
+            if (currentIndex + 1 === questions.length && questions.length === initialFlashcardQuestions.length) {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
-                    deckId: "behaapplication_securityve",
-                    deckType: "Flashcards",
-                    deckCategory: "AppSecurity"
+                    deckTitle: SUB_CATEGORY_TITLE,
                 });
             }
 
             setCurrentIndex(prev => prev + 1);
             setIsFlipped(false);
-            setAnimation(''); 
+            setAnimation('');
         }, 500);
     };
 
     const handleShuffle = () => {
         if (!questions) return;
         setQuestions(prev => [...prev].sort(() => Math.random() - 0.5));
+        handleReset();
+    };
+    
+    // ✅ UPDATED: Simplified reset function
+    const handleReset = () => {
         setCurrentIndex(0);
+        setIsFlipped(false);
         setScore({ correct: 0, wrong: 0 });
         setRoundResults({ correct: [], incorrect: [] });
+        setAnimation('reset');
+        setTimeout(() => setAnimation(''), 300);
     };
-
-// This is the only function you need to replace in your BehavioralQuestions.js file
-
-const handleReset = () => {
-    setIsLoading(true); // Show loading feedback while we re-fetch
-
-    // THIS IS THE FIX:
-    // This is the exact same, correct data-loading logic from your useEffect hook.
-    // By re-using it here, we ensure that restarting the deck always fetches
-    // the latest saved answers from your 'editedDecks' object in the database.
-    const loadData = async () => {
-        if (currentUser) {
-            try {
-                const mongo = currentUser.mongoClient("mongodb-atlas");
-                const usersCollection = mongo.db("prepdeck").collection("user");
-                const userProfile = await usersCollection.findOne({ "auth_id": currentUser.id });
-
-                const userEdits = userProfile?.editedDecks || {};
-                const personalizedQuestions = initialFlashcardQuestions.map(q => {
-                    const deckId = q.deckId;
-                    const cardId = q.id;
-                    if (userEdits[deckId] && userEdits[deckId][cardId]) {
-                        return { ...q, back: userEdits[deckId][cardId] };
-                    }
-                    return q;
-                });
-                setQuestions(personalizedQuestions);
-            } catch (error) {
-                console.error("Failed to re-load user data on reset:", error);
-                setQuestions(initialFlashcardQuestions); // Fallback on error
-            }
-        } else {
-            // If logged out, just reset to the default questions
-            setQuestions(initialFlashcardQuestions);
-        }
-        setIsLoading(false);
-    };
-
-    loadData(); // Execute the data-loading function
-
-    // Reset all the progress states
-    setCurrentIndex(0);
-    setIsFlipped(false);
-    setScore({ correct: 0, wrong: 0 });
-    setRoundResults({ correct: [], incorrect: [] });
-    setAnimation('reset');
-    setTimeout(() => setAnimation(''), 300);
-};
 
     const handleAnswerChange = (index, newAnswer) => {
         const updatedQuestions = [...questions];
@@ -374,69 +294,45 @@ const handleReset = () => {
 
     const startPracticeRound = () => {
         setQuestions(roundResults.incorrect);
-        setCurrentIndex(0);
-        setScore({ correct: 0, wrong: 0 });
-        setRoundResults({ correct: [], incorrect: [] });
+        handleReset();
     };
 
-    // In BehavioralQuestions.js, replace your entire handleSaveChanges function with this one.
+    // ✅ UPDATED: handleSaveChanges now builds the nested object structure
+    const handleSaveChanges = async () => {
+        if (!currentUser?.email || Object.keys(changedAnswers).length === 0) {
+            setIsEditMode(false);
+            return;
+        }
+        const updatedEditedCards = JSON.parse(JSON.stringify(currentUser.editedCards || {}));
 
-const handleSaveChanges = async () => {
-    // For debugging, let's see which user is saving.
-    console.log("Attempting to save changes for user:", currentUser);
-
-    
-    if (Object.keys(changedAnswers).length === 0) {
-        setIsEditMode(false);
-        return;
-    }
-    try {
-        const mongo = currentUser.mongoClient("mongodb-atlas");
-        const usersCollection = mongo.db("prepdeck").collection("user");
-        
-        const updates = {};
         Object.keys(changedAnswers).forEach(cardId => {
             const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
             if (originalCard) {
-                updates[`editedDecks.${originalCard.deckId}.${cardId}`] = changedAnswers[cardId];
+                const subCategoryTitle = originalCard.title;
+                // Ensure nested structure exists
+                updatedEditedCards[MAIN_CATEGORY_TITLE] = updatedEditedCards[MAIN_CATEGORY_TITLE] || {};
+                updatedEditedCards[MAIN_CATEGORY_TITLE][subCategoryTitle] = updatedEditedCards[MAIN_CATEGORY_TITLE][subCategoryTitle] || {};
+                // Set the new answer
+                updatedEditedCards[MAIN_CATEGORY_TITLE][subCategoryTitle][cardId] = changedAnswers[cardId];
             }
         });
 
-        console.log("Sending these updates to the database:", updates);
+        try {
+            await updateUserProfile(currentUser.email, { editedCards: updatedEditedCards });
+            setChangedAnswers({});
+            setIsEditMode(false);
+        } catch (error) {
+            console.error("Failed to save edited cards:", error);
+            alert("An error occurred while saving your changes.");
+        }
+    };
 
-        // --- ✅ THIS IS THE FIX ---
-        // We are simplifying the query to ONLY use currentUser.id.
-        // This makes it consistent with how users are created and prevents the bug.
-        const result = await usersCollection.updateOne(
-            { "auth_id": currentUser.id }, // The corrected, reliable query
-            { $set: updates }
-        );
-
-        console.log("MongoDB update result:", result);
-
-        // Check if the update actually found a user to modify.
-        if (result.matchedCount === 0) {
-            alert("Error: Could not find your user profile to save the changes.");
-        } 
-        
-        setChangedAnswers({});
-        setIsEditMode(false);
-    } catch (error) {
-        console.error("Failed to save edited cards:", error);
-        alert("An error occurred while saving your changes. Please check the console.");
-    }
-};
-    
-    // Practice Test handlers are unchanged
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
-    // Replace the existing handleNextQuestion function with this one
 
-const handleNextQuestion = () => {
+    const handleNextQuestion = () => {
         const isCorrect = selectedAnswer === practiceTestQuestions[ptCurrentIndex].correctAnswer;
         const newPtScore = ptScore + (isCorrect ? 1 : 0);
-        
         if (isCorrect) setPtScore(newPtScore);
-        
         setUserAnswers(prev => [...prev, { question: practiceTestQuestions[ptCurrentIndex].question, selected: selectedAnswer, correct: practiceTestQuestions[ptCurrentIndex].correctAnswer, isCorrect }]);
         setSelectedAnswer(null);
 
@@ -445,9 +341,7 @@ const handleNextQuestion = () => {
             updateUserDeckProgress({
                 finalScore: newPtScore,
                 totalQuestions: practiceTestQuestions.length,
-                deckId: "application_security_test",
-                deckType: "Tests",
-                deckCategory: "AppSecurity"
+                deckTitle: `${SUB_CATEGORY_TITLE} Test`,
             });
         } else {
             setPtCurrentIndex(prev => prev + 1);
@@ -463,25 +357,26 @@ const handleNextQuestion = () => {
         setTimeLeft(60);
         setTestFinished(false);
     };
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
-    // --- Render Logic ---
     if (isLoading || !questions) {
         return <div className="loading-fullscreen">Loading Questions...</div>;
     }
-    
+
     const currentQuestion = questions[currentIndex];
 
+    // --- (The rest of the rendering JSX is unchanged) ---
     if (view === 'options') {
         return (
             <div className="app-container">
                 <div className="start-options-container">
                     <div className="start-screen">
-                        <h1> Prep Flashcards</h1>
+                        <h1>Prep Flashcards</h1>
                         <p>Use these cards to practice your responses.</p>
                         <button onClick={() => setView('flashcards')} className="start-button">Start Flashcards</button>
                     </div>
@@ -572,32 +467,32 @@ const handleNextQuestion = () => {
 
         return (
             <div className="app-container">
-                 <div className="flashcard-container">
-                     <header className="header">
-                         <button className="header-button" onClick={handleReset} title="Restart"><Icon path={ICONS.undo} /></button>
-                         <button className="header-button" onClick={() => setIsEditMode(true)} title="Edit"><Icon path={ICONS.edit} /></button>
-                     </header>
-                     <main className="main-content">
-                         <div className={`card ${isFlipped ? 'is-flipped' : ''} ${animation}`} onClick={handleFlip}>
-                             <div className="card-face card-front"><p>{currentQuestion?.front}</p></div>
-                             <div className="card-face card-back"><p>{currentQuestion?.back}</p></div>
-                         </div>
-                     </main>
-                     <div className="controls">
-                         <button className="control-button wrong-button" onClick={() => handleAnswer(false)}><Icon path={ICONS.x} className="icon large-icon" /></button>
-                         <div className="progress-text">
-                             <span>{currentIndex + 1} / {questions.length}</span>
-                             <div className="score-tracker">
-                                 <span className="score-item score-wrong"><Icon path={ICONS.x} className="icon score-icon" /> {score.wrong}</span>
-                                 <span className="score-item score-correct"><Icon path={ICONS.check} className="icon score-icon" /> {score.correct}</span>
-                             </div>
-                         </div>
-                         <button className="control-button correct-button" onClick={() => handleAnswer(true)}><Icon path={ICONS.check} className="icon large-icon" /></button>
-                     </div>
-                     <footer className="footer">
-                         <div className="footer-buttons"><button onClick={handleShuffle} title="Shuffle"><Icon path={ICONS.shuffle}/></button></div>
-                     </footer>
-                 </div>
+                <div className="flashcard-container">
+                    <header className="header">
+                        <button className="header-button" onClick={handleReset} title="Restart"><Icon path={ICONS.undo} /></button>
+                        <button className="header-button" onClick={() => setIsEditMode(true)} title="Edit"><Icon path={ICONS.edit} /></button>
+                    </header>
+                    <main className="main-content">
+                        <div className={`card ${isFlipped ? 'is-flipped' : ''} ${animation}`} onClick={handleFlip}>
+                            <div className="card-face card-front"><p>{currentQuestion?.front}</p></div>
+                            <div className="card-face card-back"><p>{currentQuestion?.back}</p></div>
+                        </div>
+                    </main>
+                    <div className="controls">
+                        <button className="control-button wrong-button" onClick={() => handleAnswer(false)}><Icon path={ICONS.x} className="icon large-icon" /></button>
+                        <div className="progress-text">
+                            <span>{currentIndex + 1} / {questions.length}</span>
+                            <div className="score-tracker">
+                                <span className="score-item score-wrong"><Icon path={ICONS.x} className="icon score-icon" /> {score.wrong}</span>
+                                <span className="score-item score-correct"><Icon path={ICONS.check} className="icon score-icon" /> {score.correct}</span>
+                            </div>
+                        </div>
+                        <button className="control-button correct-button" onClick={() => handleAnswer(true)}><Icon path={ICONS.check} className="icon large-icon" /></button>
+                    </div>
+                    <footer className="footer">
+                        <div className="footer-buttons"><button onClick={handleShuffle} title="Shuffle"><Icon path={ICONS.shuffle} /></button></div>
+                    </footer>
+                </div>
             </div>
         );
     }
@@ -652,4 +547,4 @@ const handleNextQuestion = () => {
     }
 }
 
-export default AppSecurity;
+export default AppSecurity; 

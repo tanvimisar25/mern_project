@@ -19,13 +19,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;      /* keep form centered */
+  transition: margin-left 0.3s ease-in-out; /* ✅ ADD THIS LINE */
 }
 
 .signup-title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 1rem;      /* reduced bottom spacing */
-  color: #111827;
+  color: var(--bg-dark, #111827);
 }
 
 .signup-form {
@@ -51,21 +52,25 @@
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
 }
 
+/* This is the new style for the button, matching your other main buttons */
 .signup-btn {
-  background-color: #2563eb;
-  color: white;
-  padding: 12px 28px;       /* height & width padding */
-  font-weight: 400;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
+    width: 100%;
+    background-color: var(--bg-card-front); /* The dark blue color */
+    color: #FFFFFF;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease; /* A smoother transition */
 }
 
-/* Optional: Hover effect to make it more interactive */
+/* This is the new hover effect with the "lift" and "glow" */
 .signup-btn:hover {
-  background-color: #1d4ed8;
+    background-color: var(--bg-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
 }
 
 .signup-footer {
@@ -75,7 +80,7 @@
 }
 
 .signup-footer a {
-  color: #2563eb; /* blue link */
+  color: var(--bg-card-front); /* blue link */
   font-weight: 500;
   text-decoration: none;
 }
@@ -173,4 +178,11 @@
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* ✅ ADD THIS NEW RULE AT THE END OF THE FILE */
+
+/* This rule pulls the login box back to the left on sidebar hover */
+.sidebar:hover ~ .main-content1 .signup-box {
+    margin-left: -370px; 
 }
