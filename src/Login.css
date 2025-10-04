@@ -4,40 +4,38 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f3f4f6; /* light gray */
-  height: 100%; /* Add this line */
-
+  background: #f3f4f6;
+  height: 100%;
 }
 
 .login-box {
   background-color: rgba(255, 255, 255, 0.156);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(7, 0, 0, 0.082);
-  padding: 1.5rem 2.5rem;   /* reduced top padding */
+  padding: 1.5rem 2.5rem;
   border-radius: 12px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   width: 350px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;      /* ensures inputs are centered horizontally */
+  align-items: center;
   margin-left: -20px;
-  transition: margin-left 0.3s ease-in-out; /* ✅ ADD THIS LINE */
-
+  transition: margin-left 0.3s ease-in-out;
 }
 
 .login-title {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 1rem;      /* less space under the title */
+  margin-bottom: 1rem;
   color: var(--bg-dark, #111827);
 }
 
 .login-form {
-  width: 100%;              /* make form take full width */
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;      /* keeps inputs aligned center */
+  align-items: center;
 }
 
 .login-form input {
@@ -48,13 +46,12 @@
   border-radius: 8px;
   font-size: 14px;
   outline: none;
-  box-sizing: border-box;   /* ensure padding doesn’t break width */
+  box-sizing: border-box;
 }
-
 
 .login-btn {
     width: 100%;
-    background-color: var(--bg-card-front); /* The dark blue color */
+    background-color: var(--bg-card-front);
     color: #FFFFFF;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -62,10 +59,9 @@
     font-weight: 700;
     border-radius: 0.5rem;
     cursor: pointer;
-    transition: all 0.2s ease; /* A smoother transition */
+    transition: all 0.2s ease;
 }
 
-/* This is the new hover effect with the "lift" and "glow" */
 .login-btn:hover {
     background-color: var(--bg-dark);
     transform: translateY(-2px);
@@ -88,17 +84,15 @@
   text-decoration: underline;
 }
 
-/* Page wrapper */  
-.login-page, .signup-page {
+.login-page {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
 }
 
 .login-error-message {
-  color: #dc3545; /* A standard red color for errors */
+  color: #dc3545;
   background-color: #f8d7da;
   border: 1px solid #f5c6cb;
   border-radius: 4px;
@@ -109,7 +103,6 @@
   margin-top: 5px;
 }
 
-
 .password-wrapper {
   position: relative;
   width: 100%;
@@ -117,7 +110,7 @@
 
 .password-wrapper input {
   width: 100%;
-  padding-right: 40px; /* space for the eye icon */
+  padding-right: 40px;
 }
 
 .toggle-eye {
@@ -129,7 +122,8 @@
   font-size: 18px;
 }
 
-/* --- POPUP STYLES --- */
+/* --- POPUP STYLES (Matching Signup.css) --- */
+
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -154,7 +148,7 @@
 
 .popup-box h2 {
   margin-top: 0;
-  color: #28a745;
+  color: #28a745; /* Green color for success */
 }
 
 .popup-box p {
@@ -173,9 +167,6 @@
   }
 }
 
-/* ✅ ADD THIS NEW RULE AT THE END OF THE FILE */
-
-/* This rule pulls the login box back to the left on sidebar hover */
 .sidebar:hover ~ .main-content1 .login-box {
     margin-left: -390px; 
 }

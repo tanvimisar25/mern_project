@@ -159,11 +159,17 @@ function GeneralQuestions() {
     const [testFinished, setTestFinished] = useState(false);
 
     // ✅ UPDATED: useEffect now reads from the new nested structure
-    useEffect(() => {
+   useEffect(() => {
         setIsLoading(true);
+        
+        // First, explicitly reset the questions to the default state.
+        // This is crucial for when a user logs out and currentUser becomes null.
+        let questionsToLoad = initialFlashcardQuestions.map(q => ({...q}));
+
+        // THEN, if a user is logged in and has edits, apply them.
         if (currentUser && currentUser.editedCards) {
             const userEdits = currentUser.editedCards;
-            const personalizedQuestions = initialFlashcardQuestions.map(q => {
+            questionsToLoad = questionsToLoad.map(q => {
                 const subCategoryTitle = q.title;
                 const editedAnswer = userEdits[MAIN_CATEGORY_TITLE]?.[subCategoryTitle]?.[q.id];
                 if (editedAnswer) {
@@ -171,11 +177,14 @@ function GeneralQuestions() {
                 }
                 return q;
             });
-            setQuestions(personalizedQuestions);
-        } else {
-            setQuestions(initialFlashcardQuestions);
         }
+        
+        // Set the final state, which will be the default for new/logged-out users
+        // or personalized for returning users.
+        setQuestions(questionsToLoad);
         setIsLoading(false);
+        
+        // This effect now correctly depends on currentUser.
     }, [currentUser]);
     
     useEffect(() => {

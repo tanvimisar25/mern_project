@@ -5,7 +5,7 @@ import "./Homepage2.css";
 import { useAuth } from './AuthContext';
 import { allDecks } from './decks';
 
-// ✅ 1. THE MODAL COMPONENT IS NOW DEFINED INSIDE THIS FILE
+// ... (ConfirmModal is unchanged) ...
 const ConfirmModal = ({ isOpen, onClose, onConfirm, title, children }) => {
   if (!isOpen) {
     return null;
@@ -29,22 +29,30 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, title, children }) => {
   );
 };
 
-// --- DATA FOR A NEW USER'S CHART ---
+// Data for the placeholder grey circle
 const gettingStartedData = [
   { name: "Getting Started", value: 100, color: "#e0e0e0" }
 ];
 
-// --- MAIN HOMEPAGE COMPONENT ---
+// Data for the legend when there is no user activity
+const emptyLegendData = [
+  { name: "Completed Flashcards", color: "#e0e0e0" },
+  { name: "Mastered Flashcards", color: "#e0e0e0" },
+  { name: "Completed Tests", color: "#e0e0e0" },
+  { name: "Mastered Tests", color: "#e0e0e0" },
+];
+
 function Homepage2() {
   const { currentUser, resetUserProgress } = useAuth();
 
   const [chartData, setChartData] = useState(gettingStartedData);
+  const [legendData, setLegendData] = useState(emptyLegendData); // New state for legend
   const [stats, setStats] = useState({ accuracy: 0, completed: 0, mastered: 0 });
   const [hasProgress, setHasProgress] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for the modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   useEffect(() => {
-    // ... (This useEffect logic remains the same)
     if (!currentUser || !currentUser.completedDecks) return;
     const totalFlashcards = allDecks.filter(d => d.type === 'flashcard').length;
     const totalTests = allDecks.filter(d => d.type === 'test').length;
@@ -54,9 +62,11 @@ function Homepage2() {
     const completedTests = Object.keys(currentUser.completedDecks.Tests || {}).length;
     const masteredTests = Object.keys(currentUser.masteredDecks?.Tests || {}).length;
     const totalProgressCount = completedFlashcards + masteredFlashcards + completedTests + masteredTests;
+
     if (totalProgressCount === 0) {
       setHasProgress(false);
-      setChartData(gettingStartedData);
+      setChartData(gettingStartedData); // Use single item for the chart
+      setLegendData(emptyLegendData);   // Use four items for the legend
       setStats({ accuracy: 0, completed: 0, mastered: 0 });
     } else {
       setHasProgress(true);
@@ -64,12 +74,17 @@ function Homepage2() {
       const masteredFlashcardsValue = totalFlashcards > 0 ? (masteredFlashcards / totalFlashcards) * 100 : 0;
       const completedTestsValue = totalTests > 0 ? (completedTests / totalTests) * 100 : 0;
       const masteredTestsValue = totalTests > 0 ? (masteredTests / totalTests) * 100 : 0;
-      setChartData([
+      
+      const realChartData = [
         { name: "Completed Flashcards", value: completedFlashcardsValue, color: "#002d46ff" },
         { name: "Mastered Flashcards", value: masteredFlashcardsValue, color: "#00456aff" },
         { name: "Completed Tests", value: completedTestsValue, color: "#005d90ff" },
         { name: "Mastered Tests", value: masteredTestsValue, color: "#0072afff" },
-      ]);
+      ];
+
+      setChartData(realChartData); // Use real data for the chart
+      setLegendData(realChartData); // Use the same real data for the legend
+      
       const accuracy = (currentUser.totalAnsweredQuestions > 0) ? Math.round((currentUser.totalCorrectAnswers / currentUser.totalAnsweredQuestions) * 100) : 0;
       const overallCompleted = totalDecks > 0 ? ((completedFlashcards + completedTests) / totalDecks) * 100 : 0;
       const overallMastered = totalDecks > 0 ? ((masteredFlashcards + masteredTests) / totalDecks) * 100 : 0;
@@ -81,7 +96,6 @@ function Homepage2() {
     }
   }, [currentUser]);
 
-  // Function to run when the user confirms the reset
   const confirmReset = async () => {
     if (currentUser) {
       try {
@@ -90,7 +104,16 @@ function Homepage2() {
         alert("There was an error resetting your progress.");
       }
     }
-    setIsModalOpen(false); // Close the modal
+    setIsModalOpen(false);
+  };
+  
+  const onPieEnter = (_, index) => {
+  if (!hasProgress) return; // ✅ ADD THIS LINE
+  setActiveIndex(index);
+};
+
+  const onPieLeave = () => {
+    setActiveIndex(-1);
   };
 
   return (
@@ -98,93 +121,111 @@ function Homepage2() {
       <div className="layout">
         <div className="main-content2">
           <div className="main-header2">
-             <h1>Welcome back {currentUser?.username || 'User'}!!!</h1>
-             <p className="header-subtitle">Continue your learning journey</p>
+            <h1>Welcome {currentUser?.username || 'User'}!!</h1>
+            <p className="header-subtitle">
+              {hasProgress ? 'Continue your learning journey' : 'Start your learning journey'}
+            </p>
           </div>
-          <div className="dashboard-grid">
+          <div className="dashboard-layout"> 
             <div className="dashboard-card chart-card">
-              
               <div className="chart-card-header">
-                <h3>Progress Overview</h3>
+                <h3>Your Activity</h3>
                 <button onClick={() => setIsModalOpen(true)} className="reset-progress-button">
                   Reset
                 </button>
               </div>
-
               <div className="chart-wrapper">
-                 <div className="chart-container">
-                   <ResponsiveContainer width="100%" height="100%">
-                     <PieChart>
-                       <Pie data={chartData} cx="50%" cy="50%" innerRadius={70} outerRadius={120} paddingAngle={hasProgress ? 3 : 0} dataKey="value" cornerRadius={10} labelLine={false}>
-                         {chartData.map((entry, index) => (
-                           <Cell key={`cell-${index}`} fill={entry.color} stroke={entry.color} />
-                         ))}
-                       </Pie>
-                     </PieChart>
-                   </ResponsiveContainer>
-                 </div>
-               </div>
-               <div className={`chart-legend ${!hasProgress ? 'centered' : ''}`}>
-                 {chartData.map((item, idx) => (
-                   <div key={idx} className="legend-item">
-                     <div className="legend-color" style={{ backgroundColor: item.color }}></div>
-                     <span className="legend-text">{item.name}</span>
-                   </div>
-                 ))}
-               </div>
+                <div className="chart-container">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie 
+                        data={chartData} 
+                        cx="50%" 
+                        cy="50%" 
+                        innerRadius={70} 
+                        outerRadius={120} 
+                        paddingAngle={hasProgress ? 3 : 0} 
+                        dataKey="value" 
+                        cornerRadius={10} 
+                        labelLine={false}
+                        onMouseEnter={onPieEnter}
+                        onMouseLeave={onPieLeave}
+                      >
+                        {chartData.map((entry, index) => (
+                          <Cell 
+                            key={`cell-${index}`} 
+                            fill={entry.color} 
+                            stroke={entry.color}
+                          />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+              <div className="chart-legend">
+                {legendData.map((item, idx) => (
+                  <div key={idx} className={`legend-item ${idx === activeIndex ? 'highlighted' : ''}`}>
+                    <div className="legend-color" style={{ backgroundColor: item.color }}></div>
+                    <span className="legend-text">{item.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
             
-            <div className="dashboard2-card">
-              <h4>Total Accuracy Score</h4>
-              <p className="stat-value">{stats.accuracy}%</p>
-            </div>
-            <div className="dashboard2-card">
-              <h4>Completed Decks</h4>
-              <p className="stat-value">{stats.completed}%</p>
-            </div>
-            <div className="dashboard2-card">
-              <h4>Mastered Decks</h4>
-              <p className="stat-value">{stats.mastered}%</p>
+            <div className="stats-column">
+              <div className="dashboard2-card">
+                <h4>Total Accuracy Score</h4>
+                <p className="stat-value">{stats.accuracy}%</p>
+              </div>
+              <div className="dashboard2-card">
+                <h4>Completed Decks</h4>
+                <p className="stat-value">{stats.completed}%</p>
+              </div>
+              <div className="dashboard2-card">
+                <h4>Mastered Decks</h4>
+                <p className="stat-value">{stats.mastered}%</p>
+              </div>
             </div>
           </div>
+
           <div className="decks-section">
-             <div className="explore-decks-card">
-               <h2>
-                 <span className="title-expanded">Featured </span>Decks
-               </h2>
-               <div className="grid-container">
-                 {[
-                   { title: "General HR Questions", terms: "20 decks", link: "/generalquestions" },
-                   { title: "Back End Development", terms: "20 decks", link: "/backend" },
-                   { title: "Machine Learning", terms: "20 decks", link: "/machinelearning" },
-                   { title: "Ethical Hacking", terms: "20 decks", link: "/ethicalhacking" },
-                 ].map((card, index) =>
-                   <Link key={index} to={card.link} style={{ textDecoration: "none", color: "inherit" }}>
-                     <div className="grid-item">
-                       <h3 className="card-title">{card.title}</h3>
-                       <span className="terms-badge">{card.terms}</span>
-                     </div>
-                   </Link>
-                 )}
-               </div>
-               <div className="decks-collapsed-view">
-                 {[
-                   { short: "HR", link: "/generalquestions" },
-                   { short: "DEV", link: "/backend" },
-                   { short: "ML", link: "/machinelearning" },
-                   { short: "EH", link: "/ethicalhacking" },
-                 ].map((deck, index) =>
-                   <Link key={index} to={deck.link} className="deck-bubble-link">
-                     <div className="deck-bubble">{deck.short}</div>
-                   </Link>
-                 )}
-               </div>
-             </div>
-           </div>
+            <div className="explore-decks-card">
+              <h2>
+                <span className="title-expanded">Featured </span>Decks
+              </h2>
+              <div className="grid-container">
+                {[
+                  { title: "General HR Questions", terms: "20 decks", link: "/generalquestions" },
+                  { title: "Back End Development", terms: "20 decks", link: "/backend" },
+                  { title: "Machine Learning", terms: "20 decks", link: "/machinelearning" },
+                  { title: "Ethical Hacking", terms: "20 decks", link: "/ethicalhacking" },
+                ].map((card, index) =>
+                  <Link key={index} to={card.link} style={{ textDecoration: "none", color: "inherit" }}>
+                    <div className="grid-item">
+                      <h3 className="card-title">{card.title}</h3>
+                      <span className="terms-badge">{card.terms}</span>
+                    </div>
+                  </Link>
+                )}
+              </div>
+              <div className="decks-collapsed-view">
+                {[
+                  { short: "HR", link: "/generalquestions" },
+                  { short: "DEV", link: "/backend" },
+                  { short: "ML", link: "/machinelearning" },
+                  { short: "EH", link: "/ethicalhacking" },
+                ].map((deck, index) =>
+                  <Link key={index} to={deck.link} className="deck-bubble-link">
+                    <div className="deck-bubble">{deck.short}</div>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* ✅ RENDER THE MODAL (using the component defined at the top of this file) */}
       <ConfirmModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

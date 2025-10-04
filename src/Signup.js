@@ -18,7 +18,6 @@ function Signup() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    // The modal state is now only for the success message
     const [modalState, setModalState] = useState({
         isOpen: false,
         status: 'success',
@@ -30,6 +29,7 @@ function Signup() {
         e.preventDefault();
         setErrorMessage(""); // Clear previous errors
 
+        // --- Client-side validation (unchanged) ---
         if (!email.endsWith("@gmail.com") && !email.endsWith("@somaiya.edu")) {
             setErrorMessage("Please use a valid Gmail or Somaiya address.");
             return;
@@ -44,10 +44,12 @@ function Signup() {
             return;
         }
 
+        // --- ✅ CORRECTED Server-side validation and signup ---
         try {
+            // We try to sign the user up...
             await signup(username, email, password);
 
-            // Open the success modal
+            // If it succeeds, we show the success modal and plan the redirect.
             setModalState({ ...modalState, isOpen: true });
             
             setTimeout(() => {
@@ -55,20 +57,23 @@ function Signup() {
             }, 2000);
 
         } catch (error) {
+            // If the signup function throws an error (because the server sent back a 409 error),
+            // this 'catch' block will execute.
             console.error("Error signing up:", error);
-            // ✅ CHANGED: Use the simple text error for server-side failures too
+
+            // We then take the error message from the server (e.g., "Email already in use.")
+            // and set it as our errorMessage, which will display it on the screen.
             setErrorMessage(error.message || "Failed to sign up. Please try again.");
         }
     };
 
     return (
         <div className="signup-page">
-            {/* This modal will now only appear on success */}
             <StatusModal
-              isOpen={modalState.isOpen}
-              status={modalState.status}
-              title={modalState.title}
-              message={modalState.message}
+                isOpen={modalState.isOpen}
+                status={modalState.status}
+                title={modalState.title}
+                message={modalState.message}
             />
 
             <div className="signup-box">

@@ -217,43 +217,48 @@ const ExpandableDeckSection = ({ title, deckGroups = {}, isExpanded, toggleExpan
                         transition={{ duration: 0.3 }}
                     >
                         {totalCount > 0 ? (
-                            Object.entries(deckGroups).map(([mainGroup, subCategories]) => (
-                                <div key={mainGroup} className="favorite-category-group">
-                                    <h5>{mainGroup}</h5>
-                                    <div className="favorite-items">
-                                        {Object.keys(subCategories).map(subCategoryTitle => {
-                                            const deckInfo = titleToDeckInfoMap[subCategoryTitle];
-                                            if (!deckInfo) return null;
-                                            return (
-                                                <div key={deckInfo.id} className="favorite-item-wrapper">
-                                                    <Link to={deckInfo.path} className="favorite-item-link">
-                                                        <motion.div 
-                                                            className="favorite-item" 
-                                                            initial={{ y: 10, opacity: 0 }} 
-                                                            animate={{ y: 0, opacity: 1 }}
-                                                        >
-                                                            <span>{deckInfo.title}</span>
-                                                        </motion.div>
-                                                    </Link>
-                                                    {/* Conditionally render the trash button */}
-                                                    {onRemove && (
-                                                        <button
-                                                            className="remove-deck-btn"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                e.preventDefault();
-                                                                onRemove(listName, deckInfo.title);
-                                                            }}
-                                                        >
-                                                            <TrashIcon className="trash-icon" />
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            ))
+                            Object.entries(deckGroups).map(([mainGroup, subCategories]) => {
+    // ✅ This is the new check
+    const hasItems = Object.keys(subCategories).length > 0;
+
+    // Only render the group if it has items
+    return hasItems && (
+        <div key={mainGroup} className="favorite-category-group">
+            <h5>{mainGroup}</h5>
+            <div className="favorite-items">
+                {Object.keys(subCategories).map(subCategoryTitle => {
+                    const deckInfo = titleToDeckInfoMap[subCategoryTitle];
+                    if (!deckInfo) return null;
+                    return (
+                        <div key={deckInfo.id} className="favorite-item-wrapper">
+                            <Link to={deckInfo.path} className="favorite-item-link">
+                                <motion.div 
+                                    className="favorite-item" 
+                                    initial={{ y: 10, opacity: 0 }} 
+                                    animate={{ y: 0, opacity: 1 }}
+                                >
+                                    <span>{deckInfo.title}</span>
+                                </motion.div>
+                            </Link>
+                            {onRemove && (
+                                <button
+                                    className="remove-deck-btn"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        e.preventDefault();
+                                        onRemove(listName, deckInfo.title);
+                                    }}
+                                >
+                                    <TrashIcon className="trash-icon" />
+                                </button>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+})
                         ) : (<p className="empty-state-message">No decks in this category yet.</p>)}
                     </motion.div>
                 )}

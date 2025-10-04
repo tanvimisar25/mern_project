@@ -29,7 +29,6 @@ body {
     overflow-x: hidden; 
     box-sizing: border-box;
     /* Add padding to prevent content from starting at the very edge */
-    padding-bottom: -50px;
     margin-left: 20px;
       transition: margin-left 0.3s ease-in-out; /* ✅ ADD THIS LINE */
 
@@ -104,7 +103,7 @@ body {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 1rem;
+    padding: 10px;
     color: var(--text-secondary);
     box-sizing: border-box;
 }
@@ -646,7 +645,7 @@ align-items: center;
 
 .pt-progress-bar {
     height: 100%;
-    background-color: #3B82F6;
+    background-color: var(--bg-card-front);
     border-radius: 5px;
     transition: width 0.3s ease-in-out;
 }
@@ -713,14 +712,13 @@ align-items: center;
 }
 
 .pt-option-btn:hover {
-    border-color: #3B82F6;
-    background-color: #EFF6FF;
+    border-color: var(--bg-card-front);
 }
 
 .pt-option-btn.selected {
-    border-color: #3B82F6;
-    background-color: #DBEAFE;
-    color: #1E40AF;
+    border-color: var(--bg-card-front);
+    background-color: #dbe6e78e;
+    color: var(--bg-card-front);
     font-weight: 600;
 }
 
@@ -840,5 +838,5 @@ align-items: center;
 /* This rule pulls the content back to control the movement on hover */
 .sidebar:hover ~ .main-content1 .app-container,
 .sidebar:hover ~ .main-content1 .pt-app-container {
-    margin-left: -150px; 
+    margin-left: -350px; 
 }

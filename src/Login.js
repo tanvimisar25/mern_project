@@ -3,53 +3,47 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import "./Login.css";
-
-// ✅ We now import useAuth from our own custom AuthContext.
 import { useAuth } from './AuthContext'; 
 
 function Login() {
     const navigate = useNavigate();
-    // ✅ This login function now comes from our AuthContext and calls our backend API.
     const { login } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
-    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false); // Simplified state
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null); // Clear previous errors on a new submission
+        setError(null);
 
         try {
-            // ✅ Call the login function from our context with the user's credentials.
             await login(email, password);
             
-            // If login is successful, show the success popup.
+            // Show the success popup
             setShowSuccessPopup(true);
 
-            // After 2 seconds, navigate to the main dashboard.
+            // After 2 seconds, navigate to the dashboard.
             setTimeout(() => {
                 navigate("/dashboard");
             }, 2000);
 
         } catch (err) {
-            // ✅ If login fails, our AuthContext throws an error. We catch it here.
             console.error("Login failed:", err);
-            // The error message from our backend is now in err.message.
             setError(err.message || "An unexpected error occurred. Please try again.");
         }
     };
 
     return (
         <div className="login-page">
-            {/* Success Popup */}
+            {/* This is the simple, built-in modal that matches your CSS */}
             {showSuccessPopup && (
                 <div className="popup-overlay">
                     <div className="popup-box">
                         <h2>Success!</h2>
-                        <p>You have successfully logged in.</p>
+                        <p>Redirecting to your dashboard...</p>
                     </div>
                 </div>
             )}
