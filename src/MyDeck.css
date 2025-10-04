@@ -1,15 +1,16 @@
-
-
+/* --- Base Layout for the "My Decks" Page --- */
+/* Establishes the main flex container for the page layout. */
 .my-decks-layout {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-start; /* Aligns children to the top. */
     width: 100%;
     padding-right: 20px;
 }
 
 /* --- Center Content Column --- */
+/* This is the main content area that holds the header and progress cards. */
 .center-content {
-    flex-grow: 1;
+    flex-grow: 1; /* Allows this column to take up available space. */
     padding: 40px 20px;
     display: flex;
     flex-direction: column;
@@ -17,9 +18,10 @@
     justify-content: flex-start;
     margin-right: 20px;
     margin-left: 30px;
-    transition: margin-left 0.4s ease;
+    transition: margin-left 0.4s ease; /* Smooth transition for sidebar interaction. */
 }
 
+/* --- Header Styles for "My Decks" Page --- */
 .mmain-header {
     width: 100%;
     text-align: center;
@@ -39,12 +41,13 @@
     margin-top: 8px;
 }
 
+/* --- Main "Progress Overview" Card --- */
 .progress-overview-card {
     width: 100%;
     max-width: 700px;
     border-radius: 16px;
     padding: 24px;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
     border: 1px solid rgba(0, 0, 0, 0.08);
     margin-left: -20px;
 }
@@ -59,7 +62,7 @@
 /* --- Grid & Card Layout --- */
 .progress-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* A single column grid. */
     gap: 16px;
     margin-top: 16px;
 }
@@ -69,15 +72,15 @@
     border-radius: 12px;
     padding: 16px;
     border: 1px solid var(--border-color);
-    
 }
 
+/* Ensures direct children of the grid span the full width. */
 .progress-grid > .progress-card {
     grid-column: 1 / -1;
 }
 
 .progress-card.full-width {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1; /* Helper class for full-width items. */
 }
 
 /* --- Expandable "Favorites Card" Styles --- */
@@ -95,7 +98,7 @@
 }
 
 .favorites-header-inline h4 {
-  color: var(--bg-dark);
+    color: var(--bg-dark);
     margin: 0;
     font-size: 20px;
     font-weight: 500;
@@ -108,6 +111,7 @@
     color: var(--primary-accent);
 }
 
+/* The container for the list of favorites, hidden by default and shown on expand. */
 .favorites-list {
     overflow: hidden;
     margin-top: 12px;
@@ -116,100 +120,97 @@
 }
 
 .favorite-category-group h5 {
-    font-size: 17px; /* Adjust this value to your preferred size */
+    font-size: 17px;
     font-weight: 600;
-    color: var(--bg-dark); /* Optional: A slightly darker color for better contrast */
-    margin-bottom: 1rem; /* Optional: Adds a bit more space below the title */
+    color: var(--bg-dark);
+    margin-bottom: 1rem;
     margin-top: 1rem;
     margin-left: 6px;
 }
 
-/* ✅ --- CSS CHANGES START HERE --- ✅ */
+/* --- Favorite Item List Styles --- */
 
-/* Change the grid layout to a vertical flex layout */
+/* Lays out the individual favorited deck items vertically. */
 .favorite-items {
     display: flex;
-    flex-direction: column; /* This stacks the items vertically */
-    gap: 0.75rem; /* Adjusts the space between the vertical items */
+    flex-direction: column; /* Stacks the items vertically. */
+    gap: 0.75rem; /* Space between each item. */
 }
 
-/* Make the items thinner and look more like list entries */
+/* Styles for a single favorited item, giving it a list-like appearance. */
 .favorite-item {
-  background-color: #e6ebf4;
-     /* A lighter, softer background color */
-    border: 1px solid #e2e8f0; /* Softer border */
+    background-color: #e6ebf4; /* A light, soft background color. */
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 16px 20px; /* Reduced padding to make items thinner */
-    text-align: left; /* Align text to the left */
+    padding: 16px 20px; /* Reduced padding to make items thinner. */
+    text-align: left;
     font-weight: 500;
     font-size: 16px;
-    color: #334155; /* Darker text for better readability */
+    color: #334155;
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Adjust the hover effect for the new list-style items */
+/* Hover effect for a favorite item. */
 .favorite-item:hover {
-    transform: translateY(-2px); /* The "lift" effect on hover */
+    transform: translateY(-2px); /* "Lift" effect on hover. */
     box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
-    background: var(--primary-accent); /* Slightly darken on hover */
+    background: var(--primary-accent);
 }
 
 .favorite-item-wrapper {
-  position: relative;
+    position: relative; /* Allows absolute positioning of the remove button. */
 }
 
 .favorite-item-link {
-  text-decoration: none;
-  color: inherit;
+    text-decoration: none;
+    color: inherit;
 }
 
 .favorite-item span {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
+/* Button to remove a deck from favorites. */
 .remove-deck-btn {
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #94a3b8; /* A muted color */
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.2s ease;
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8; /* Muted color by default. */
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
 }
 
+/* The remove button becomes visible when hovering over the list item wrapper. */
 .favorite-item-wrapper:hover .remove-deck-btn {
-  opacity: 1; /* Show button on hover of the wrapper */
+    opacity: 1;
 }
 
 .remove-deck-btn:hover {
-  color: #ef4444; /* Red color on hover */
+    color: #ef4444; /* Red color on hover. */
 }
 
 .remove-deck-btn .trash-icon {
-  width: 18px;
-  height: 18px;
+    width: 18px;
+    height: 18px;
 }
-
-/* ✅ --- CSS CHANGES END HERE --- ✅ */
-
 
 /* --- Right Sidebar (To-Do List) --- */
 .right-sidebar {
     width: 350px;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Prevents the sidebar from shrinking. */
     padding: 5px -2px;
     display: flex;
     align-items: flex-start;
-    position: sticky;
+    position: sticky; /* Keeps the sidebar in view while scrolling. */
     margin-right: -20px;
-
 }
 
 .todo-list-card {
@@ -222,7 +223,7 @@
     display: flex;
     flex-direction: column;
     height: 550px;
-    position: fixed;
+    position: fixed; /* Fixes the card within the sidebar container. */
 }
 
 .todo-list-card h3 {
@@ -272,14 +273,14 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    flex-grow: 1;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    flex-grow: 1; /* Allows the list to fill available vertical space. */
+    overflow-y: auto; /* Adds a scrollbar if content overflows. */
+    scrollbar-width: none; /* Hides scrollbar on Firefox. */
+    -ms-overflow-style: none; /* Hides scrollbar on IE/Edge. */
 }
 
 .todo-items::-webkit-scrollbar {
-    display: none;
+    display: none; /* Hides scrollbar on Chrome/Safari. */
 }
 
 .todo-items li {
@@ -307,6 +308,7 @@
     height: 18px;
 }
 
+/* Applies a line-through style to completed to-do items. */
 .todo-items li.completed span {
     text-decoration: line-through;
     color: var(--text-muted);
@@ -320,7 +322,7 @@
 }
 
 .delete-btn:hover {
-    color: #ef4444;
+    color: #ef4444; /* Red on hover for delete action. */
 }
 
 .trash-icon {
@@ -328,7 +330,7 @@
     height: 18px;
 }
 
-/* Add this new rule to the end of your mydecks.css file */
+/* Shifts the center content to the left when the main sidebar is expanded on hover. */
 .main-content1.sidebar-is-hovered .center-content {
-    margin-left: -180px; /* Adjust this value for the perfect spacing */
+    margin-left: -180px;
 }

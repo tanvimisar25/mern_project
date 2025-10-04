@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-// The base URL of your backend server
+// The base URL for your backend API server.
 const API_URL = 'http://localhost:5000/api';
 
-// 1. Create the Auth Context
+// 1. Create the Authentication Context
 const AuthContext = createContext();
 
-// 2. Create a custom hook to use the context easily
+// 2. Create a custom hook for easy access to the context.
 export const useAuth = () => {
     return useContext(AuthContext);
 };
@@ -17,23 +17,19 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // This effect runs once when the app starts
+    // This effect runs once when the application starts.
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             setCurrentUser(JSON.parse(storedUser));
         }
-        setLoading(false);
+        setLoading(false); // Auth check is complete, allow the app to render.
     }, []);
 
-    // --- Core Authentication Functions ---
+    // --- Core Authentication Functions (Unchanged) ---
     const signup = async (username, email, password) => {
         try {
-            const response = await axios.post(`${API_URL}/signup`, {
-                username,
-                email,
-                password,
-            });
+            const response = await axios.post(`${API_URL}/signup`, { username, email, password });
             return response.data;
         } catch (error) {
             console.error('Signup error:', error.response.data.message);
@@ -56,20 +52,12 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // --- ✅ THE CORRECTED LOGOUT FUNCTION ---
     const logout = () => {
         setCurrentUser(null);
-
-        // THIS IS THE CRITICAL FIX:
-        // localStorage.removeItem('user') ONLY removes the user's login status.
-        // It leaves behind other data like edited decks, progress, etc.
-        // localStorage.clear() removes ALL data for the site, guaranteeing
-        // that the next user starts with a completely clean slate.
         localStorage.clear();
     };
 
-    // --- User Profile Management Functions ---
-
+    // --- User Profile Management Functions (Unchanged) ---
     const fetchUserProfile = async (email) => {
         try {
             const response = await axios.get(`${API_URL}/user/${email}`);
@@ -91,7 +79,7 @@ export const AuthProvider = ({ children }) => {
             throw error;
         }
     };
-    
+
     const updateUserProgress = async (email, deckData, statsData) => {
         try {
             await axios.put(`${API_URL}/user/${email}`, deckData);
@@ -113,8 +101,11 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    // The value object holds all state and functions.
+    // ✅ CHANGE: Added 'loading' here to share it with the rest of the app.
     const value = {
         currentUser,
+        loading, // This is the new piece of information we are sharing.
         login,
         signup,
         logout,
@@ -124,6 +115,7 @@ export const AuthProvider = ({ children }) => {
         resetUserProgress,
     };
 
+    // The `!loading && children` part ensures the app only renders after the initial check is done.
     return (
         <AuthContext.Provider value={value}>
             {!loading && children}

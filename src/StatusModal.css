@@ -1,19 +1,23 @@
 /* src/components/StatusModal.css */
 
+/* --- Modal Overlay --- */
+/* Styles for the full-screen backdrop that appears behind the modal. */
 .status-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(10, 25, 47, 0.7);
+  background-color: rgba(10, 25, 47, 0.7); /* Semi-transparent dark background. */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
+  z-index: 1000; /* Ensures the modal appears on top of all other content. */
+  backdrop-filter: blur(5px); /* Creates a blur effect on the content behind the modal. */
 }
 
+/* --- Modal Content Box --- */
+/* The main white container for the modal's content. */
 .status-modal-content {
   background: white;
   padding: 2.5rem;
@@ -29,6 +33,7 @@
   gap: 0.5rem;
 }
 
+/* --- Modal Typography --- */
 .status-modal-title {
   margin: 0;
   font-size: 1.75rem;
@@ -43,17 +48,20 @@
   margin: 0 0 0.5rem 0;
 }
 
-/* Icon Styles */
+/* --- Icon Styles --- */
+/* Base style for the success or error icon. */
 .status-icon {
   width: 70px;
   height: 70px;
   margin-bottom: 1rem;
 }
 
+/* Applies a green fill color for success states. */
 .status-icon.success {
-  fill: #2ecc71; /* Green */
+  fill: #2ecc71;
 }
 
+/* Applies a red fill color for error states. */
 .status-icon.error {
-  fill: #e74c3c; /* Red */
+  fill: #e74c3c;
 }

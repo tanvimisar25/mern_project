@@ -1,5 +1,8 @@
 /* Login.css */
 
+/* --- Main Container & Layout --- */
+
+/* Centers the login box vertically and horizontally on the page. */
 .login-container {
   display: flex;
   justify-content: center;
@@ -8,9 +11,10 @@
   height: 100%;
 }
 
+/* Styles for the main login form container, creating a "glassmorphism" effect. */
 .login-box {
   background-color: rgba(255, 255, 255, 0.156);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px); /* Creates the blurred background effect. */
   border: 1px solid rgba(7, 0, 0, 0.082);
   padding: 1.5rem 2.5rem;
   border-radius: 12px;
@@ -21,15 +25,19 @@
   flex-direction: column;
   align-items: center;
   margin-left: -20px;
-  transition: margin-left 0.3s ease-in-out;
+  transition: margin-left 0.3s ease-in-out; /* Smooth transition for sidebar interaction. */
 }
+
+/* --- Typography --- */
 
 .login-title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 1rem;
-  color: var(--bg-dark, #111827);
+  color: var(--bg-dark, #111827); /* Uses a CSS variable with a fallback color. */
 }
+
+/* --- Form & Input Fields --- */
 
 .login-form {
   width: 100%;
@@ -46,8 +54,10 @@
   border-radius: 8px;
   font-size: 14px;
   outline: none;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Ensures padding doesn't affect the width. */
 }
+
+/* --- Buttons --- */
 
 .login-btn {
     width: 100%;
@@ -64,9 +74,11 @@
 
 .login-btn:hover {
     background-color: var(--bg-dark);
-    transform: translateY(-2px);
+    transform: translateY(-2px); /* Slight lift effect on hover. */
     box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
 }
+
+/* --- Footer & Links --- */
 
 .login-footer {
   margin-top: 1rem;
@@ -91,8 +103,11 @@
   align-items: center;
 }
 
+/* --- Error & Feedback --- */
+
+/* Styles for displaying error messages to the user. */
 .login-error-message {
-  color: #dc3545;
+  color: #dc3545; /* Red for errors. */
   background-color: #f8d7da;
   border: 1px solid #f5c6cb;
   border-radius: 4px;
@@ -103,6 +118,9 @@
   margin-top: 5px;
 }
 
+/* --- Password Visibility Toggle --- */
+
+/* A wrapper to position the toggle icon inside the password input field. */
 .password-wrapper {
   position: relative;
   width: 100%;
@@ -110,7 +128,7 @@
 
 .password-wrapper input {
   width: 100%;
-  padding-right: 40px;
+  padding-right: 40px; /* Add space on the right for the icon. */
 }
 
 .toggle-eye {
@@ -122,8 +140,9 @@
   font-size: 18px;
 }
 
-/* --- POPUP STYLES (Matching Signup.css) --- */
+/* --- Success Popup Modal --- */
 
+/* Full-screen overlay for the popup. */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -143,12 +162,12 @@
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out; /* Simple fade-in animation. */
 }
 
 .popup-box h2 {
   margin-top: 0;
-  color: #28a745; /* Green color for success */
+  color: #28a745; /* Green color for success messages. */
 }
 
 .popup-box p {
@@ -156,6 +175,7 @@
   color: #333;
 }
 
+/* Animation keyframes for the popup's appearance. */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -167,6 +187,9 @@
   }
 }
 
+/* --- Layout Adjustments for Sidebar Interaction --- */
+
+/* Shifts the login box to the left when the main sidebar is hovered. */
 .sidebar:hover ~ .main-content1 .login-box {
     margin-left: -390px; 
 }

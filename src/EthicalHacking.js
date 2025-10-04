@@ -2,16 +2,18 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import './Questions.css';
-
 import { useAuth } from './AuthContext';
 
 // --- (Reusable Components & Data) ---
+
+// A simple, reusable SVG icon component.
 const Icon = ({ path, className = "icon" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d={path} />
     </svg>
 );
 
+// Central object to store SVG paths for all icons used in the component.
 const ICONS = {
     check: "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z",
     x: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z",
@@ -20,10 +22,11 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
-// ✅ ADDED: Main and sub-category titles for the new data structure
+// Defines the titles for categorizing user's edited cards in the database.
 const MAIN_CATEGORY_TITLE = "Cybersecurity";
 const SUB_CATEGORY_TITLE = "Ethical Hacking & Pen Testing";
 
+// The default set of flashcard questions for this topic.
 const initialFlashcardQuestions = [
     { id: "eh_1", deckId: "ethical_hacking_pen_testing", title: SUB_CATEGORY_TITLE, front: "What are the five phases of ethical hacking?", back: "1. Reconnaissance (Info gathering), 2. Scanning (Find vulnerabilities), 3. Gaining Access (Exploitation), 4. Maintaining Access (Persistence), 5. Covering Tracks (Clear evidence)." },
     { id: "eh_2", deckId: "ethical_hacking_pen_testing", title: SUB_CATEGORY_TITLE, front: "What is the difference between a vulnerability assessment and a penetration test?", back: "An assessment identifies potential vulnerabilities. A pen test actively tries to exploit those vulnerabilities to confirm if they are real threats. An assessment finds what *might* be a problem; a pen test proves what *is* a problem." },
@@ -37,219 +40,149 @@ const initialFlashcardQuestions = [
     { id: "eh_10", deckId: "ethical_hacking_pen_testing", title: SUB_CATEGORY_TITLE, front: "What is the role of Burp Suite in web application testing?", back: "Burp Suite is a platform for web app security testing. Its main feature is an intercepting proxy that sits between the browser and the application, allowing a tester to inspect and modify all traffic to find vulnerabilities." }
 ];
 
+// The questions for the multiple-choice practice test.
 const practiceTestQuestions = [
-    {
-        question: "The first phase of any ethical hacking process, which involves passively and actively gathering information about a target, is called:",
-        options: [
-            "Exploitation",
-            "Scanning",
-            "Reconnaissance",
-            "Maintaining Access"
-        ],
-        correctAnswer: "Reconnaissance"
-    },
-    {
-        question: "In which type of penetration test is the tester given full knowledge of the target's infrastructure, including source code and network diagrams?",
-        options: [
-            "Black Box",
-            "White Box",
-            "Grey Box",
-            "Red Box"
-        ],
-        correctAnswer: "White Box"
-    },
-    {
-        question: "Which tool is a powerful network scanner used for host discovery, port scanning, and OS detection?",
-        options: [
-            "Wireshark",
-            "Metasploit",
-            "Nmap",
-            "Burp Suite"
-        ],
-        correctAnswer: "Nmap"
-    },
-    {
-        question: "A security assessment that identifies and reports on vulnerabilities but does not attempt to actively exploit them is a:",
-        options: [
-            "Red Team Engagement",
-            "Penetration Test",
-            "Vulnerability Assessment",
-            "Code Review"
-        ],
-        correctAnswer: "Vulnerability Assessment"
-    },
-    {
-        question: "A piece of code that takes advantage of a security vulnerability to cause unintended behavior is called a(n):",
-        options: [
-            "Payload",
-            "Exploit",
-            "Firewall",
-            "Honeypot"
-        ],
-        correctAnswer: "Exploit"
-    },
-    {
-        question: "Which of the following is a comprehensive framework that contains a database of exploits and allows testers to launch them against a target?",
-        options: [
-            "Nmap",
-            "Wireshark",
-            "John the Ripper",
-            "Metasploit"
-        ],
-        correctAnswer: "Metasploit"
-    },
-    {
-        question: "The phase of hacking that involves creating a backdoor or installing malware to ensure future access to the target is known as:",
-        options: [
-            "Gaining Access",
-            "Covering Tracks",
-            "Reconnaissance",
-            "Maintaining Access"
-        ],
-        correctAnswer: "Maintaining Access"
-    },
-    {
-        question: "The legal document that defines the scope, permissions, and boundaries of a penetration test is called the:",
-        options: [
-            "Service Level Agreement (SLA)",
-            "Non-Disclosure Agreement (NDA)",
-            "Rules of Engagement (RoE)",
-            "Acceptable Use Policy (AUP)"
-        ],
-        correctAnswer: "Rules of Engagement (RoE)"
-    },
-    {
-        question: "A tool that primarily functions as an intercepting proxy to inspect and manipulate HTTP/S traffic is:",
-        options: [
-            "Nmap",
-            "Burp Suite",
-            "Metasploit",
-            "Aircrack-ng"
-        ],
-        correctAnswer: "Burp Suite"
-    },
-    {
-        question: "The team responsible for defending a network and responding to security incidents is known as the:",
-        options: [
-            "Red Team",
-            "Blue Team",
-            "White Team",
-            "Green Team"
-        ],
-        correctAnswer: "Blue Team"
-    }
+    { question: "The first phase of any ethical hacking process, which involves passively and actively gathering information about a target, is called:", options: ["Exploitation", "Scanning", "Reconnaissance", "Maintaining Access"], correctAnswer: "Reconnaissance" },
+    { question: "In which type of penetration test is the tester given full knowledge of the target's infrastructure, including source code and network diagrams?", options: ["Black Box", "White Box", "Grey Box", "Red Box"], correctAnswer: "White Box" },
+    { question: "Which tool is a powerful network scanner used for host discovery, port scanning, and OS detection?", options: ["Wireshark", "Metasploit", "Nmap", "Burp Suite"], correctAnswer: "Nmap" },
+    { question: "A security assessment that identifies and reports on vulnerabilities but does not attempt to actively exploit them is a:", options: ["Red Team Engagement", "Penetration Test", "Vulnerability Assessment", "Code Review"], correctAnswer: "Vulnerability Assessment" },
+    { question: "A piece of code that takes advantage of a security vulnerability to cause unintended behavior is called a(n):", options: ["Payload", "Exploit", "Firewall", "Honeypot"], correctAnswer: "Exploit" },
+    { question: "Which of the following is a comprehensive framework that contains a database of exploits and allows testers to launch them against a target?", options: ["Nmap", "Wireshark", "John the Ripper", "Metasploit"], correctAnswer: "Metasploit" },
+    { question: "The phase of hacking that involves creating a backdoor or installing malware to ensure future access to the target is known as:", options: ["Gaining Access", "Covering Tracks", "Reconnaissance", "Maintaining Access"], correctAnswer: "Maintaining Access" },
+    { question: "The legal document that defines the scope, permissions, and boundaries of a penetration test is called the:", options: ["Service Level Agreement (SLA)", "Non-Disclosure Agreement (NDA)", "Rules of Engagement (RoE)", "Acceptable Use Policy (AUP)"], correctAnswer: "Rules of Engagement (RoE)" },
+    { question: "A tool that primarily functions as an intercepting proxy to inspect and manipulate HTTP/S traffic is:", options: ["Nmap", "Burp Suite", "Metasploit", "Aircrack-ng"], correctAnswer: "Burp Suite" },
+    { question: "The team responsible for defending a network and responding to security incidents is known as the:", options: ["Red Team", "Blue Team", "White Team", "Green Team"], correctAnswer: "Blue Team" }
 ];
 
 function EthicalHacking() {
+    // --- State Management ---
     const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
+
+    // Tracks the current view: 'options', 'flashcards', or 'practiceTest'.
     const [view, setView] = useState('options');
+    // Holds the array of flashcard questions being displayed.
     const [questions, setQuestions] = useState(initialFlashcardQuestions);
+    // Manages the loading state, e.g., while fetching user data.
     const [isLoading, setIsLoading] = useState(false);
+    // Index of the current flashcard being viewed.
     const [currentIndex, setCurrentIndex] = useState(0);
+    // Tracks if the current flashcard is flipped to its back.
     const [isFlipped, setIsFlipped] = useState(false);
+    // Controls the animation class for card transitions.
     const [animation, setAnimation] = useState('');
+    // Stores the user's score for the current flashcard round.
     const [score, setScore] = useState({ correct: 0, wrong: 0 });
+    // Toggles the edit mode for flashcard answers.
     const [isEditMode, setIsEditMode] = useState(false);
+    // Stores the results of a flashcard round to show on the completion screen.
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
+    // Tracks which flashcard answers have been changed by the user in edit mode.
     const [changedAnswers, setChangedAnswers] = useState({});
+
+    // --- State for Practice Test ---
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
     const [ptScore, setPtScore] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(60);
+    const [timeLeft, setTimeLeft] = useState(180); // Test timer set to 3 minutes.
     const [testFinished, setTestFinished] = useState(false);
 
-    // ✅ UPDATED: useEffect now reads from the new nested structure
+    // This effect runs when the component mounts or when the user logs in/out.
+    // It loads the initial questions and applies any personalized edits the user has saved.
     useEffect(() => {
-            setIsLoading(true);
-            
-            // First, explicitly reset the questions to the default state.
-            // This is crucial for when a user logs out and currentUser becomes null.
-            let questionsToLoad = initialFlashcardQuestions.map(q => ({...q}));
-    
-            // THEN, if a user is logged in and has edits, apply them.
-            if (currentUser && currentUser.editedCards) {
-                const userEdits = currentUser.editedCards;
-                questionsToLoad = questionsToLoad.map(q => {
-                    const subCategoryTitle = q.title;
-                    const editedAnswer = userEdits[MAIN_CATEGORY_TITLE]?.[subCategoryTitle]?.[q.id];
-                    if (editedAnswer) {
-                        return { ...q, back: editedAnswer };
-                    }
-                    return q;
-                });
-            }
-            
-            // Set the final state, which will be the default for new/logged-out users
-            // or personalized for returning users.
-            setQuestions(questionsToLoad);
-            setIsLoading(false);
-            
-            // This effect now correctly depends on currentUser.
-        }, [currentUser]);
+        setIsLoading(true);
+
+        // Always start by resetting to the default questions. This handles user logout.
+        let questionsToLoad = initialFlashcardQuestions.map(q => ({ ...q }));
+
+        // If a user is logged in, check for their saved edits and apply them.
+        if (currentUser && currentUser.editedCards) {
+            const userEdits = currentUser.editedCards;
+            questionsToLoad = questionsToLoad.map(q => {
+                const subCategoryTitle = q.title;
+                const editedAnswer = userEdits[MAIN_CATEGORY_TITLE]?.[subCategoryTitle]?.[q.id];
+                if (editedAnswer) {
+                    return { ...q, back: editedAnswer };
+                }
+                return q;
+            });
+        }
+
+        // Set the final state with either default or personalized cards.
+        setQuestions(questionsToLoad);
+        setIsLoading(false);
+    }, [currentUser]); // Re-run this effect whenever the currentUser object changes.
+
+    // This effect manages the timer for the practice test.
     useEffect(() => {
         if (view !== 'practiceTest' || testFinished) return;
-        if (timeLeft === 0) { setTestFinished(true); return; }
+        if (timeLeft === 0) {
+            setTestFinished(true);
+            return;
+        }
         const timerId = setInterval(() => setTimeLeft(t => t - 1), 1000);
-        return () => clearInterval(timerId);
+        return () => clearInterval(timerId); // Cleanup function to prevent memory leaks.
     }, [timeLeft, view, testFinished]);
 
- // ✅ UPDATED: Now uses updateUserProfile from AuthContext
-     const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckTitle }) => {
-     if (!currentUser?.email) return;
- 
-     // ... (all the logic for preparing deck data remains the same) ...
-     const percentage = totalQuestions > 0 ? finalScore / totalQuestions : 0;
-     const isMastered = percentage >= 0.9;
-     const deckType = deckTitle.endsWith(" Test") ? "Tests" : "Flashcards";
-     const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
-     const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
-     
-     if (isMastered) {
-         updatedMastered[deckType] = updatedMastered[deckType] || {};
-         updatedMastered[deckType][deckTitle] = true;
-         if (updatedCompleted[deckType]?.[deckTitle]) {
-             delete updatedCompleted[deckType][deckTitle];
-         }
-     } else {
-         updatedCompleted[deckType] = updatedCompleted[deckType] || {};
-         updatedCompleted[deckType][deckTitle] = true;
-         if (updatedMastered[deckType]?.[deckTitle]) {
-             delete updatedMastered[deckType][deckTitle];
-         }
-     }
- 
-     try {
-         // Update completed/mastered decks
-         await updateUserProfile(currentUser.email, {
-             completedDecks: updatedCompleted,
-             masteredDecks: updatedMastered
-         });
- 
-         // Update accuracy stats
-         await fetch(`http://localhost:5000/api/user/${currentUser.email}/stats`, {
-             method: 'POST',
-             headers: { 'Content-Type': 'application/json' },
-             body: JSON.stringify({
-                 correct: finalScore,
-                 total: totalQuestions
-             })
-         });
- 
-         // ✅ FIXED: Call the correct function from your AuthContext
-         await fetchUserProfile(currentUser.email);
- 
-     } catch (error) {
-         console.error("Failed to update user progress:", error);
-     }
- }, [currentUser, updateUserProfile, fetchUserProfile]); 
- 
+    // This function updates the user's progress in the database after a round.
+    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckTitle }) => {
+        if (!currentUser?.email) return;
 
+        const percentage = totalQuestions > 0 ? finalScore / totalQuestions : 0;
+        const isMastered = percentage >= 0.9;
+        const deckType = deckTitle.endsWith(" Test") ? "Tests" : "Flashcards";
+        
+        // Deep copy existing progress to avoid direct state mutation.
+        const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
+        const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
+        
+        // Logic to update either 'mastered' or 'completed' status.
+        if (isMastered) {
+            updatedMastered[deckType] = updatedMastered[deckType] || {};
+            updatedMastered[deckType][deckTitle] = true;
+            if (updatedCompleted[deckType]?.[deckTitle]) {
+                delete updatedCompleted[deckType][deckTitle];
+            }
+        } else {
+            updatedCompleted[deckType] = updatedCompleted[deckType] || {};
+            updatedCompleted[deckType][deckTitle] = true;
+            if (updatedMastered[deckType]?.[deckTitle]) {
+                delete updatedMastered[deckType][deckTitle];
+            }
+        }
+
+        try {
+            // Update the user's profile with completion/mastery data.
+            await updateUserProfile(currentUser.email, {
+                completedDecks: updatedCompleted,
+                masteredDecks: updatedMastered
+            });
+
+            // Update the user's overall accuracy statistics.
+            await fetch(`http://localhost:5000/api/user/${currentUser.email}/stats`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    correct: finalScore,
+                    total: totalQuestions
+                })
+            });
+
+            // Refresh the local user profile to reflect the changes.
+            await fetchUserProfile(currentUser.email);
+
+        } catch (error) {
+            console.error("Failed to update user progress:", error);
+        }
+    }, [currentUser, updateUserProfile, fetchUserProfile]);
+
+    // Toggles the flipped state of the flashcard.
     const handleFlip = () => !animation && setIsFlipped(!isFlipped);
 
-    // ✅ FIXED: Now includes the check to prevent firing on practice rounds
+    // Handles the user's response (correct or incorrect) to a flashcard.
     const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
+        
         const currentQ = questions[currentIndex];
         setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left');
         setRoundResults(prev => ({
@@ -262,7 +195,7 @@ function EthicalHacking() {
             const newWrongCount = score.wrong + (!isCorrect ? 1 : 0);
             setScore({ correct: newCorrectCount, wrong: newWrongCount });
 
-            // Only update progress if the user has just finished the FULL deck.
+            // Only update backend progress if this is the *end* of the *full* initial deck.
             if (currentIndex + 1 === questions.length && questions.length === initialFlashcardQuestions.length) {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
@@ -277,13 +210,14 @@ function EthicalHacking() {
         }, 500);
     };
 
+    // Shuffles the current set of flashcards and resets the view.
     const handleShuffle = () => {
         if (!questions) return;
         setQuestions(prev => [...prev].sort(() => Math.random() - 0.5));
         handleReset();
     };
     
-    // ✅ UPDATED: Simplified reset function
+    // Resets the flashcard session to the beginning.
     const handleReset = () => {
         setCurrentIndex(0);
         setIsFlipped(false);
@@ -293,35 +227,38 @@ function EthicalHacking() {
         setTimeout(() => setAnimation(''), 300);
     };
 
+    // Updates the state when the user types in the textarea in edit mode.
     const handleAnswerChange = (index, newAnswer) => {
         const updatedQuestions = [...questions];
         updatedQuestions[index].back = newAnswer;
         setQuestions(updatedQuestions);
+        
         const questionId = updatedQuestions[index].id;
         setChangedAnswers(prev => ({ ...prev, [questionId]: newAnswer }));
     };
 
+    // Starts a new flashcard round with only the incorrectly answered questions.
     const startPracticeRound = () => {
         setQuestions(roundResults.incorrect);
         handleReset();
     };
 
-    // ✅ UPDATED: handleSaveChanges now builds the nested object structure
+    // Saves the user's edited flashcard answers to their profile.
     const handleSaveChanges = async () => {
         if (!currentUser?.email || Object.keys(changedAnswers).length === 0) {
             setIsEditMode(false);
             return;
         }
+        
         const updatedEditedCards = JSON.parse(JSON.stringify(currentUser.editedCards || {}));
 
+        // Build the nested object structure for the database update.
         Object.keys(changedAnswers).forEach(cardId => {
             const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
             if (originalCard) {
                 const subCategoryTitle = originalCard.title;
-                // Ensure nested structure exists
                 updatedEditedCards[MAIN_CATEGORY_TITLE] = updatedEditedCards[MAIN_CATEGORY_TITLE] || {};
                 updatedEditedCards[MAIN_CATEGORY_TITLE][subCategoryTitle] = updatedEditedCards[MAIN_CATEGORY_TITLE][subCategoryTitle] || {};
-                // Set the new answer
                 updatedEditedCards[MAIN_CATEGORY_TITLE][subCategoryTitle][cardId] = changedAnswers[cardId];
             }
         });
@@ -336,15 +273,25 @@ function EthicalHacking() {
         }
     };
 
+    // --- Practice Test Handlers ---
+
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
 
     const handleNextQuestion = () => {
         const isCorrect = selectedAnswer === practiceTestQuestions[ptCurrentIndex].correctAnswer;
         const newPtScore = ptScore + (isCorrect ? 1 : 0);
         if (isCorrect) setPtScore(newPtScore);
-        setUserAnswers(prev => [...prev, { question: practiceTestQuestions[ptCurrentIndex].question, selected: selectedAnswer, correct: practiceTestQuestions[ptCurrentIndex].correctAnswer, isCorrect }]);
+        
+        setUserAnswers(prev => [...prev, {
+            question: practiceTestQuestions[ptCurrentIndex].question,
+            selected: selectedAnswer,
+            correct: practiceTestQuestions[ptCurrentIndex].correctAnswer,
+            isCorrect
+        }]);
+        
         setSelectedAnswer(null);
 
+        // Check if the test is over.
         if (ptCurrentIndex + 1 === practiceTestQuestions.length) {
             setTestFinished(true);
             updateUserDeckProgress({
@@ -363,15 +310,18 @@ function EthicalHacking() {
         setSelectedAnswer(null);
         setUserAnswers([]);
         setPtScore(0);
-        setTimeLeft(60);
+        setTimeLeft(180); // Reset timer to 3 minutes on restart.
         setTestFinished(false);
     };
 
+    // Helper function to format the timer display.
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
+
+    // --- Render Logic ---
 
     if (isLoading || !questions) {
         return <div className="loading-fullscreen">Loading Questions...</div>;
@@ -379,7 +329,7 @@ function EthicalHacking() {
 
     const currentQuestion = questions[currentIndex];
 
-    // --- (The rest of the rendering JSX is unchanged) ---
+    // Render the initial choice screen.
     if (view === 'options') {
         return (
             <div className="app-container">
@@ -399,7 +349,9 @@ function EthicalHacking() {
         );
     }
 
+    // --- Render: Flashcard Mode ---
     if (view === 'flashcards') {
+        // Render the edit mode view.
         if (isEditMode) {
             return (
                 <div className="app-container">
@@ -412,7 +364,12 @@ function EthicalHacking() {
                             {questions.map((q, index) => (
                                 <div key={q.id} className="edit-question-item">
                                     <label className="edit-question-label">{q.front}</label>
-                                    <textarea className="edit-textarea" value={q.back} onChange={(e) => handleAnswerChange(index, e.target.value)} rows="3" />
+                                    <textarea
+                                        className="edit-textarea"
+                                        value={q.back}
+                                        onChange={(e) => handleAnswerChange(index, e.target.value)}
+                                        rows="3"
+                                    />
                                 </div>
                             ))}
                         </div>
@@ -421,6 +378,7 @@ function EthicalHacking() {
             );
         }
 
+        // Render the completion screen after a flashcard round.
         if (currentIndex >= questions.length && questions.length > 0) {
             const totalAnswered = score.correct + score.wrong;
             const percentage = totalAnswered > 0 ? Math.round((score.correct / totalAnswered) * 100) : 0;
@@ -474,6 +432,7 @@ function EthicalHacking() {
             );
         }
 
+        // Render the main flashcard interface.
         return (
             <div className="app-container">
                 <div className="flashcard-container">
@@ -506,8 +465,11 @@ function EthicalHacking() {
         );
     }
 
+    // --- Render: Practice Test Mode ---
     if (view === 'practiceTest') {
         const currentPtQuestion = practiceTestQuestions[ptCurrentIndex];
+        
+        // Render the test results screen.
         if (testFinished) {
             return (
                 <div className="pt-app-container">
@@ -529,6 +491,7 @@ function EthicalHacking() {
             );
         }
 
+        // Render the active practice test view.
         return (
             <div className="pt-app-container">
                 <div className="pt-test-header">
@@ -542,12 +505,20 @@ function EthicalHacking() {
                     <p className="pt-question-text">{currentPtQuestion.question}</p>
                     <div className="pt-options">
                         {currentPtQuestion.options.map((option, index) => (
-                            <button key={index} className={`pt-option-btn ${selectedAnswer === option ? 'selected' : ''}`} onClick={() => handleAnswerSelect(option)}>
+                            <button
+                                key={index}
+                                className={`pt-option-btn ${selectedAnswer === option ? 'selected' : ''}`}
+                                onClick={() => handleAnswerSelect(option)}
+                            >
                                 {option}
                             </button>
                         ))}
                     </div>
-                    <button className="pt-next-button" onClick={handleNextQuestion} disabled={!selectedAnswer}>
+                    <button
+                        className="pt-next-button"
+                        onClick={handleNextQuestion}
+                        disabled={!selectedAnswer}
+                    >
                         {ptCurrentIndex === practiceTestQuestions.length - 1 ? 'Finish' : 'Next'}
                     </button>
                 </div>
@@ -556,4 +527,4 @@ function EthicalHacking() {
     }
 }
 
-export default EthicalHacking; 
+export default EthicalHacking;

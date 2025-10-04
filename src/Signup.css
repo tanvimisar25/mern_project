@@ -1,5 +1,7 @@
 /* Signup.css - Blue theme like Login page */
 
+/* --- Main Container & Layout --- */
+/* Centers the signup box vertically and horizontally on the page. */
 .signup-container {
   display: flex;
   justify-content: center;
@@ -7,33 +9,36 @@
   min-height: 100vh;
 }
 
+/* Styles for the main signup form container, creating a "glassmorphism" effect. */
 .signup-box {
   background-color: rgba(255, 255, 255, 0.156);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px); /* Creates the blurred background effect. */
   border: 1px solid rgba(7, 0, 0, 0.082);
-  padding: 1.5rem 2.5rem;   /* reduced top padding */
+  padding: 1.5rem 2.5rem;
   border-radius: 12px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   width: 380px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;      /* keep form centered */
-  transition: margin-left 0.3s ease-in-out; /* ✅ ADD THIS LINE */
+  align-items: center;
+  transition: margin-left 0.3s ease-in-out; /* Smooth transition for sidebar interaction. */
 }
 
+/* --- Typography --- */
 .signup-title {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 1rem;      /* reduced bottom spacing */
+  margin-bottom: 1rem;
   color: var(--bg-dark, #111827);
 }
 
+/* --- Form & Input Fields --- */
 .signup-form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;      /* ensures inputs stay centered */
+  align-items: center;
 }
 
 .signup-form input {
@@ -44,15 +49,15 @@
   border-radius: 8px;
   font-size: 14px;
   outline: none;
-  box-sizing: border-box;   /* keep width consistent */
+  box-sizing: border-box; /* Ensures padding doesn't affect the width. */
 }
 
 .signup-form input:focus {
-  border-color: #2563eb; /* blue highlight */
+  border-color: #2563eb; /* Blue highlight on focus. */
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
 }
 
-/* This is the new style for the button, matching your other main buttons */
+/* --- Buttons --- */
 .signup-btn {
     width: 100%;
     background-color: var(--bg-card-front); /* The dark blue color */
@@ -63,16 +68,16 @@
     font-weight: 700;
     border-radius: 0.5rem;
     cursor: pointer;
-    transition: all 0.2s ease; /* A smoother transition */
+    transition: all 0.2s ease;
 }
 
-/* This is the new hover effect with the "lift" and "glow" */
 .signup-btn:hover {
     background-color: var(--bg-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
+    transform: translateY(-2px); /* "Lift" effect on hover. */
+    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233); /* "Glow" effect on hover. */
 }
 
+/* --- Footer & Links --- */
 .signup-footer {
   margin-top: 1rem;
   font-size: 14px;
@@ -80,7 +85,7 @@
 }
 
 .signup-footer a {
-  color: var(--bg-card-front); /* blue link */
+  color: var(--bg-card-front); /* Blue link color. */
   font-weight: 500;
   text-decoration: none;
 }
@@ -95,11 +100,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
-
-
+/* --- Password Visibility Toggle --- */
 .password-wrapper {
   position: relative;
   width: 100%;
@@ -107,7 +110,7 @@
 
 .password-wrapper input {
   width: 100%;
-  padding-right: 40px; /* space for the eye icon */
+  padding-right: 40px; /* Make space for the eye icon. */
 }
 
 .toggle-eye {
@@ -119,8 +122,7 @@
   font-size: 18px;
 }
 
-/* --- POPUP STYLES --- */
-
+/* --- Success Popup Modal --- */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -145,7 +147,7 @@
 
 .popup-box h2 {
   margin-top: 0;
-  color: #28a745; /* Green color for success */
+  color: #28a745; /* Green color for success messages. */
 }
 
 .popup-box p {
@@ -153,9 +155,9 @@
   color: #333;
 }
 
-/* --- ERROR MESSAGE STYLE --- */
+/* --- Error Message Style --- */
 .signup-error-message {
-  color: #dc3545; /* A standard red color for errors */
+  color: #dc3545; /* A standard red color for errors. */
   background-color: #f8d7da;
   border: 1px solid #f5c6cb;
   border-radius: 4px;
@@ -164,10 +166,9 @@
   text-align: center;
   font-size: 0.9em;
   margin-top: 5px;
-
 }
 
-
+/* Animation keyframes for the popup's appearance. */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -179,9 +180,8 @@
   }
 }
 
-/* ✅ ADD THIS NEW RULE AT THE END OF THE FILE */
-
-/* This rule pulls the login box back to the left on sidebar hover */
+/* --- Layout Adjustment for Sidebar Interaction --- */
+/* This rule pulls the signup box to the left when the main sidebar is hovered. */
 .sidebar:hover ~ .main-content1 .signup-box {
     margin-left: -370px; 
 }

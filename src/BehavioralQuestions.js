@@ -2,17 +2,18 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import './Questions.css';
+import { useAuth } from './AuthContext';
 
-// ✅ 1. IMPORT FROM OUR CUSTOM AUTH CONTEXT
-import { useAuth } from './AuthContext'; 
+// --- (Reusable Components & Data) ---
 
-// --- Reusable Components & Data ---
+// A simple, reusable SVG icon component.
 const Icon = ({ path, className = "icon" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d={path} />
     </svg>
 );
 
+// Central object to store SVG paths for all icons used in the component.
 const ICONS = {
     check: "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z",
     x: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z",
@@ -21,10 +22,11 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
-// ✅ ADDED: Constants for consistency
+// Defines the titles for categorizing user's edited cards in the database.
 const MAIN_CATEGORY_TITLE = "Core Interview Questions";
 const SUB_CATEGORY_TITLE = "Behavioral Questions";
 
+// The default set of flashcard questions for this topic.
 const initialFlashcardQuestions = [
     { id: "bq_1", deckId: "behave", title: SUB_CATEGORY_TITLE, front: "Tell me about a time when you had to work under a tight deadline.", back: "I managed my tasks by prioritizing critical items first, breaking down work into smaller steps, and collaborating with teammates. This helped us deliver the project on time without compromising quality." },
     { id: "bq_2", deckId: "behave", title: SUB_CATEGORY_TITLE, front: "Describe a situation where you faced a conflict with a team member. How did you handle it?", back: "I scheduled a one-on-one conversation, actively listened to their concerns, and clarified misunderstandings. We agreed on a middle ground and improved our collaboration afterward." },
@@ -38,6 +40,7 @@ const initialFlashcardQuestions = [
     { id: "bq_10", deckId: "behave", title: SUB_CATEGORY_TITLE, front: "Tell me about a time you worked in a diverse team.", back: "In my internship, I collaborated with teammates from different cultural and educational backgrounds. I adapted my communication style and respected everyone’s input, which led to better solutions." }
 ];
 
+// The questions for the multiple-choice practice test.
 const practiceTestQuestions = [
     { question: "When interviewers ask you to 'Tell me about a time you handled conflict,' what should your answer focus on?", options: ["Blaming the other person in detail.", "Describing how you handled the situation constructively and what you learned.", "Avoiding the question by saying you never had conflicts.", "Giving a vague response without examples."], correctAnswer: "Describing how you handled the situation constructively and what you learned." },
     { question: "What is the best structure to answer behavioral questions?", options: ["STAR (Situation, Task, Action, Result)", "Giving a random story.", "Talking only about results without context.", "Listing skills without examples."], correctAnswer: "STAR (Situation, Task, Action, Result)" },
@@ -52,70 +55,88 @@ const practiceTestQuestions = [
 ];
 
 function BehavioralQuestions() {
+    // --- State Management ---
     const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
+
+    // Tracks the current view: 'options', 'flashcards', or 'practiceTest'.
     const [view, setView] = useState('options');
-    const [questions, setQuestions] = useState(initialFlashcardQuestions); 
+    // Holds the array of flashcard questions being displayed.
+    const [questions, setQuestions] = useState(initialFlashcardQuestions);
+    // Manages the loading state, e.g., while fetching user data.
     const [isLoading, setIsLoading] = useState(false);
+    // Index of the current flashcard being viewed.
     const [currentIndex, setCurrentIndex] = useState(0);
+    // Tracks if the current flashcard is flipped to its back.
     const [isFlipped, setIsFlipped] = useState(false);
+    // Controls the animation class for card transitions.
     const [animation, setAnimation] = useState('');
+    // Stores the user's score for the current flashcard round.
     const [score, setScore] = useState({ correct: 0, wrong: 0 });
+    // Toggles the edit mode for flashcard answers.
     const [isEditMode, setIsEditMode] = useState(false);
+    // Stores the results of a flashcard round to show on the completion screen.
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
+    // Tracks which flashcard answers have been changed by the user in edit mode.
     const [changedAnswers, setChangedAnswers] = useState({});
+
+    // --- State for Practice Test ---
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
     const [ptScore, setPtScore] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(60);
+    const [timeLeft, setTimeLeft] = useState(180); // Test timer set to 3 minutes.
     const [testFinished, setTestFinished] = useState(false);
 
+    // This effect runs when the component mounts or when the user logs in/out.
+    // It loads the initial questions and applies any personalized edits the user has saved.
     useEffect(() => {
-            setIsLoading(true);
-            
-            // First, explicitly reset the questions to the default state.
-            // This is crucial for when a user logs out and currentUser becomes null.
-            let questionsToLoad = initialFlashcardQuestions.map(q => ({...q}));
-    
-            // THEN, if a user is logged in and has edits, apply them.
-            if (currentUser && currentUser.editedCards) {
-                const userEdits = currentUser.editedCards;
-                questionsToLoad = questionsToLoad.map(q => {
-                    const subCategoryTitle = q.title;
-                    const editedAnswer = userEdits[MAIN_CATEGORY_TITLE]?.[subCategoryTitle]?.[q.id];
-                    if (editedAnswer) {
-                        return { ...q, back: editedAnswer };
-                    }
-                    return q;
-                });
-            }
-            
-            // Set the final state, which will be the default for new/logged-out users
-            // or personalized for returning users.
-            setQuestions(questionsToLoad);
-            setIsLoading(false);
-            
-            // This effect now correctly depends on currentUser.
-        }, [currentUser]);
-    
+        setIsLoading(true);
+
+        // Always start by resetting to the default questions. This handles user logout.
+        let questionsToLoad = initialFlashcardQuestions.map(q => ({ ...q }));
+
+        // If a user is logged in, check for their saved edits and apply them.
+        if (currentUser && currentUser.editedCards) {
+            const userEdits = currentUser.editedCards;
+            questionsToLoad = questionsToLoad.map(q => {
+                const subCategoryTitle = q.title;
+                const editedAnswer = userEdits[MAIN_CATEGORY_TITLE]?.[subCategoryTitle]?.[q.id];
+                if (editedAnswer) {
+                    return { ...q, back: editedAnswer };
+                }
+                return q;
+            });
+        }
+
+        // Set the final state with either default or personalized cards.
+        setQuestions(questionsToLoad);
+        setIsLoading(false);
+    }, [currentUser]); // Re-run this effect whenever the currentUser object changes.
+
+    // This effect manages the timer for the practice test.
     useEffect(() => {
         if (view !== 'practiceTest' || testFinished) return;
-        if (timeLeft === 0) { setTestFinished(true); return; }
+        if (timeLeft === 0) {
+            setTestFinished(true);
+            return;
+        }
         const timerId = setInterval(() => setTimeLeft(t => t - 1), 1000);
-        return () => clearInterval(timerId);
+        return () => clearInterval(timerId); // Cleanup function to prevent memory leaks.
     }, [timeLeft, view, testFinished]);
 
-    // ✅ UPDATED: Now uses updateUserProfile from AuthContext
-        const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckTitle }) => {
+    // This function updates the user's progress in the database after a round.
+    const updateUserDeckProgress = useCallback(async ({ finalScore, totalQuestions, deckTitle }) => {
         if (!currentUser?.email) return;
-    
-        // ... (all the logic for preparing deck data remains the same) ...
+
         const percentage = totalQuestions > 0 ? finalScore / totalQuestions : 0;
         const isMastered = percentage >= 0.9;
         const deckType = deckTitle.endsWith(" Test") ? "Tests" : "Flashcards";
+        
+        // Deep copy existing progress to avoid direct state mutation.
         const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
         const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
         
+        // Logic to update either 'mastered' or 'completed' status.
         if (isMastered) {
             updatedMastered[deckType] = updatedMastered[deckType] || {};
             updatedMastered[deckType][deckTitle] = true;
@@ -129,15 +150,15 @@ function BehavioralQuestions() {
                 delete updatedMastered[deckType][deckTitle];
             }
         }
-    
+
         try {
-            // Update completed/mastered decks
+            // Update the user's profile with completion/mastery data.
             await updateUserProfile(currentUser.email, {
                 completedDecks: updatedCompleted,
                 masteredDecks: updatedMastered
             });
-    
-            // Update accuracy stats
+
+            // Update the user's overall accuracy statistics.
             await fetch(`http://localhost:5000/api/user/${currentUser.email}/stats`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -146,21 +167,24 @@ function BehavioralQuestions() {
                     total: totalQuestions
                 })
             });
-    
-            // ✅ FIXED: Call the correct function from your AuthContext
+
+            // Refresh the local user profile to reflect the changes.
             await fetchUserProfile(currentUser.email);
-    
+
         } catch (error) {
             console.error("Failed to update user progress:", error);
         }
-    }, [currentUser, updateUserProfile, fetchUserProfile]); 
-    
+    }, [currentUser, updateUserProfile, fetchUserProfile]);
+
+    // Toggles the flipped state of the flashcard.
     const handleFlip = () => !animation && setIsFlipped(!isFlipped);
-    
+
+    // Handles the user's response (correct or incorrect) to a flashcard.
     const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
+        
         const currentQ = questions[currentIndex];
-        setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left'); 
+        setAnimation(isCorrect ? 'slide-out-right' : 'slide-out-left');
         setRoundResults(prev => ({
             correct: isCorrect ? [...prev.correct, currentQ] : prev.correct,
             incorrect: !isCorrect ? [...prev.incorrect, currentQ] : prev.incorrect,
@@ -170,26 +194,30 @@ function BehavioralQuestions() {
             const newCorrectCount = score.correct + (isCorrect ? 1 : 0);
             const newWrongCount = score.wrong + (!isCorrect ? 1 : 0);
             setScore({ correct: newCorrectCount, wrong: newWrongCount });
-            
-        if (currentIndex + 1 === questions.length && questions.length === initialFlashcardQuestions.length) {
+
+            // Only update backend progress if this is the *end* of the *full* initial deck.
+            if (currentIndex + 1 === questions.length && questions.length === initialFlashcardQuestions.length) {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
                     totalQuestions: questions.length,
                     deckTitle: SUB_CATEGORY_TITLE,
                 });
             }
+
             setCurrentIndex(prev => prev + 1);
             setIsFlipped(false);
-            setAnimation(''); 
+            setAnimation('');
         }, 500);
     };
 
+    // Shuffles the current set of flashcards and resets the view.
     const handleShuffle = () => {
         if (!questions) return;
         setQuestions(prev => [...prev].sort(() => Math.random() - 0.5));
         handleReset();
     };
 
+    // Resets the flashcard session to the beginning.
     const handleReset = () => {
         setCurrentIndex(0);
         setIsFlipped(false);
@@ -199,26 +227,32 @@ function BehavioralQuestions() {
         setTimeout(() => setAnimation(''), 300);
     };
 
+    // Updates the state when the user types in the textarea in edit mode.
     const handleAnswerChange = (index, newAnswer) => {
         const updatedQuestions = [...questions];
         updatedQuestions[index].back = newAnswer;
         setQuestions(updatedQuestions);
+        
         const questionId = updatedQuestions[index].id;
         setChangedAnswers(prev => ({ ...prev, [questionId]: newAnswer }));
     };
 
+    // Starts a new flashcard round with only the incorrectly answered questions.
     const startPracticeRound = () => {
         setQuestions(roundResults.incorrect);
         handleReset();
     };
 
+    // Saves the user's edited flashcard answers to their profile.
     const handleSaveChanges = async () => {
         if (!currentUser?.email || Object.keys(changedAnswers).length === 0) {
             setIsEditMode(false);
             return;
         }
+        
         const updatedEditedCards = JSON.parse(JSON.stringify(currentUser.editedCards || {}));
 
+        // Build the nested object structure for the database update.
         Object.keys(changedAnswers).forEach(cardId => {
             const originalCard = initialFlashcardQuestions.find(q => q.id === cardId);
             if (originalCard) {
@@ -238,15 +272,25 @@ function BehavioralQuestions() {
         }
     };
     
+    // --- Practice Test Handlers ---
+
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
     
     const handleNextQuestion = () => {
         const isCorrect = selectedAnswer === practiceTestQuestions[ptCurrentIndex].correctAnswer;
         const newPtScore = ptScore + (isCorrect ? 1 : 0);
         if (isCorrect) setPtScore(newPtScore);
-        setUserAnswers(prev => [...prev, { question: practiceTestQuestions[ptCurrentIndex].question, selected: selectedAnswer, correct: practiceTestQuestions[ptCurrentIndex].correctAnswer, isCorrect }]);
+        
+        setUserAnswers(prev => [...prev, {
+            question: practiceTestQuestions[ptCurrentIndex].question,
+            selected: selectedAnswer,
+            correct: practiceTestQuestions[ptCurrentIndex].correctAnswer,
+            isCorrect
+        }]);
+        
         setSelectedAnswer(null);
 
+        // Check if the test is over.
         if (ptCurrentIndex + 1 === practiceTestQuestions.length) {
             setTestFinished(true);
             updateUserDeckProgress({
@@ -265,15 +309,18 @@ function BehavioralQuestions() {
         setSelectedAnswer(null);
         setUserAnswers([]);
         setPtScore(0);
-        setTimeLeft(60);
+        setTimeLeft(180); // Reset timer to 3 minutes on restart.
         setTestFinished(false);
     };
 
+    // Helper function to format the timer display.
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
+
+    // --- Render Logic ---
 
     if (isLoading || !questions) {
         return <div className="loading-fullscreen">Loading Questions...</div>;
@@ -281,7 +328,7 @@ function BehavioralQuestions() {
     
     const currentQuestion = questions[currentIndex];
 
-    // --- (The rest of the rendering JSX is unchanged) ---
+    // Render the initial choice screen.
     if (view === 'options') {
         return (
             <div className="app-container">
@@ -301,7 +348,9 @@ function BehavioralQuestions() {
         );
     }
 
+    // --- Render: Flashcard Mode ---
     if (view === 'flashcards') {
+        // Render the edit mode view.
         if (isEditMode) {
             return (
                 <div className="app-container">
@@ -314,7 +363,12 @@ function BehavioralQuestions() {
                             {questions.map((q, index) => (
                                 <div key={q.id} className="edit-question-item">
                                     <label className="edit-question-label">{q.front}</label>
-                                    <textarea className="edit-textarea" value={q.back} onChange={(e) => handleAnswerChange(index, e.target.value)} rows="3" />
+                                    <textarea
+                                        className="edit-textarea"
+                                        value={q.back}
+                                        onChange={(e) => handleAnswerChange(index, e.target.value)}
+                                        rows="3"
+                                    />
                                 </div>
                             ))}
                         </div>
@@ -323,6 +377,7 @@ function BehavioralQuestions() {
             );
         }
 
+        // Render the completion screen after a flashcard round.
         if (currentIndex >= questions.length && questions.length > 0) {
             const totalAnswered = score.correct + score.wrong;
             const percentage = totalAnswered > 0 ? Math.round((score.correct / totalAnswered) * 100) : 0;
@@ -376,40 +431,44 @@ function BehavioralQuestions() {
             );
         }
 
+        // Render the main flashcard interface.
         return (
             <div className="app-container">
-                 <div className="flashcard-container">
-                     <header className="header">
-                         <button className="header-button" onClick={handleReset} title="Restart"><Icon path={ICONS.undo} /></button>
-                         <button className="header-button" onClick={() => setIsEditMode(true)} title="Edit"><Icon path={ICONS.edit} /></button>
-                     </header>
-                     <main className="main-content">
-                         <div className={`card ${isFlipped ? 'is-flipped' : ''} ${animation}`} onClick={handleFlip}>
-                             <div className="card-face card-front"><p>{currentQuestion?.front}</p></div>
-                             <div className="card-face card-back"><p>{currentQuestion?.back}</p></div>
-                         </div>
-                     </main>
-                     <div className="controls">
-                         <button className="control-button wrong-button" onClick={() => handleAnswer(false)}><Icon path={ICONS.x} className="icon large-icon" /></button>
-                         <div className="progress-text">
-                             <span>{currentIndex + 1} / {questions.length}</span>
-                             <div className="score-tracker">
-                                 <span className="score-item score-wrong"><Icon path={ICONS.x} className="icon score-icon" /> {score.wrong}</span>
-                                 <span className="score-item score-correct"><Icon path={ICONS.check} className="icon score-icon" /> {score.correct}</span>
-                             </div>
-                         </div>
-                         <button className="control-button correct-button" onClick={() => handleAnswer(true)}><Icon path={ICONS.check} className="icon large-icon" /></button>
-                     </div>
-                     <footer className="footer">
-                         <div className="footer-buttons"><button onClick={handleShuffle} title="Shuffle"><Icon path={ICONS.shuffle}/></button></div>
-                     </footer>
-                 </div>
+                <div className="flashcard-container">
+                    <header className="header">
+                        <button className="header-button" onClick={handleReset} title="Restart"><Icon path={ICONS.undo} /></button>
+                        <button className="header-button" onClick={() => setIsEditMode(true)} title="Edit"><Icon path={ICONS.edit} /></button>
+                    </header>
+                    <main className="main-content">
+                        <div className={`card ${isFlipped ? 'is-flipped' : ''} ${animation}`} onClick={handleFlip}>
+                            <div className="card-face card-front"><p>{currentQuestion?.front}</p></div>
+                            <div className="card-face card-back"><p>{currentQuestion?.back}</p></div>
+                        </div>
+                    </main>
+                    <div className="controls">
+                        <button className="control-button wrong-button" onClick={() => handleAnswer(false)}><Icon path={ICONS.x} className="icon large-icon" /></button>
+                        <div className="progress-text">
+                            <span>{currentIndex + 1} / {questions.length}</span>
+                            <div className="score-tracker">
+                                <span className="score-item score-wrong"><Icon path={ICONS.x} className="icon score-icon" /> {score.wrong}</span>
+                                <span className="score-item score-correct"><Icon path={ICONS.check} className="icon score-icon" /> {score.correct}</span>
+                            </div>
+                        </div>
+                        <button className="control-button correct-button" onClick={() => handleAnswer(true)}><Icon path={ICONS.check} className="icon large-icon" /></button>
+                    </div>
+                    <footer className="footer">
+                        <div className="footer-buttons"><button onClick={handleShuffle} title="Shuffle"><Icon path={ICONS.shuffle}/></button></div>
+                    </footer>
+                </div>
             </div>
         );
     }
 
+    // --- Render: Practice Test Mode ---
     if (view === 'practiceTest') {
         const currentPtQuestion = practiceTestQuestions[ptCurrentIndex];
+        
+        // Render the test results screen.
         if (testFinished) {
             return (
                 <div className="pt-app-container">
@@ -431,6 +490,7 @@ function BehavioralQuestions() {
             );
         }
 
+        // Render the active practice test view.
         return (
             <div className="pt-app-container">
                 <div className="pt-test-header">
@@ -444,12 +504,20 @@ function BehavioralQuestions() {
                     <p className="pt-question-text">{currentPtQuestion.question}</p>
                     <div className="pt-options">
                         {currentPtQuestion.options.map((option, index) => (
-                            <button key={index} className={`pt-option-btn ${selectedAnswer === option ? 'selected' : ''}`} onClick={() => handleAnswerSelect(option)}>
+                            <button
+                                key={index}
+                                className={`pt-option-btn ${selectedAnswer === option ? 'selected' : ''}`}
+                                onClick={() => handleAnswerSelect(option)}
+                            >
                                 {option}
                             </button>
                         ))}
                     </div>
-                    <button className="pt-next-button" onClick={handleNextQuestion} disabled={!selectedAnswer}>
+                    <button
+                        className="pt-next-button"
+                        onClick={handleNextQuestion}
+                        disabled={!selectedAnswer}
+                    >
                         {ptCurrentIndex === practiceTestQuestions.length - 1 ? 'Finish' : 'Next'}
                     </button>
                 </div>

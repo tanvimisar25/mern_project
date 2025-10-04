@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 /* --- CSS Variables for easy theme management --- */
+/* Defines a global color palette and size variables for consistent styling across the application. */
 :root {
     --bg-dark: #100a27;
     --bg-light: #f8f9fc;
@@ -23,23 +24,26 @@
 }
 
 /* --- Base & Layout --- */
+/* Basic reset and default styles for the body. */
 body {
     margin: 0;
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: var(--bg-dark);
     color: var(--text-dark);
-    overflow-x: hidden;
+    overflow-x: hidden; /* Prevents horizontal scrolling. */
 }
 
+/* A fixed background overlay image to add texture to the page. */
 .bg-overlay {
     position: fixed;
-    inset: 0;
+    inset: 0; /* A shorthand for top: 0; right: 0; bottom: 0; left: 0; */
     background-image: url("trans.png");
     background-size: cover;
     background-position: center;
     opacity: 0.7;
 }
 
+/* The main flex container that holds the sidebar and main content. */
 .layout {
     display: flex;
     min-height: 100vh;
@@ -49,6 +53,7 @@ body {
 }
 
 /* --- Sidebar --- */
+/* Styles for the collapsible sidebar navigation. */
 .sidebar {
     background-color: var(--bg-dark);
     color: var(--text-light);
@@ -56,19 +61,20 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: fixed;
+    position: fixed; /* Fixes the sidebar to the viewport. */
     height: calc(100vh - 40px);
     border-radius: 40px;
     box-sizing: border-box;
     transition: width 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     overflow: hidden;
-    width: var(--sidebar-collapsed-width);
+    width: var(--sidebar-collapsed-width); /* Starts in a collapsed state. */
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     top: 20px;
     left: 20px;
-    z-index: 2000;
+    z-index: 2000; /* High z-index to keep it above other content. */
 }
 
+/* The sidebar expands to its full width on hover. */
 .sidebar:hover {
     width: var(--sidebar-expanded-width);
     box-shadow: 0 12px 40px rgba(118, 169, 250, 0.3);
@@ -84,7 +90,7 @@ body {
     justify-content: flex-start;
     gap: 12px;
     cursor: default;
-    white-space: nowrap;
+    white-space: nowrap; /* Prevents text from wrapping. */
     overflow: hidden;
     height: 40px;
     padding-left: 6px;
@@ -93,15 +99,15 @@ body {
 .logo-img {
     width: 40px;
     height: 40px;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Prevents the image from shrinking. */
 }
 
 .logo-text {
     font-size: 30px;
     font-weight: 600;
     color: white;
-    opacity: 0;
-    width: 0;
+    opacity: 0; /* Hidden by default. */
+    width: 0;   /* Collapsed by default. */
     transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out, background-position 1s ease-in-out;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(90deg, #fff, var(--primary-accent), #fff);
@@ -110,28 +116,31 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
+/* When the sidebar is hovered, the logo text becomes visible. */
 .sidebar:hover .logo-text {
     opacity: 1;
     width: auto;
     animation: shine 3s linear infinite;
 }
 
+/* A shining animation for the logo text gradient. */
 @keyframes shine {
     0% { background-position: 100% center; }
     100% { background-position: -100% center; }
 }
 
+/* Main container for the navigation links. */
 .sidebar-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     padding-top: 15px;
     overflow-y: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    -ms-overflow-style: none;  /* Hides scrollbar on IE and Edge. */
+    scrollbar-width: none;  /* Hides scrollbar on Firefox. */
 }
 
-.sidebar-content::-webkit-scrollbar { display: none; }
+.sidebar-content::-webkit-scrollbar { display: none; } /* Hides scrollbar on Chrome, Safari, and Opera. */
 
 .sidebar-section {
     display: flex;
@@ -149,12 +158,13 @@ body {
     letter-spacing: 0.5px;
     white-space: nowrap;
     overflow: hidden;
-    opacity: 0;
+    opacity: 0; /* Hidden in collapsed view. */
     transform: translateX(-10px);
     transition: all 0.3s ease-in-out;
     margin-bottom: 0;
 }
 
+/* The section title appears when the sidebar is expanded. */
 .sidebar:hover .section-title {
     opacity: 1;
     transform: translateX(0);
@@ -196,16 +206,18 @@ body {
 }
 
 .sidebar-link:hover svg {
-    transform: translateY(-2px);
+    transform: translateY(-2px); /* Slight upward movement on hover. */
 }
 
+/* The text next to the icon is hidden by default. */
 .sidebar-link .link-text {
     opacity: 0;
     width: 0;
     margin-left: 0;
-    transition: none;
+    transition: none; /* No transition for the collapsed state. */
 }
 
+/* The text appears when the sidebar is hovered/expanded. */
 .sidebar:hover .sidebar-link .link-text {
     opacity: 1;
     width: auto;
@@ -217,8 +229,9 @@ body {
     color: white;
 }
 
+/* --- Sidebar Footer (Login/Logout) --- */
 .sidebar-footer {
-    margin-top: auto;
+    margin-top: auto; /* Pushes the footer to the bottom. */
     padding: 8px 0 5px 0;
     border-top: 1px solid #333333;
 }
@@ -268,7 +281,7 @@ body {
 /* --- Main Content Area --- */
 .main-content1 {
     flex-grow: 1;
-    margin-left: var(--sidebar-collapsed-width);
+    margin-left: var(--sidebar-collapsed-width); /* Creates space for the collapsed sidebar. */
     transition: margin-left 0.3s ease-in-out;
     position: relative;
     z-index: 1;
@@ -278,11 +291,12 @@ body {
     align-items: center;
 }
 
-/* ✅ FIX: This rule neutralizes a style on ANY descendant that prevents 'position: fixed' from working correctly. */
+/* This rule neutralizes a style on ANY descendant that prevents 'position: fixed' from working correctly. */
 .main-content1 * {
     perspective: none !important;
 }
 
+/* When the sidebar expands, push the main content to the right. */
 .sidebar:hover ~ .main-content1 {
     margin-left: calc(var(--sidebar-expanded-width) + 200px);
 }
@@ -298,6 +312,7 @@ body {
     height: 100%;
 }
 
+/* Specific positioning for the header and flip card on the homepage. */
 .homepage-wrapper .main-header {
     text-align: center;
     margin-left: -320px;
@@ -310,14 +325,13 @@ body {
 }
 
 /* --- GLOBAL DECKS SECTION --- */
-/* This rule now positions the decks section on ANY page that has it */
+/* This rule positions the decks section on ANY page that has it. */
 .decks-section {
     position: fixed;
     top: 20px;
     right: 22px;
-    z-index: 100; /* Ensure it's on top of other content */
+    z-index: 100; /* Ensures it's on top of other content. */
 }
-
 
 /* Generic Header (for other pages) */
 .main-header {
@@ -346,7 +360,7 @@ body {
     box-shadow: var(--shadow);
     height: calc(100vh - 40px);
     overflow-y: auto;
-    width: var(--decks-expanded-width);
+    width: var(--decks-expanded-width); /* Starts in expanded state. */
     transition: width 0.3s ease-in-out;
     overflow-x: hidden;
     display: flex;
@@ -356,43 +370,39 @@ body {
 
 .explore-decks-card::-webkit-scrollbar { display: none; }
 
+/* --- Corrected Interaction Styles for Featured Decks --- */
 
-/* ✅ --- START: CORRECTED INTERACTION STYLES FOR FEATURED DECKS --- ✅ */
-
-/* This rule correctly shrinks the card's width on sidebar hover */
+/* This rule correctly shrinks the card's width when the main sidebar is hovered. */
 .sidebar:hover ~ .main-content1 .explore-decks-card {
     width: var(--decks-collapsed-width);
 }
 
-/* This rule hides the "Featured" part of the title */
+/* This rule hides the "Featured" part of the title when collapsed. */
 .sidebar:hover ~ .main-content1 .explore-decks-card h2 .title-expanded {
     opacity: 0;
     width: 0;
 }
 
-/* This rule re-aligns the title to the left */
+/* This rule re-aligns the title to the left in the collapsed view. */
 .sidebar:hover ~ .main-content1 .decks-section h2 {
     justify-content: flex-start;
     margin-left: -6px;
 }
 
-/* This rule hides the full list of decks */
+/* This rule hides the full list of decks when collapsed. */
 .sidebar:hover ~ .main-content1 .grid-container {
     opacity: 0;
     height: 0;
-    pointer-events: none;
+    pointer-events: none; /* Prevents interaction with hidden elements. */
     overflow: hidden;
 }
 
-/* This rule shows the bubbles */
+/* This rule shows the bubbles when the decks section is collapsed. */
 .sidebar:hover ~ .main-content1 .decks-collapsed-view {
   opacity: 1;
   height: 100%;
   flex-grow: 1;
 }
-
-/* ✅ --- END: CORRECTED INTERACTION STYLES --- ✅ */
-
 
 .decks-section h2 {
     font-size: 26px;
@@ -406,12 +416,13 @@ body {
     transition: justify-content 0.3s ease-in-out;
 }
 
-/* Added span for better control */
+/* Added span for better animation control of the "Featured" text. */
 .explore-decks-card h2 .title-expanded {
     display: inline-block;
     transition: opacity 0.1s ease, width 0.3s ease-in-out;
 }
 
+/* Container for the list of deck links. */
 .grid-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -457,18 +468,19 @@ body {
     height: 350px;
     position: relative;
     transition: transform 0.8s ease-in-out;
-    transform-style: preserve-3d;
+    transform-style: preserve-3d; /* Allows child elements to have 3D position. */
     cursor: pointer;
     margin-left: -20px;
 }
 
+/* The class that triggers the flip animation. */
 .info-card.is-flipped { transform: rotateY(180deg); }
 
 .info-card-face {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
+    backface-visibility: hidden; /* Hides the back of the element when it's facing away. */
     border-radius: 1rem;
     display: flex;
     align-items: center;
@@ -489,7 +501,7 @@ body {
 
 .info-card-back {
     background-color: #1b4965;
-    transform: rotateY(180deg);
+    transform: rotateY(180deg); /* Positions the back face correctly for the flip. */
     font-size: 2rem;
     font-weight: 500;
     color: #ffffff;
@@ -537,9 +549,9 @@ body {
     box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
 }
 
-/* Other decks collapsed view styles */
+/* --- Decks Collapsed View (Bubbles) --- */
 .decks-collapsed-view {
-  opacity: 0;
+  opacity: 0; /* Hidden by default. */
   height: 0;
   overflow: hidden;
   transition: opacity 0.3s ease 0.1s;
@@ -574,4 +586,3 @@ body {
   transform: scale(1.1);
   background-color: #c7e8ff;
 }
-

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import './MyDeck.css';
@@ -7,7 +7,6 @@ import { useAuth } from './AuthContext';
 // --- (SVG Icons and ALL_DECK_INFO are unchanged) ---
 const AddIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}> <path d="M12 4.5v15m7.5-7.5h-15" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /> </svg>);
 const TrashIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}> <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.134-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.067-2.09.92-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /> </svg>);
-
 const ALL_DECK_INFO = {
     "general_hr": { id: "general_hr", title: "General HR Questions", path: "/generalquestions" },
     "general_hr_test": { id: "general_hr_test", title: "General HR Questions Test", path: "/generalquestions" },
@@ -59,7 +58,7 @@ const ALL_DECK_INFO = {
     "ethical_hacking_pen_testing_test": { id: "ethical_hacking_pen_testing_test", title: "Ethical Hacking & Pen Testing Test", path: "/ethicalhacking" },
 };
 
-// --- (TodoList component is unchanged) ---
+// --- (TodoList component remains unchanged) ---
 const TodoList = ({ todos = [], onAdd, onToggle, onDelete }) => {
     const [newTodo, setNewTodo] = useState('');
     const handleAddSubmit = (e) => {
@@ -91,36 +90,18 @@ const TodoList = ({ todos = [], onAdd, onToggle, onDelete }) => {
     );
 };
 
-
-// --- Main My Decks Page Component ---
 const MyDeck = () => {
-    const { currentUser, fetchUserProfile, updateUserProfile } = useAuth();
-    const [isLoading, setIsLoading] = useState(true);
-    // ✅ FIX: Favorites section is now closed by default
+    // ✅ CHANGE: Get the 'loading' state from the AuthContext.
+    const { currentUser, loading, updateUserProfile, fetchUserProfile } = useAuth();
+    
+    // ✅ CHANGE: The local 'isLoading' state is no longer needed.
     const [favoritesExpanded, setFavoritesExpanded] = useState(false);
     const [completedExpanded, setCompletedExpanded] = useState(false);
     const [masteredExpanded, setMasteredExpanded] = useState(false);
 
-    useEffect(() => {
-        const loadData = async () => {
-            if (!currentUser?.email) {
-                setIsLoading(false);
-                return;
-            }
-            setIsLoading(true);
-            try {
-                await fetchUserProfile(currentUser.email);
-            } catch (error) {
-                console.error("Failed to fetch user data:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        loadData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentUser?.email]);
+    // ✅ CHANGE: The local useEffect for loading data is removed, simplifying the component.
 
-
+    // --- (To-Do and Deck handlers remain unchanged) ---
     const handleAddTodo = async (text) => {
         const newTodo = { text, completed: false };
         const updatedTodos = [...(currentUser.todos || []), newTodo];
@@ -137,20 +118,16 @@ const MyDeck = () => {
         const updatedTodos = currentUser.todos.filter((_, i) => i !== index);
         await updateUserProfile(currentUser.email, { todos: updatedTodos });
     };
-
-    // ✅ NEW: Function to handle removing a deck from Completed or Mastered lists
+    
     const handleRemoveDeck = async (listName, deckTitle) => {
         if (!currentUser?.email) return;
-
         const deckType = deckTitle.includes("Test") ? "Tests" : "Flashcards";
         const updatedList = JSON.parse(JSON.stringify(currentUser[listName] || {}));
-
         if (updatedList[deckType]?.[deckTitle]) {
             delete updatedList[deckType][deckTitle];
             if (Object.keys(updatedList[deckType]).length === 0) {
                 delete updatedList[deckType];
             }
-
             try {
                 await updateUserProfile(currentUser.email, { [listName]: updatedList });
             } catch (error) {
@@ -159,10 +136,24 @@ const MyDeck = () => {
         }
     };
 
+    // --- Render Logic ---
 
-    if (isLoading) { return <div className="loading-fullscreen">Loading Your Decks...</div>; }
-    if (!currentUser) { return (<div className="loading-fullscreen">Please <Link to="/login">log in</Link> to see your decks.</div>); }
+    // ✅ CHANGE: This is the new, flicker-free render logic.
+    // 1. First, check if the Auth context is still loading. This prevents any UI flash.
+    if (loading) {
+        return <div className="loading-fullscreen">Initializing...</div>;
+    }
+
+    // 2. After the auth check is complete, if there's no user, show the login prompt.
+    if (!currentUser) {
+        return (
+            <div className="loading-fullscreen">
+                Please <Link to="/login" style={{ marginLeft: '5px' }}>log in</Link> to see your decks.
+            </div>
+        );
+    }
     
+    // 3. If we have a user, render the full page content.
     const favoriteDecks = currentUser.favoriteDecks || {};
     const completedDecks = currentUser.completedDecks || {};
     const masteredDecks = currentUser.masteredDecks || {};
@@ -170,7 +161,10 @@ const MyDeck = () => {
     return (
         <div className="my-decks-layout">
             <main className="center-content">
-                <div className="mmain-header"><h1>Your Decks</h1><p className="subtitle">Track your progress and organize your study materials.</p></div>
+                <div className="mmain-header">
+                    <h1>Your Decks</h1>
+                    <p className="subtitle">Track your progress and organize your study materials.</p>
+                </div>
                 <div className="progress-overview-card">
                     <h3>Progress Overview</h3>
                     <div className="progress-grid">
@@ -192,13 +186,12 @@ const MyDeck = () => {
     );
 };
 
-// ✅ UPDATED: This component now includes the remove button functionality and correct grouping
+// ... (ExpandableDeckSection component remains unchanged) ...
 const ExpandableDeckSection = ({ title, deckGroups = {}, isExpanded, toggleExpand, onRemove, listName }) => {
     const titleToDeckInfoMap = Object.values(ALL_DECK_INFO).reduce((acc, deck) => {
         acc[deck.title] = deck;
         return acc;
     }, {});
-
     const totalCount = Object.values(deckGroups).reduce((count, subCategories) => count + Object.keys(subCategories).length, 0);
 
     return (
@@ -218,47 +211,44 @@ const ExpandableDeckSection = ({ title, deckGroups = {}, isExpanded, toggleExpan
                     >
                         {totalCount > 0 ? (
                             Object.entries(deckGroups).map(([mainGroup, subCategories]) => {
-    // ✅ This is the new check
-    const hasItems = Object.keys(subCategories).length > 0;
-
-    // Only render the group if it has items
-    return hasItems && (
-        <div key={mainGroup} className="favorite-category-group">
-            <h5>{mainGroup}</h5>
-            <div className="favorite-items">
-                {Object.keys(subCategories).map(subCategoryTitle => {
-                    const deckInfo = titleToDeckInfoMap[subCategoryTitle];
-                    if (!deckInfo) return null;
-                    return (
-                        <div key={deckInfo.id} className="favorite-item-wrapper">
-                            <Link to={deckInfo.path} className="favorite-item-link">
-                                <motion.div 
-                                    className="favorite-item" 
-                                    initial={{ y: 10, opacity: 0 }} 
-                                    animate={{ y: 0, opacity: 1 }}
-                                >
-                                    <span>{deckInfo.title}</span>
-                                </motion.div>
-                            </Link>
-                            {onRemove && (
-                                <button
-                                    className="remove-deck-btn"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        e.preventDefault();
-                                        onRemove(listName, deckInfo.title);
-                                    }}
-                                >
-                                    <TrashIcon className="trash-icon" />
-                                </button>
-                            )}
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
-    );
-})
+                                const hasItems = Object.keys(subCategories).length > 0;
+                                return hasItems && (
+                                    <div key={mainGroup} className="favorite-category-group">
+                                        <h5>{mainGroup}</h5>
+                                        <div className="favorite-items">
+                                            {Object.keys(subCategories).map(subCategoryTitle => {
+                                                const deckInfo = titleToDeckInfoMap[subCategoryTitle];
+                                                if (!deckInfo) return null;
+                                                return (
+                                                    <div key={deckInfo.id} className="favorite-item-wrapper">
+                                                        <Link to={deckInfo.path} className="favorite-item-link">
+                                                            <motion.div 
+                                                                className="favorite-item" 
+                                                                initial={{ y: 10, opacity: 0 }} 
+                                                                animate={{ y: 0, opacity: 1 }}
+                                                            >
+                                                                <span>{deckInfo.title}</span>
+                                                            </motion.div>
+                                                        </Link>
+                                                        {onRemove && (
+                                                            <button
+                                                                className="remove-deck-btn"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    e.preventDefault();
+                                                                    onRemove(listName, deckInfo.title);
+                                                                }}
+                                                            >
+                                                                <TrashIcon className="trash-icon" />
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                );
+                            })
                         ) : (<p className="empty-state-message">No decks in this category yet.</p>)}
                     </motion.div>
                 )}
@@ -268,4 +258,3 @@ const ExpandableDeckSection = ({ title, deckGroups = {}, isExpanded, toggleExpan
 };
 
 export default MyDeck;
-

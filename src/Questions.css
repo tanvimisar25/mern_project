@@ -1,37 +1,40 @@
 /* --- Global Styles & Variables --- */
+/* Establishes a global color palette and font import for consistent styling. */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Defines CSS variables for easy theme management and consistency. */
 :root {
-    --bg-primary: #F3F4F6;      /* Light Gray */
-    --bg-card-front: #1b4965;     /* White */
-    --bg-card-back: #1b4965;       /* Off-White */
-    --text-primary: #FFFFFF;       /* Dark Gray */
-    --text-secondary: #6B7280;     /* Medium Gray */
-    --text-on-card: #ffffff;       /* Nearly Black */
-    --color-correct: #22C55E;       /* Green */
-    --color-wrong: #EF4444;       /* Red */
-    --color-blue: #3B82F6;         /* Blue */
+    --bg-primary: #F3F4F6;
+    --bg-card-front: #1b4965;
+    --bg-card-back: #1b4965;
+    --text-primary: #FFFFFF;
+    --text-secondary: #6B7280;
+    --text-on-card: #ffffff;
+    --color-correct: #22C55E;
+    --color-wrong: #EF4444;
+    --color-blue: #3B82F6;
 }
 
+/* --- Base & Layout --- */
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--bg-primary); /* Set a global background color */
+    background-color: var(--bg-primary); /* Sets a global background color. */
 }
 
-/* --- Main Layout --- */
+/* --- Main Layout Container for Flashcard/Test Pages --- */
 .app-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Align content to the top */
+    justify-content: flex-start; /* Aligns content to the top. */
     padding: 1rem;
-    overflow-x: hidden; 
+    overflow-x: hidden;
     box-sizing: border-box;
-    /* Add padding to prevent content from starting at the very edge */
     margin-left: 20px;
-      transition: margin-left 0.3s ease-in-out; /* ✅ ADD THIS LINE */
-
+    transition: margin-left 0.3s ease-in-out; /* Smooth transition for sidebar interaction. */
 }
 
 .flashcard-container {
@@ -40,11 +43,11 @@ body {
     flex-direction: column;
 }
 
-/* --- Start Screen --- */
+/* --- Start Screen (Choose Flashcards or Test) --- */
 .start-options-container {
     display: flex;
     justify-content: center;
-    align-items: stretch; 
+    align-items: stretch;
     gap: 2rem;
     width: 100%;
     max-width: 900px;
@@ -62,7 +65,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .start-screen h1 {
@@ -97,8 +100,7 @@ body {
     box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
 }
 
-
-/* --- Header & Footer --- */
+/* --- Header & Footer for Flashcard View --- */
 .header, .footer {
     display: flex;
     align-items: center;
@@ -109,19 +111,17 @@ body {
 }
 
 .header {
-    justify-content: center; 
+    justify-content: center;
     gap: 30rem;
     margin-left: -20px;
     padding-top: 0;
-
 }
+
 .footer {
     justify-content: center;
     padding-top: 0;
     padding-bottom: 0;
     padding-left: 0;
-
-
 }
 
 .header-button {
@@ -135,6 +135,7 @@ body {
     transition: color 0.2s ease;
     font-size: 1rem;
 }
+
 .header-button:hover {
     color: #1F2937;
 }
@@ -142,8 +143,9 @@ body {
 .footer-buttons {
     display: flex;
     align-items: center;
-    gap: 1.5rem; 
+    gap: 1.5rem;
 }
+
 .footer-buttons button {
     background: none;
     border: none;
@@ -151,26 +153,26 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
 }
+
 .footer-buttons button:hover {
     color: #1F2937;
 }
+
 .footer-buttons button:disabled {
-    color: #D1D5DB; /* gray-300 */
+    color: #D1D5DB;
     cursor: not-allowed;
 }
 
-
-/* --- Main Content & Card --- */
+/* --- Main Content & Flashcard --- */
 .main-content {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    flex-direction: column;      /* Ensures content flows downwards */
-    perspective: 1000px;
+    flex-direction: column;
+    perspective: 1000px; /* Enables 3D transformations for child elements like the card flip. */
     width: 100%;
     margin-left: -20px;
-    padding-top: -2rem; /* ✅ Add some space from the top */
-
+    padding-top: -2rem;
 }
 
 .card {
@@ -188,6 +190,7 @@ body {
     }
 }
 
+/* This class is toggled by React state to trigger the flip animation. */
 .card.is-flipped {
     transform: rotateY(180deg);
 }
@@ -196,17 +199,17 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
+    backface-visibility: hidden; /* Hides the back of the element when it's not facing the screen. */
     border-radius: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* padding: 1.5rem; */
     text-align: center;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
     box-sizing: border-box;
     border: 1px solid #E5E7EB;
     overflow-wrap: break-word;
+    padding: 20px;
 }
 
 .card-front {
@@ -214,18 +217,15 @@ body {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-on-card);
-    padding: 20px;
 }
 
 .card-back {
     background-color: var(--bg-card-back);
-    transform: rotateY(180deg);
+    transform: rotateY(180deg); /* Positions the back face correctly for the flip. */
     font-size: 1.25rem;
     font-weight: 500;
-    color: #ffffff; /* Make text readable */
+    color: #ffffff;
     overflow-wrap: break-word;
-    padding: 20px;
-
 }
 
 @media (min-width: 768px) {
@@ -233,8 +233,7 @@ body {
     .card-back { font-size: 1.7rem; }
 }
 
-
-/* --- Controls --- */
+/* --- Controls (Correct/Incorrect Buttons) --- */
 .controls {
     display: flex;
     justify-content: center;
@@ -258,8 +257,9 @@ body {
     transition: all 0.3s ease;
     transform: scale(1);
 }
+
 .control-button:hover {
-    transform: scale(1.1);
+    transform: scale(1.1); /* Slight zoom effect on hover. */
 }
 
 .wrong-button {
@@ -313,20 +313,10 @@ body {
 .score-correct { color: var(--color-correct); }
 .score-wrong { color: var(--color-wrong); }
 
-
 /* --- Icons --- */
-.icon {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-.score-icon {
-    width: 1.1rem;
-    height: 1.1rem;
-}
-.large-icon {
-    width: 2rem;
-    height: 2rem;
-}
+.icon { width: 1.5rem; height: 1.5rem; }
+.score-icon { width: 1.1rem; height: 1.1rem; }
+.large-icon { width: 2rem; height: 2rem; }
 @media (min-width: 768px) {
     .large-icon {
         width: 2.5rem;
@@ -342,24 +332,20 @@ body {
     box-sizing: border-box;
 }
 
-/* This new, combined rule applies the same style to both containers */
+/* A combined rule to apply the same card style to both completion containers. */
 .completion-screen-new,
 .your-stats-container {
-    /* These properties are copied directly from your .start-screen for a perfect match */
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-
-    /* These properties ensure the curved edges and spacing are consistent */
     border-radius: 1rem;
-    padding: 2.5rem 2rem; /* Using the more generous padding from .start-screen */
+    padding: 2.5rem 2rem;
     width: 100%;
     box-sizing: border-box;
 }
 
-/* We just need to keep the margin on the top box to separate it from the bottom one */
 .completion-screen-new {
-    margin-bottom: 2rem;
+    margin-bottom: 2rem; /* Adds space between the two cards. */
 }
 
 .completion-header h1 {
@@ -368,9 +354,6 @@ body {
     margin-top: 0;
     margin-bottom: 2rem;
     text-align: center;
-}
-.stats-container {
-    margin-bottom: 1.5rem;
 }
 .stats-container h2 {
     font-size: 1.1rem;
@@ -426,8 +409,6 @@ body {
     color: #1F2937;
 }
 
-
-
 .your-stats-container h2 {
     font-size: 1.5rem;
     margin-top: 0;
@@ -471,42 +452,37 @@ body {
     line-height: 1.5;
 }
 
+/* Shared styles for the main action buttons on the completion screen. */
 .practice-button, .restart-button-alt {
-    background-color: var(--bg-card-front); /* Dark blue background */
+    background-color: var(--bg-card-front);
     color: #FFFFFF;
-    border: none; /* Removes the old border from the restart button */
+    border: none;
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 700;
     border-radius: 0.5rem;
     cursor: pointer;
-    transition: all 0.2s ease; /* A slightly smoother transition */
+    transition: all 0.2s ease;
     width: 100%;
 }
 
 .practice-button {
-    margin-top: 1rem; /* Keeps the space above the practice button */
+    margin-top: 1rem;
 }
 
-/* This is the new hover effect for BOTH buttons, matching the start button */
 .practice-button:hover, .restart-button-alt:hover {
-    background-color: var(--bg-dark); /* Using the --bg-dark variable from your root */
+    background-color: var(--bg-dark);
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
 }
 
- /* --- Edit Mode --- */
+/* --- Edit Mode --- */
 .edit-mode-container {
-    /* These properties are copied directly from your .start-screen for a perfect match */
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-
-    /* These properties ensure the curved edges and spacing match */
     border-radius: 1.5rem;
-    padding: 2.5rem 2rem; /* Increased padding to match */
-
-    /* These properties are from your original code and our previous scrolling fix */
+    padding: 2.5rem 2rem;
     width: 100%;
     max-width: 700px;
     display: flex;
@@ -527,20 +503,20 @@ body {
     color: #1F2937;
 }
 .done-button {
-background-color: var(--bg-card-front); /* Changed to the dark blue */
-color: #FFFFFF;
- border: none;
-padding: 0.75rem 1.5rem; /* Matched padding */
- font-size: 1rem;
- font-weight: 700; /* Matched font weight */
- border-radius: 0.5rem;
- cursor: pointer;
- transition: all 0.2s ease; /* Matched transition */
+    background-color: var(--bg-card-front);
+    color: #FFFFFF;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 .done-button:hover {
--color: var(--bg-dark); /* Matched hover background */
-    transform: translateY(-2px); /* Matched "lift" effect */
-    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233); /* Matched "glow" effect */
+    background-color: var(--bg-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
 }
 .questions-list {
     max-height: 65vh;
@@ -573,7 +549,7 @@ padding: 0.75rem 1.5rem; /* Matched padding */
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
 }
 
-/* --- Animations --- */
+/* --- Animations for Card Transitions --- */
 .card.slide-out-left { animation: slideOutLeft 0.5s forwards; }
 .card.slide-out-right { animation: slideOutRight 0.5s forwards; }
 .card.shuffle { animation: shuffle 0.3s forwards; }
@@ -593,24 +569,20 @@ padding: 0.75rem 1.5rem; /* Matched padding */
     to { transform: scale(1); opacity: 1; }
 }
 
-/* * =========================================
- * --- All Styles for Practice Test --- 
- * =========================================
- */
+/* --- All Styles for Practice Test --- */
 .pt-app-container {
     display: flex;
-flex-direction: column;
-align-items: center;
- justify-content: flex-start; /* This pushes the box to the top */
- min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
     padding-top: 5rem;
     color: #1F2937;
     margin-top: -100px;
     margin-bottom: -10px;
     box-sizing: border-box;
     margin-left: 20px;
-      transition: margin-left 0.3s ease-in-out; /* ✅ ADD THIS LINE */
-
+    transition: margin-left 0.3s ease-in-out;
 }
 
 .pt-back-homepage {
@@ -651,32 +623,24 @@ align-items: center;
 }
 
 .pt-timer {
-    /* --- Translucent Style Applied --- */
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-
-    /* --- Style Adjustments for Consistency --- */
     font-size: 1.25rem;
     font-weight: 600;
     color: #374151;
     padding: 0.5rem 1rem;
-    border-radius: 0.75rem; /* Softer radius */
+    border-radius: 0.75rem;
 }
 
 .pt-question-container {
-    /* These properties are copied from your .start-screen for a perfect match */
-    background-color: rgba(255, 255, 255, 0.5); /* The semi-transparent white */
-    border: 1px solid rgba(0, 0, 0, 0.08);      /* A subtle border for the edge */
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-    backdrop-filter: blur(10px);                 /* This creates the sleek blur effect */
-
-    /* These properties ensure the curved edges and spacing are consistent */
+    backdrop-filter: blur(10px);
     border-radius: 1rem;
-    padding: 1.5rem 2rem; /* Using the more generous padding from .start-screen */
-
-    /* These properties are from your original code and control the size */
+    padding: 1.5rem 2rem;
     width: 900px;
     max-width: 800px;
 }
@@ -723,32 +687,31 @@ align-items: center;
 }
 
 .pt-next-button {
-    /* These properties are copied from your .start-button for a perfect match */
-    background-color: var(--bg-card-front); /* The solid dark blue */
+    background-color: var(--bg-card-front);
     color: #FFFFFF;
     border: none;
-    padding: 0.75rem 1.75rem; /* Standardized padding */
-    font-size: 1rem;      /* Standardized font size */
+    padding: 0.75rem 1.75rem;
+    font-size: 1rem;
     font-weight: 700;
     border-radius: 0.5rem;
     cursor: pointer;
-    transition: all 0.2s ease; /* A smoother transition for all properties */
-
-    /* These layout properties are kept from the original button */
+    transition: all 0.2s ease;
     margin-top: 2rem;
     float: right;
 }
 
 .pt-next-button:hover:not(:disabled) {
-    background-color: var(--bg-dark); /* The hover color from your other buttons */
-    transform: translateY(-2px);      /* The "lift" effect */
-    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233); /* The "glow" effect */
+    background-color: var(--bg-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
 }
+
 .pt-next-button:disabled {
     background-color: #D1D5DB;
     cursor: not-allowed;
 }
 
+/* --- Practice Test Results Screen --- */
 .pt-results-screen {
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.08);
@@ -784,7 +747,6 @@ align-items: center;
 }
 
 .pt-start-button {
-    /* These styles are copied from your main .start-button */
     background-color: var(--bg-card-front);
     color: #FFFFFF;
     border: none;
@@ -798,7 +760,6 @@ align-items: center;
 }
 
 .pt-start-button:hover {
-    /* This hover effect matches your other main buttons */
     background-color: var(--bg-dark);
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(59, 131, 246, 0.233);
@@ -834,8 +795,8 @@ align-items: center;
     color: #374151;
 }
 
-/* ✅ ADD THIS NEW RULE AT THE END OF THE FILE */
-/* This rule pulls the content back to control the movement on hover */
+/* --- Sidebar Interaction Adjustment --- */
+/* This rule pulls the main content back to the left when the sidebar is hovered to keep it centered. */
 .sidebar:hover ~ .main-content1 .app-container,
 .sidebar:hover ~ .main-content1 .pt-app-container {
     margin-left: -350px; 

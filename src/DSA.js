@@ -4,10 +4,11 @@ import { motion } from "framer-motion";
 import './Core.css';
 import { useAuth } from './AuthContext';
 
-// ✅ 1. DEFINE THE MAIN CATEGORY TITLE
-// This will be used as the key in our new nested data structure.
+// Defines the main category title used for storing user data (like favorites) in a structured way.
 const MAIN_CATEGORY_TITLE = "Data Structure and Algorithm";
 
+// An array of objects representing the different subcategories within DSA.
+// Each object has a unique ID, a display title, a description, and a link for navigation.
 const categories = [
     {
         id: "array_string",
@@ -35,64 +36,63 @@ const categories = [
     }
 ];
 
-// --- HeartIcon Component (Unchanged) ---
+// A reusable SVG icon component for the 'favorite' button.
 const HeartIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
     </svg>
 );
 
-// --- Main DSA Page Component (Refactored for MERN) ---
+// The main component for the Data Structure and Algorithm category page.
 const DSA = () => {
+    // Access user data and authentication functions from the AuthContext.
     const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
 
-    // Fetch user profile on component load to ensure favorites are up-to-date
+    // This effect runs when the component mounts or when the user's email changes.
+    // It ensures that the latest user data (including favorites) is loaded.
     useEffect(() => {
         if (currentUser?.email) {
             fetchUserProfile(currentUser.email);
         }
     }, [currentUser?.email, fetchUserProfile]);
 
-
-    // ✅ 2. UPDATED: Favorite handler now uses the sub-category TITLE as the key.
+    // Handles the click event on the favorite (heart) icon for a subcategory.
     const handleFavoriteClick = async (e, deckTitle) => {
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault(); // Prevents navigation when clicking the button inside the link.
+        e.stopPropagation(); // Stops the event from bubbling up to the parent Link component.
+        
         if (!currentUser?.email) return;
 
-        // Deep copy the favorites object to avoid direct state mutation
+        // Create a deep copy of the user's favorites to avoid direct state mutation.
         const updatedFavorites = JSON.parse(JSON.stringify(currentUser.favoriteDecks || {}));
-
-        // Get the sub-object for our main category, or create it if it doesn't exist
         const categoryFavorites = updatedFavorites[MAIN_CATEGORY_TITLE] || {};
 
+        // Check if the deck is already favorited.
         const isCurrentlyFavorited = categoryFavorites.hasOwnProperty(deckTitle);
 
+        // Toggle the favorite status.
         if (isCurrentlyFavorited) {
-            // Remove the sub-category using its title
             delete categoryFavorites[deckTitle];
         } else {
-            // Add the sub-category using its title
             categoryFavorites[deckTitle] = true;
         }
 
-        // If the main category object is now empty, remove it from the top-level favorites
+        // Clean up the main category object if it becomes empty.
         if (Object.keys(categoryFavorites).length === 0) {
             delete updatedFavorites[MAIN_CATEGORY_TITLE];
         } else {
-            // Otherwise, update the favorites with the modified category object
             updatedFavorites[MAIN_CATEGORY_TITLE] = categoryFavorites;
         }
 
+        // Update the user's profile in the backend with the new favorites object.
         try {
-            // Call the context function to save the entire updated favorites object
             await updateUserProfile(currentUser.email, { favoriteDecks: updatedFavorites });
         } catch (error) {
             console.error("Failed to update favorites:", error);
         }
     };
     
-    // ✅ 3. UPDATED: Check for favorites within the nested structure.
+    // Safely access the favorites for this specific main category.
     const dsaFavorites = currentUser?.favoriteDecks?.[MAIN_CATEGORY_TITLE] || {};
 
     return (
@@ -115,7 +115,7 @@ const DSA = () => {
                                     transition={{ type: "spring", stiffness: 400, damping: 15 }}
                                 >
                                     <button
-                                        // ✅ 4. UPDATED: Check and update using the category TITLE.
+                                        // Dynamically set the 'favorited' class based on the user's data.
                                         className={`favorite-btn ${dsaFavorites[category.title] ? 'favorited' : ''}`}
                                         onClick={(e) => handleFavoriteClick(e, category.title)}
                                         aria-label={`Favorite ${category.title}`}
@@ -135,4 +135,3 @@ const DSA = () => {
 };
 
 export default DSA;
-

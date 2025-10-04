@@ -1,24 +1,37 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+/**
+ * InfoFlipCard is a self-contained component that displays a card
+ * which can be flipped by the user to reveal more information and a signup button.
+ */
 const InfoFlipCard = () => {
+  // State to track whether the card is flipped or not.
   const [isFlipped, setIsFlipped] = useState(false);
+  // Hook from React Router to programmatically navigate the user.
   const navigate = useNavigate();
 
+  // Handles the click on the "Sign Up" button.
   const handleSignUpClick = (e) => {
+    // Stop the click from bubbling up to the parent div, which would flip the card back.
     e.stopPropagation();
+    // Navigate the user to the signup page.
     navigate('/SignUp');
   };
 
   return (
     <div className="info-card-container">
       <div
+        // Dynamically apply the 'is-flipped' class based on the state.
         className={`info-card ${isFlipped ? 'is-flipped' : ''}`}
+        // Toggle the flipped state when the card is clicked.
         onClick={() => setIsFlipped(!isFlipped)}
       >
+        {/* The front face of the card, visible by default. */}
         <div className="info-card-face info-card-front">
           <h2>Flip me!</h2>
         </div>
+        {/* The back face of the card, visible after being flipped. */}
         <div className="info-card-face info-card-back">
           <div className="info-card-content">
             <h3>Why PrepDeck?</h3>
@@ -37,9 +50,13 @@ const InfoFlipCard = () => {
   );
 };
 
+/**
+ * The main Homepage component for logged-out users. It displays a welcome message,
+ * an interactive flip card, and a selection of featured study decks.
+ */
 function Homepage() {
-  // ✅ FIX: Re-introduced a wrapper div with a unique class "homepage-wrapper".
-  // This ensures the special layout styles in index.css only apply to this page.
+  // This wrapper div is used to apply specific layout styles from an external CSS file
+  // that should only affect this homepage component.
   return (
     <div className="homepage-wrapper">
       <div className="main-header">
@@ -49,11 +66,15 @@ function Homepage() {
         </p>
       </div>
 
+      {/* Renders the interactive flip card component. */}
       <InfoFlipCard />
 
+      {/* Section to display the featured study decks. */}
       <div className="decks-section">
         <div className="explore-decks-card">
           <h2><span className="title-expanded">Featured </span>Decks</h2>
+          
+          {/* Grid view for larger screens */}
           <div className="grid-container">
             {[
               { title: "General HR Questions", terms: "20 decks", link: "/generalquestions" },
@@ -69,6 +90,8 @@ function Homepage() {
               </Link>
             ))}
           </div>
+          
+          {/* Collapsed bubble view for smaller screens or alternative layouts */}
           <div className="decks-collapsed-view">
             {[
               { short: "HR", link: "/generalquestions" },
@@ -88,4 +111,3 @@ function Homepage() {
 }
 
 export default Homepage;
-

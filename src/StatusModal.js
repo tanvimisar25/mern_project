@@ -3,7 +3,9 @@
 import React from 'react';
 import './StatusModal.css';
 
-// SVG Icons for success and error
+/**
+ * A reusable SVG icon component to indicate success.
+ */
 const SuccessIcon = () => (
   <svg className="status-icon success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M0 0h24v24H0z" fill="none"/>
@@ -11,6 +13,9 @@ const SuccessIcon = () => (
   </svg>
 );
 
+/**
+ * A reusable SVG icon component to indicate an error.
+ */
 const ErrorIcon = () => (
   <svg className="status-icon error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M0 0h24v24H0z" fill="none"/>
@@ -18,7 +23,17 @@ const ErrorIcon = () => (
   </svg>
 );
 
-const StatusModal = ({ isOpen, onClose, status, title, message }) => {
+/**
+ * A simple modal component to display a status message (success or error).
+ * It appears as an overlay on the screen.
+ *
+ * @param {boolean} isOpen - Controls whether the modal is visible or not.
+ * @param {string} status - Determines which icon to show ('success' or 'error').
+ * @param {string} title - The main heading of the modal.
+ * @param {string} message - The descriptive text below the title.
+ */
+const StatusModal = ({ isOpen, status, title, message }) => {
+  // If the modal is not supposed to be open, render nothing.
   if (!isOpen) {
     return null;
   }
@@ -26,8 +41,10 @@ const StatusModal = ({ isOpen, onClose, status, title, message }) => {
   return (
     <div className="status-modal-overlay">
       <div className="status-modal-content">
+        {/* Conditionally render the correct icon based on the 'status' prop. */}
         {status === 'success' && <SuccessIcon />}
         {status === 'error' && <ErrorIcon />}
+        
         <h2 className="status-modal-title">{title}</h2>
         <p className="status-modal-message">{message}</p>
       </div>
