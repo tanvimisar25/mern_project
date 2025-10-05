@@ -185,3 +185,11 @@
 .sidebar:hover ~ .main-content1 .signup-box {
     margin-left: -370px; 
 }
+
+/* To remove the second eye that's coming */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-webkit-password-reveal-button {
+    display: none !important;
+    -webkit-appearance: none; /* For older WebKit browsers */
+    appearance: none; /* Standard property */
+}
