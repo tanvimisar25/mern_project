@@ -51,9 +51,8 @@ const practiceTestQuestions = [
     { question: "An application that does not adequately log security events like login failures makes it difficult to detect an ongoing attack. This issue is categorized under:", options: ["A04: Insecure Design", "A07: Identification and Authentication Failures", "A09: Security Logging and Monitoring Failures", "A01: Broken Access Control"], correctAnswer: "A09: Security Logging and Monitoring Failures" }
 ];
 
-
 function AppSecurity() {
-    // --- State Management ---
+    // State Management
     const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
 
     // Tracks the current view: 'options', 'flashcards', or 'practiceTest'.
