@@ -10,7 +10,6 @@ const Icon = ({ path, className = "icon" }) => (
     </svg>
 );
 
-// Central object to store SVG paths for all icons used in the component.
 const ICONS = {
     check: "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z",
     x: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z",
@@ -19,11 +18,9 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
-// Defines the titles for categorizing user's edited cards in the database.
 const MAIN_CATEGORY_TITLE = "Cybersecurity";
 const SUB_CATEGORY_TITLE = "Application Security";
 
-// The default set of flashcard questions for this topic.
 const initialFlashcardQuestions = [
     { id: "as_1", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What is the OWASP Top 10?", back: "The OWASP (Open Web Application Security Project) Top 10 is a standard awareness document for developers and web application security professionals. It represents a broad consensus about the most critical security risks to web applications, updated every few years to reflect the changing threat landscape." },
     { id: "as_2", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What is an SQL Injection (SQLi) attack?", back: "SQL Injection is a type of injection attack where an attacker inserts malicious SQL code into a query. If the application does not properly sanitize the user input, the malicious query can be executed against the database, allowing the attacker to bypass authentication, access, modify, or delete data." },
@@ -37,7 +34,6 @@ const initialFlashcardQuestions = [
     { id: "as_10", deckId: "application_security", title: SUB_CATEGORY_TITLE, front: "What is a Content Security Policy (CSP)?", back: "A Content Security Policy (CSP) is an added layer of security, implemented via an HTTP response header, that helps to detect and mitigate certain types of attacks, particularly Cross-Site Scripting (XSS). It allows you to specify a whitelist of trusted sources from which a browser is allowed to load resources like scripts, styles, and images." }
 ];
 
-// The questions for the multiple-choice practice test.
 const practiceTestQuestions = [
     { question: "An attacker altering a URL parameter like user_id=123 to user_id=124 to access another user's private data is a classic example of what vulnerability?", options: ["SQL Injection", "Cross-Site Scripting (XSS)", "Insecure Direct Object Reference (IDOR)", "Security Misconfiguration"], correctAnswer: "Insecure Direct Object Reference (IDOR)" },
     { question: "What is the most effective and widely recommended defense against SQL Injection attacks?", options: ["Blacklisting dangerous characters like ';'.", "Using a Web Application Firewall (WAF).", "Using parameterized queries (prepared statements).", "Encrypting the entire database."], correctAnswer: "Using parameterized queries (prepared statements)." },
@@ -52,40 +48,27 @@ const practiceTestQuestions = [
 ];
 
 function AppSecurity() {
-    // State Management
     const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
 
-    // Tracks the current view: 'options', 'flashcards', or 'practiceTest'.
     const [view, setView] = useState('options');
-    // Holds the array of flashcard questions being displayed.
     const [questions, setQuestions] = useState(initialFlashcardQuestions);
-    // Manages the loading state, e.g., while fetching user data.
     const [isLoading, setIsLoading] = useState(false);
-    // Index of the current flashcard being viewed.
     const [currentIndex, setCurrentIndex] = useState(0);
-    // Tracks if the current flashcard is flipped to its back.
     const [isFlipped, setIsFlipped] = useState(false);
-    // Controls the animation class for card transitions.
     const [animation, setAnimation] = useState('');
-    // Stores the user's score for the current flashcard round.
     const [score, setScore] = useState({ correct: 0, wrong: 0 });
-    // Toggles the edit mode for flashcard answers.
     const [isEditMode, setIsEditMode] = useState(false);
-    // Stores the results of a flashcard round to show on the completion screen.
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
-    // Tracks which flashcard answers have been changed by the user in edit mode.
     const [changedAnswers, setChangedAnswers] = useState({});
 
-    // --- State for Practice Test ---
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
     const [ptScore, setPtScore] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(180); // 3 minutes for the test
+    const [timeLeft, setTimeLeft] = useState(180); 
     const [testFinished, setTestFinished] = useState(false);
 
-    // This effect runs when the component mounts or when the user logs in/out.
-    // It loads the initial questions and applies any personalized edits the user has saved.
+    
     useEffect(() => {
         setIsLoading(true);
 
@@ -105,10 +88,9 @@ function AppSecurity() {
             });
         }
         
-        // Set the final state with either default or personalized cards.
         setQuestions(questionsToLoad);
         setIsLoading(false);
-    }, [currentUser]); // Re-run this effect whenever the currentUser object changes.
+    }, [currentUser]); 
 
     // This effect manages the timer for the practice test.
     useEffect(() => {
@@ -118,7 +100,7 @@ function AppSecurity() {
             return;
         }
         const timerId = setInterval(() => setTimeLeft(t => t - 1), 1000);
-        return () => clearInterval(timerId); // Cleanup function to prevent memory leaks.
+        return () => clearInterval(timerId); 
     }, [timeLeft, view, testFinished]);
 
     // This function updates the user's progress in the database after a round.
@@ -129,11 +111,9 @@ function AppSecurity() {
         const isMastered = percentage >= 0.9;
         const deckType = deckTitle.endsWith(" Test") ? "Tests" : "Flashcards";
         
-        // Deep copy existing progress to avoid direct state mutation.
         const updatedCompleted = JSON.parse(JSON.stringify(currentUser.completedDecks || {}));
         const updatedMastered = JSON.parse(JSON.stringify(currentUser.masteredDecks || {}));
         
-        // Logic to update either 'mastered' or 'completed' status.
         if (isMastered) {
             updatedMastered[deckType] = updatedMastered[deckType] || {};
             updatedMastered[deckType][deckTitle] = true;
@@ -149,13 +129,11 @@ function AppSecurity() {
         }
 
         try {
-            // Update the user's profile with completion/mastery data.
             await updateUserProfile(currentUser.email, {
                 completedDecks: updatedCompleted,
                 masteredDecks: updatedMastered
             });
 
-            // Update the user's overall accuracy statistics.
             await fetch(`http://localhost:5000/api/user/${currentUser.email}/stats`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -165,7 +143,6 @@ function AppSecurity() {
                 })
             });
 
-            // Refresh the local user profile to reflect the changes.
             await fetchUserProfile(currentUser.email);
 
         } catch (error) {
@@ -173,10 +150,8 @@ function AppSecurity() {
         }
     }, [currentUser, updateUserProfile, fetchUserProfile]);
 
-    // Toggles the flipped state of the flashcard.
     const handleFlip = () => !animation && setIsFlipped(!isFlipped);
 
-    // Handles the user's response (correct or incorrect) to a flashcard.
     const handleAnswer = (isCorrect) => {
         if (animation || !questions) return;
         

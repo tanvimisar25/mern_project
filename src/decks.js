@@ -1,4 +1,3 @@
-// src/decks.js
 
 export const allDecks = [
   // Flashcard Decks

@@ -1,5 +1,3 @@
-// src/components/StatusModal.js
-
 import React from 'react';
 import './StatusModal.css';
 
@@ -19,15 +17,7 @@ const ErrorIcon = () => (
   </svg>
 );
 
-/**
- * A simple modal component to display a status message (success or error).
- * It appears as an overlay on the screen.
- *
- * @param {boolean} isOpen - Controls whether the modal is visible or not.
- * @param {string} status - Determines which icon to show ('success' or 'error').
- * @param {string} title - The main heading of the modal.
- * @param {string} message - The descriptive text below the title.
- */
+
 const StatusModal = ({ isOpen, status, title, message }) => {
   // If the modal is not supposed to be open, render nothing.
   if (!isOpen) {
@@ -37,7 +27,6 @@ const StatusModal = ({ isOpen, status, title, message }) => {
   return (
     <div className="status-modal-overlay">
       <div className="status-modal-content">
-        {/* Conditionally render the correct icon based on the 'status' prop. */}
         {status === 'success' && <SuccessIcon />}
         {status === 'error' && <ErrorIcon />}
         

@@ -4,15 +4,12 @@ import axios from 'axios';
 // The base URL for your backend API server.
 const API_URL = 'http://localhost:5000/api';
 
-// 1. Create the Authentication Context
 const AuthContext = createContext();
 
-// 2. Create a custom hook for easy access to the context.
 export const useAuth = () => {
     return useContext(AuthContext);
 };
 
-// 3. Create the AuthProvider component
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -23,10 +20,9 @@ export const AuthProvider = ({ children }) => {
         if (storedUser) {
             setCurrentUser(JSON.parse(storedUser));
         }
-        setLoading(false); // Auth check is complete, allow the app to render.
+        setLoading(false); 
     }, []);
 
-    // --- Core Authentication Functions (Unchanged) ---
     const signup = async (username, email, password) => {
         try {
             const response = await axios.post(`${API_URL}/signup`, { username, email, password });
@@ -57,7 +53,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.clear();
     };
 
-    // --- User Profile Management Functions (Unchanged) ---
     const fetchUserProfile = async (email) => {
         try {
             const response = await axios.get(`${API_URL}/user/${email}`);
@@ -102,10 +97,9 @@ export const AuthProvider = ({ children }) => {
     };
 
     // The value object holds all state and functions.
-    // ✅ CHANGE: Added 'loading' here to share it with the rest of the app.
     const value = {
         currentUser,
-        loading, // This is the new piece of information we are sharing.
+        loading, 
         login,
         signup,
         logout,

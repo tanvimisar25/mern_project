@@ -40,7 +40,6 @@ import AppSecurity from "./AppSecurity";
 import Cryptography from "./Cryptography";
 import EthicalHacking from "./EthicalHacking";
 
-// This is your existing ProtectedRoute component. It now works with your AuthContext.
 const ProtectedRoute = () => {
   const { currentUser } = useAuth();
 
@@ -53,7 +52,6 @@ const ProtectedRoute = () => {
   return <Outlet />;
 };
 
-// This component also works with your AuthContext.
 const PublicRoute = () => {
     const { currentUser } = useAuth();
 
@@ -67,7 +65,6 @@ const PublicRoute = () => {
 };
 
 
-// The main App component with the final, robust routing structure
 function App() {
   return (
     <AuthProvider>

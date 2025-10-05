@@ -4,16 +4,13 @@ import { motion } from "framer-motion";
 import './Questions.css';
 import { useAuth } from './AuthContext';
 
-// --- (Reusable Components & Data) ---
 
-// A simple, reusable SVG icon component.
 const Icon = ({ path, className = "icon" }) => (
     <svg xmlns="http://www.w.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d={path} />
     </svg>
 );
 
-// Central object to store SVG paths for all icons used in the component.
 const ICONS = {
     check: "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z",
     x: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z",
@@ -22,11 +19,9 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
-// Defines the titles for categorizing user's edited cards in the database.
 const MAIN_CATEGORY_TITLE = "Data Science & ML";
 const SUB_CATEGORY_TITLE = "Deep Learning";
 
-// The default set of flashcard questions for this topic.
 const initialFlashcardQuestions = [
     { id: "dl_1", deckId: "deep_learning", title: SUB_CATEGORY_TITLE, front: "What is a neuron in a neural network?", back: "A neuron, or perceptron, is the fundamental processing unit of a neural network. It receives one or more inputs, applies a weight to each, sums them up, adds a bias, and then passes the result through an activation function to produce an output." },
     { id: "dl_2", deckId: "deep_learning", title: SUB_CATEGORY_TITLE, front: "What is the purpose of an activation function? Name a common one.", back: "An activation function introduces non-linearity into the output of a neuron. Without non-linearity, a neural network, no matter how many layers it has, would behave just like a single-layer linear model. A very common activation function is ReLU (Rectified Linear Unit)." },
@@ -40,7 +35,6 @@ const initialFlashcardQuestions = [
     { id: "dl_10", deckId: "deep_learning", title: SUB_CATEGORY_TITLE, front: "What is the main advantage of the ReLU activation function over Sigmoid?", back: "The main advantage of ReLU (Rectified Linear Unit) is that it does not saturate in the positive region, which helps to mitigate the vanishing gradient problem. It is also computationally very efficient, as it only involves a simple max(0, x) operation, leading to faster training times compared to the more complex exponential calculations in Sigmoid." }
 ];
 
-// The questions for the multiple-choice practice test.
 const practiceTestQuestions = [
     { question: "Convolutional Neural Networks (CNNs) are most commonly and effectively used for which type of task?", options: ["Time series forecasting", "Text translation", "Image recognition", "Customer segmentation"], correctAnswer: "Image recognition" },
     { question: "The core algorithm used to calculate gradients and update the weights in a neural network is called:", options: ["Gradient Descent", "Forward Propagation", "Backpropagation", "K-Means Clustering"], correctAnswer: "Backpropagation" },
@@ -55,47 +49,32 @@ const practiceTestQuestions = [
 ];
 
 function DeepLearning() {
-    // --- State Management ---
     const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
 
-    // Tracks the current view: 'options', 'flashcards', or 'practiceTest'.
     const [view, setView] = useState('options');
-    // Holds the array of flashcard questions being displayed.
     const [questions, setQuestions] = useState(initialFlashcardQuestions);
-    // Manages the loading state, e.g., while fetching user data.
     const [isLoading, setIsLoading] = useState(false);
-    // Index of the current flashcard being viewed.
     const [currentIndex, setCurrentIndex] = useState(0);
-    // Tracks if the current flashcard is flipped to its back.
     const [isFlipped, setIsFlipped] = useState(false);
-    // Controls the animation class for card transitions.
     const [animation, setAnimation] = useState('');
-    // Stores the user's score for the current flashcard round.
     const [score, setScore] = useState({ correct: 0, wrong: 0 });
-    // Toggles the edit mode for flashcard answers.
     const [isEditMode, setIsEditMode] = useState(false);
-    // Stores the results of a flashcard round to show on the completion screen.
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
-    // Tracks which flashcard answers have been changed by the user in edit mode.
     const [changedAnswers, setChangedAnswers] = useState({});
 
-    // --- State for Practice Test ---
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
     const [ptScore, setPtScore] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(180); // Test timer set to 3 minutes.
+    const [timeLeft, setTimeLeft] = useState(180); 
     const [testFinished, setTestFinished] = useState(false);
 
-    // This effect runs when the component mounts or when the user logs in/out.
-    // It loads the initial questions and applies any personalized edits the user has saved.
+   
     useEffect(() => {
         setIsLoading(true);
 
-        // Always start by resetting to the default questions. This handles user logout.
         let questionsToLoad = initialFlashcardQuestions.map(q => ({ ...q }));
 
-        // If a user is logged in, check for their saved edits and apply them.
         if (currentUser && currentUser.editedCards) {
             const userEdits = currentUser.editedCards;
             questionsToLoad = questionsToLoad.map(q => {
@@ -108,12 +87,10 @@ function DeepLearning() {
             });
         }
 
-        // Set the final state with either default or personalized cards.
         setQuestions(questionsToLoad);
         setIsLoading(false);
-    }, [currentUser]); // Re-run this effect whenever the currentUser object changes.
+    }, [currentUser]); 
 
-    // This effect manages the timer for the practice test.
     useEffect(() => {
         if (view !== 'practiceTest' || testFinished) return;
         if (timeLeft === 0) {

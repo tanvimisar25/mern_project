@@ -4,16 +4,12 @@ import { motion } from "framer-motion";
 import './Questions.css';
 import { useAuth } from './AuthContext';
 
-// --- (Reusable Components & Data) ---
-
-// A simple, reusable SVG icon component.
 const Icon = ({ path, className = "icon" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d={path} />
     </svg>
 );
 
-// Central object to store SVG paths for all icons used in the component.
 const ICONS = {
     check: "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z",
     x: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z",
@@ -22,11 +18,9 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
-// Defines the titles for categorizing user's edited cards in the database.
 const MAIN_CATEGORY_TITLE = "Core Interview Questions";
 const SUB_CATEGORY_TITLE = "Behavioral Questions";
 
-// The default set of flashcard questions for this topic.
 const initialFlashcardQuestions = [
     { id: "bq_1", deckId: "behave", title: SUB_CATEGORY_TITLE, front: "Tell me about a time when you had to work under a tight deadline.", back: "I managed my tasks by prioritizing critical items first, breaking down work into smaller steps, and collaborating with teammates. This helped us deliver the project on time without compromising quality." },
     { id: "bq_2", deckId: "behave", title: SUB_CATEGORY_TITLE, front: "Describe a situation where you faced a conflict with a team member. How did you handle it?", back: "I scheduled a one-on-one conversation, actively listened to their concerns, and clarified misunderstandings. We agreed on a middle ground and improved our collaboration afterward." },
@@ -40,7 +34,6 @@ const initialFlashcardQuestions = [
     { id: "bq_10", deckId: "behave", title: SUB_CATEGORY_TITLE, front: "Tell me about a time you worked in a diverse team.", back: "In my internship, I collaborated with teammates from different cultural and educational backgrounds. I adapted my communication style and respected everyone’s input, which led to better solutions." }
 ];
 
-// The questions for the multiple-choice practice test.
 const practiceTestQuestions = [
     { question: "When interviewers ask you to 'Tell me about a time you handled conflict,' what should your answer focus on?", options: ["Blaming the other person in detail.", "Describing how you handled the situation constructively and what you learned.", "Avoiding the question by saying you never had conflicts.", "Giving a vague response without examples."], correctAnswer: "Describing how you handled the situation constructively and what you learned." },
     { question: "What is the best structure to answer behavioral questions?", options: ["STAR (Situation, Task, Action, Result)", "Giving a random story.", "Talking only about results without context.", "Listing skills without examples."], correctAnswer: "STAR (Situation, Task, Action, Result)" },
@@ -55,40 +48,27 @@ const practiceTestQuestions = [
 ];
 
 function BehavioralQuestions() {
-    // --- State Management ---
     const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
 
-    // Tracks the current view: 'options', 'flashcards', or 'practiceTest'.
     const [view, setView] = useState('options');
-    // Holds the array of flashcard questions being displayed.
     const [questions, setQuestions] = useState(initialFlashcardQuestions);
-    // Manages the loading state, e.g., while fetching user data.
     const [isLoading, setIsLoading] = useState(false);
-    // Index of the current flashcard being viewed.
     const [currentIndex, setCurrentIndex] = useState(0);
-    // Tracks if the current flashcard is flipped to its back.
     const [isFlipped, setIsFlipped] = useState(false);
-    // Controls the animation class for card transitions.
     const [animation, setAnimation] = useState('');
-    // Stores the user's score for the current flashcard round.
     const [score, setScore] = useState({ correct: 0, wrong: 0 });
-    // Toggles the edit mode for flashcard answers.
     const [isEditMode, setIsEditMode] = useState(false);
-    // Stores the results of a flashcard round to show on the completion screen.
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
-    // Tracks which flashcard answers have been changed by the user in edit mode.
     const [changedAnswers, setChangedAnswers] = useState({});
 
-    // --- State for Practice Test ---
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
     const [ptScore, setPtScore] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(180); // Test timer set to 3 minutes.
+    const [timeLeft, setTimeLeft] = useState(180); 
     const [testFinished, setTestFinished] = useState(false);
 
-    // This effect runs when the component mounts or when the user logs in/out.
-    // It loads the initial questions and applies any personalized edits the user has saved.
+   
     useEffect(() => {
         setIsLoading(true);
 

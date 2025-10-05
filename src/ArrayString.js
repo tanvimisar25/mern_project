@@ -4,16 +4,13 @@ import { motion } from "framer-motion";
 import './Questions.css';
 import { useAuth } from './AuthContext';
 
-// --- (Reusable Components & Data) ---
 
-// A simple, reusable SVG icon component.
 const Icon = ({ path, className = "icon" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d={path} />
     </svg>
 );
 
-// Central object to store SVG paths for all icons used in the component.
 const ICONS = {
     check: "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z",
     x: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z",
@@ -22,11 +19,9 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
-// Defines the titles for categorizing user's edited cards in the database.
 const MAIN_CATEGORY_TITLE = "Data Structure and Algorithm";
 const SUB_CATEGORY_TITLE = "Arrays & Strings";
 
-// The default set of flashcard questions for this topic.
 const initialFlashcardQuestions = [
     { id: "arr_1", deckId: "arrstr", title: SUB_CATEGORY_TITLE, front: "How would you find the duplicate number in an array of integers?", back: "Use a HashSet or frequency map, iterate through the array, check if element exists in set, if yes it's duplicate; O(n) time." },
     { id: "arr_2", deckId: "arrstr", title: SUB_CATEGORY_TITLE, front: "Explain the logic to reverse a string in-place.", back: "Use two-pointer approach, swap characters at start and end pointers, move pointers toward each other until they meet." },
@@ -40,7 +35,6 @@ const initialFlashcardQuestions = [
     { id: "arr_10", deckId: "arrstr", title: SUB_CATEGORY_TITLE, front: "What's the difference between an Array and a String?", back: "Array stores elements of any type and is mutable; string is sequence of characters, often immutable in many languages." }
 ];
 
-// The questions for the multiple-choice practice test.
 const practiceTestQuestions = [
     { question: "What is the time complexity of accessing an element in an array by its index?", options: ["O(n)", "O(log n)", "O(1)", "O(n^2)"], correctAnswer: "O(1)" },
     { question: "In many programming languages like Java and Python, strings are 'immutable.' What does this mean?", options: ["They can only contain alphabetic characters.", "Once a string is created, it cannot be modified. Any 'modification' creates a new string.", "The length of the string cannot exceed 256 characters.", "They are stored on the stack instead of the heap."], correctAnswer: "Once a string is created, it cannot be modified. Any 'modification' creates a new string." },
@@ -55,47 +49,30 @@ const practiceTestQuestions = [
 ];
 
 function ArrayString() {
-    // --- State Management ---
     const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
-
-    // Tracks the current view: 'options', 'flashcards', or 'practiceTest'.
     const [view, setView] = useState('options');
-    // Holds the array of flashcard questions being displayed.
     const [questions, setQuestions] = useState(initialFlashcardQuestions);
-    // Manages the loading state, e.g., while fetching user data.
     const [isLoading, setIsLoading] = useState(false);
-    // Index of the current flashcard being viewed.
     const [currentIndex, setCurrentIndex] = useState(0);
-    // Tracks if the current flashcard is flipped to its back.
     const [isFlipped, setIsFlipped] = useState(false);
-    // Controls the animation class for card transitions.
     const [animation, setAnimation] = useState('');
-    // Stores the user's score for the current flashcard round.
     const [score, setScore] = useState({ correct: 0, wrong: 0 });
-    // Toggles the edit mode for flashcard answers.
     const [isEditMode, setIsEditMode] = useState(false);
-    // Stores the results of a flashcard round to show on the completion screen.
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
-    // Tracks which flashcard answers have been changed by the user in edit mode.
     const [changedAnswers, setChangedAnswers] = useState({});
 
-    // --- State for Practice Test ---
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
     const [ptScore, setPtScore] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(180); // Changed from 60 to 180 seconds.
+    const [timeLeft, setTimeLeft] = useState(180); 
     const [testFinished, setTestFinished] = useState(false);
 
-    // This effect runs when the component mounts or when the user logs in/out.
-    // It loads the initial questions and applies any personalized edits the user has saved.
     useEffect(() => {
         setIsLoading(true);
 
-        // Always start by resetting to the default questions. This handles user logout.
         let questionsToLoad = initialFlashcardQuestions.map(q => ({ ...q }));
 
-        // If a user is logged in, check for their saved edits and apply them.
         if (currentUser && currentUser.editedCards) {
             const userEdits = currentUser.editedCards;
             questionsToLoad = questionsToLoad.map(q => {
@@ -108,12 +85,10 @@ function ArrayString() {
             });
         }
         
-        // Set the final state with either default or personalized cards.
         setQuestions(questionsToLoad);
         setIsLoading(false);
-    }, [currentUser]); // Re-run this effect whenever the currentUser object changes.
+    }, [currentUser]); 
 
-    // This effect manages the timer for the practice test.
     useEffect(() => {
         if (view !== 'practiceTest' || testFinished) return;
         if (timeLeft === 0) {

@@ -5,10 +5,7 @@ import "./Homepage2.css";
 import { useAuth } from './AuthContext';
 import { allDecks } from './decks';
 
-/**
- * A reusable confirmation modal component. It appears when `isOpen` is true
- * and calls the appropriate function based on user action (confirm or cancel).
- */
+
 const ConfirmModal = ({ isOpen, onClose, onConfirm, title, children }) => {
     if (!isOpen) {
         return null;
@@ -45,24 +42,15 @@ const emptyLegendData = [
     { name: "Mastered Tests", color: "#e0e0e0" },
 ];
 
-/**
- * The main dashboard component displayed to logged-in users.
- * It shows user statistics, a progress chart, and featured decks.
- */
+
 function Homepage2() {
     const { currentUser, resetUserProgress } = useAuth();
 
-    // State for the pie chart data.
     const [chartData, setChartData] = useState(gettingStartedData);
-    // State for the legend items, which can differ from chart data for the initial empty state.
     const [legendData, setLegendData] = useState(emptyLegendData);
-    // State to hold calculated user statistics (accuracy, completion, etc.).
     const [stats, setStats] = useState({ accuracy: 0, completed: 0, mastered: 0 });
-    // Boolean flag to determine if the user has any progress to display.
     const [hasProgress, setHasProgress] = useState(false);
-    // State to control the visibility of the confirmation modal.
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // State to track the currently hovered pie chart segment for legend highlighting.
     const [activeIndex, setActiveIndex] = useState(-1);
 
     // This effect runs whenever the currentUser object changes to update the dashboard stats.
@@ -103,7 +91,7 @@ function Homepage2() {
             setChartData(realChartData);
             setLegendData(realChartData);
             
-            // Calculate and set the summary stats for the side column.
+            // Calculating accuracy score.
             const accuracy = (currentUser.totalAnsweredQuestions > 0) ? Math.round((currentUser.totalCorrectAnswers / currentUser.totalAnsweredQuestions) * 100) : 0;
             const overallCompleted = totalDecks > 0 ? ((completedFlashcards + completedTests) / totalDecks) * 100 : 0;
             const overallMastered = totalDecks > 0 ? ((masteredFlashcards + masteredTests) / totalDecks) * 100 : 0;
@@ -151,7 +139,6 @@ function Homepage2() {
                     </div>
 
                     <div className="dashboard-layout"> 
-                        {/* Main Chart Card */}
                         <div className="dashboard-card chart-card">
                             <div className="chart-card-header">
                                 <h3>Your Activity</h3>

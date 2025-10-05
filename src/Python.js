@@ -4,16 +4,13 @@ import { motion } from "framer-motion";
 import './Questions.css';
 import { useAuth } from './AuthContext';
 
-// --- (Reusable Components & Data) ---
 
-// A simple, reusable SVG icon component.
 const Icon = ({ path, className = "icon" }) => (
     <svg xmlns="http://www.w.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d={path} />
     </svg>
 );
 
-// Central object to store SVG paths for all icons used in the component.
 const ICONS = {
     check: "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z",
     x: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z",
@@ -22,11 +19,9 @@ const ICONS = {
     edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
 };
 
-// Defines the titles for categorizing user's edited cards in the database.
 const MAIN_CATEGORY_TITLE = "Data Science & ML";
 const SUB_CATEGORY_TITLE = "Python & Data Analysis Libraries";
 
-// The default set of flashcard questions for this topic.
 const initialFlashcardQuestions = [
     { id: "py_1", deckId: "python_data_libraries", title: SUB_CATEGORY_TITLE, front: "What is the difference between a list and a tuple in Python?", back: "The main difference is mutability. A list is mutable, meaning you can change its contents (add, remove, or modify elements) after it's created. A tuple is immutable, meaning once it's created, its contents cannot be changed. Tuples are generally faster than lists." },
     { id: "py_2", deckId: "python_data_libraries", title: SUB_CATEGORY_TITLE, front: "What is a list comprehension and what is its main advantage?", back: "A list comprehension is a concise and readable way to create a list in Python. It allows you to generate a new list by applying an expression to each item in an existing iterable. Its main advantage is that it's often more performant and uses a more compact, expressive syntax than an equivalent for loop. e.g., squares = [x**2 for x in range(10)]" },
@@ -40,7 +35,6 @@ const initialFlashcardQuestions = [
     { id: "py_10", deckId: "python_data_libraries", title: SUB_CATEGORY_TITLE, front: "Explain what pd.merge() is used for in Pandas.", back: "The pd.merge() function is used to combine two or more DataFrames based on the values of one or more common columns or indices, similar to how a JOIN operation works in SQL. It allows for different types of joins, such as inner, outer, left, and right." }
 ];
 
-// The questions for the multiple-choice practice test.
 const practiceTestQuestions = [
     { question: "Which Python data structure is an unordered collection of unique, immutable elements?", options: ["List", "Tuple", "Dictionary", "Set"], correctAnswer: "Set" },
     { question: "To select rows from a Pandas DataFrame based on their integer position (e.g., the first 5 rows), which accessor should you use?", options: [".loc[]", ".iloc[]", ".ix[]", ".get()"], correctAnswer: ".iloc[]" },
@@ -55,44 +49,30 @@ const practiceTestQuestions = [
 ];
 
 function Python() {
-    // --- State Management ---
     const { currentUser, updateUserProfile, fetchUserProfile } = useAuth();
 
-    // Tracks the current view: 'options', 'flashcards', or 'practiceTest'.
     const [view, setView] = useState('options');
-    // Holds the array of flashcard questions being displayed.
     const [questions, setQuestions] = useState(initialFlashcardQuestions);
-    // Manages the loading state, e.g., while fetching user data.
     const [isLoading, setIsLoading] = useState(false);
-    // Index of the current flashcard being viewed.
     const [currentIndex, setCurrentIndex] = useState(0);
-    // Tracks if the current flashcard is flipped to its back.
     const [isFlipped, setIsFlipped] = useState(false);
-    // Controls the animation class for card transitions.
     const [animation, setAnimation] = useState('');
-    // Stores the user's score for the current flashcard round.
     const [score, setScore] = useState({ correct: 0, wrong: 0 });
-    // Toggles the edit mode for flashcard answers.
     const [isEditMode, setIsEditMode] = useState(false);
-    // Stores the results of a flashcard round to show on the completion screen.
     const [roundResults, setRoundResults] = useState({ correct: [], incorrect: [] });
-    // Tracks which flashcard answers have been changed by the user in edit mode.
     const [changedAnswers, setChangedAnswers] = useState({});
 
-    // --- State for Practice Test ---
     const [ptCurrentIndex, setPtCurrentIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
     const [ptScore, setPtScore] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(180); // Test timer set to 3 minutes.
+    const [timeLeft, setTimeLeft] = useState(180); 
     const [testFinished, setTestFinished] = useState(false);
 
-    // This effect runs when the component mounts or when the user logs in/out.
-    // It loads the initial questions and applies any personalized edits the user has saved.
+   
     useEffect(() => {
         setIsLoading(true);
 
-        // Always start by resetting to the default questions. This handles user logout.
         let questionsToLoad = initialFlashcardQuestions.map(q => ({ ...q }));
 
         // If a user is logged in, check for their saved edits and apply them.
@@ -108,10 +88,9 @@ function Python() {
             });
         }
         
-        // Set the final state with either default or personalized cards.
         setQuestions(questionsToLoad);
         setIsLoading(false);
-    }, [currentUser]); // Re-run this effect whenever the currentUser object changes.
+    }, [currentUser]); 
 
     // This effect manages the timer for the practice test.
     useEffect(() => {

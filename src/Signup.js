@@ -6,28 +6,19 @@ import "./Signup.css";
 import { useAuth } from "./AuthContext";
 import StatusModal from "./StatusModal";
 
-/**
- * The Signup component provides a user interface for new user registration.
- * It handles form input, client-side validation, server-side signup requests,
- * and displays success or error feedback.
- */
 function Signup() {
-    // Hooks for navigation and authentication context.
     const navigate = useNavigate();
     const { signup } = useAuth();
 
-    // State to manage form inputs.
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    // State for UI/UX enhancements.
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    // State to control the status modal for success/error feedback.
     const [modalState, setModalState] = useState({
         isOpen: false,
         status: 'success',
@@ -35,22 +26,16 @@ function Signup() {
         message: 'Redirecting you to the login page...'
     });
 
-    /**
-     * Handles the form submission event.
-     * It performs client-side validation first. If validation passes, it attempts
-     * to sign up the user via the authentication context and handles success or error responses.
-     */
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage(""); // Clear any previous errors.
 
         // Client-side Validation
-        // Ensure email is from an allowed domain.
         if (!email.endsWith("@gmail.com") && !email.endsWith("@somaiya.edu")) {
             setErrorMessage("Please use a valid Gmail or Somaiya address.");
             return;
         }
-        // Ensure the password meets complexity requirements.
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
         if (!passwordRegex.test(password)) {
             setErrorMessage("Password must include uppercase, lowercase, a number, and be at least 6 characters.");
@@ -64,20 +49,16 @@ function Signup() {
 
         // Server-side Signup Attempt
         try {
-            // Call the signup function from the authentication context.
             await signup(username, email, password);
 
-            // On success, show the success modal.
             setModalState({ ...modalState, isOpen: true });
             
-            // After a 2-second delay, redirect the user to the login page.
             setTimeout(() => {
                 navigate("/login"); 
             }, 2000);
 
         } catch (error) {
-            // If the signup function throws an error (e.g., email already exists),
-            // display the error message from the server.
+        
             console.error("Error signing up:", error);
             setErrorMessage(error.message || "Failed to sign up. Please try again.");
         }
