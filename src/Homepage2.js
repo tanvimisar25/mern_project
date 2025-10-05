@@ -122,7 +122,6 @@ function Homepage2() {
             try {
                 await resetUserProgress(currentUser.email);
             } catch (error) {
-                // In a real app, a more user-friendly error notification would be used.
                 console.error("Error resetting progress:", error);
                 alert("There was an error resetting your progress.");
             }

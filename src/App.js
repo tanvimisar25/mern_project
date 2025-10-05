@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
-
-// ✅ THIS IS THE ONLY LINE THAT CHANGES
 import { AuthProvider, useAuth } from "./AuthContext";
 
 // Import all your page and layout components
@@ -42,7 +40,7 @@ import AppSecurity from "./AppSecurity";
 import Cryptography from "./Cryptography";
 import EthicalHacking from "./EthicalHacking";
 
-// This is your existing ProtectedRoute component. It now works with your new AuthContext.
+// This is your existing ProtectedRoute component. It now works with your AuthContext.
 const ProtectedRoute = () => {
   const { currentUser } = useAuth();
 
@@ -55,7 +53,7 @@ const ProtectedRoute = () => {
   return <Outlet />;
 };
 
-// This component also works with your new AuthContext.
+// This component also works with your AuthContext.
 const PublicRoute = () => {
     const { currentUser } = useAuth();
 

@@ -3,9 +3,7 @@
 import React from 'react';
 import './StatusModal.css';
 
-/**
- * A reusable SVG icon component to indicate success.
- */
+// A reusable SVG icon component to indicate success.
 const SuccessIcon = () => (
   <svg className="status-icon success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M0 0h24v24H0z" fill="none"/>
@@ -13,9 +11,7 @@ const SuccessIcon = () => (
   </svg>
 );
 
-/**
- * A reusable SVG icon component to indicate an error.
- */
+// A reusable SVG icon component to indicate an error.
 const ErrorIcon = () => (
   <svg className="status-icon error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M0 0h24v24H0z" fill="none"/>

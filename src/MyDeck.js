@@ -58,7 +58,7 @@ const ALL_DECK_INFO = {
     "ethical_hacking_pen_testing_test": { id: "ethical_hacking_pen_testing_test", title: "Ethical Hacking & Pen Testing Test", path: "/ethicalhacking" },
 };
 
-// --- (TodoList component remains unchanged) ---
+// (TodoList component remains unchanged)
 const TodoList = ({ todos = [], onAdd, onToggle, onDelete }) => {
     const [newTodo, setNewTodo] = useState('');
     const handleAddSubmit = (e) => {
@@ -91,17 +91,15 @@ const TodoList = ({ todos = [], onAdd, onToggle, onDelete }) => {
 };
 
 const MyDeck = () => {
-    // ✅ CHANGE: Get the 'loading' state from the AuthContext.
+    //Get the 'loading' state from the AuthContext.
     const { currentUser, loading, updateUserProfile, fetchUserProfile } = useAuth();
     
-    // ✅ CHANGE: The local 'isLoading' state is no longer needed.
+    //The local 'isLoading' state is no longer needed.
     const [favoritesExpanded, setFavoritesExpanded] = useState(false);
     const [completedExpanded, setCompletedExpanded] = useState(false);
     const [masteredExpanded, setMasteredExpanded] = useState(false);
 
-    // ✅ CHANGE: The local useEffect for loading data is removed, simplifying the component.
-
-    // --- (To-Do and Deck handlers remain unchanged) ---
+    //(To-Do and Deck handlers remain unchanged)
     const handleAddTodo = async (text) => {
         const newTodo = { text, completed: false };
         const updatedTodos = [...(currentUser.todos || []), newTodo];
@@ -136,9 +134,9 @@ const MyDeck = () => {
         }
     };
 
-    // --- Render Logic ---
+    // Render Logic
 
-    // ✅ CHANGE: This is the new, flicker-free render logic.
+
     // 1. First, check if the Auth context is still loading. This prevents any UI flash.
     if (loading) {
         return <div className="loading-fullscreen">Initializing...</div>;
@@ -186,7 +184,6 @@ const MyDeck = () => {
     );
 };
 
-// ... (ExpandableDeckSection component remains unchanged) ...
 const ExpandableDeckSection = ({ title, deckGroups = {}, isExpanded, toggleExpand, onRemove, listName }) => {
     const titleToDeckInfoMap = Object.values(ALL_DECK_INFO).reduce((acc, deck) => {
         acc[deck.title] = deck;

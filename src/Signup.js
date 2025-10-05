@@ -44,7 +44,7 @@ function Signup() {
         e.preventDefault();
         setErrorMessage(""); // Clear any previous errors.
 
-        // --- Client-side Validation ---
+        // Client-side Validation
         // Ensure email is from an allowed domain.
         if (!email.endsWith("@gmail.com") && !email.endsWith("@somaiya.edu")) {
             setErrorMessage("Please use a valid Gmail or Somaiya address.");
@@ -62,7 +62,7 @@ function Signup() {
             return;
         }
 
-        // --- Server-side Signup Attempt ---
+        // Server-side Signup Attempt
         try {
             // Call the signup function from the authentication context.
             await signup(username, email, password);

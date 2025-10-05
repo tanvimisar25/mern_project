@@ -4,9 +4,6 @@ import { motion } from "framer-motion";
 import './Questions.css';
 import { useAuth } from './AuthContext';
 
-// --- (Reusable Components & Data) ---
-
-// A simple, reusable SVG icon component.
 const Icon = ({ path, className = "icon" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d={path} />
@@ -196,7 +193,7 @@ function AppSecurity() {
             const newWrongCount = score.wrong + (!isCorrect ? 1 : 0);
             setScore({ correct: newCorrectCount, wrong: newWrongCount });
 
-            // Only update backend progress if this is the *end* of the *full* initial deck.
+            // Only update backend progress if this is the end of the full initial deck.
             if (currentIndex + 1 === questions.length && questions.length === initialFlashcardQuestions.length) {
                 updateUserDeckProgress({
                     finalScore: newCorrectCount,
@@ -274,7 +271,7 @@ function AppSecurity() {
         }
     };
 
-    // --- Practice Test Handlers ---
+    //Practice Test Handlers
 
     const handleAnswerSelect = (answer) => setSelectedAnswer(answer);
 
@@ -322,7 +319,7 @@ function AppSecurity() {
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
-    // --- Render Logic ---
+    //Render Logic
 
     if (isLoading || !questions) {
         return <div className="loading-fullscreen">Loading Questions...</div>;
@@ -350,7 +347,7 @@ function AppSecurity() {
         );
     }
 
-    // --- Render: Flashcard Mode ---
+    //Render: Flashcard Mode
     if (view === 'flashcards') {
         // Render the edit mode view.
         if (isEditMode) {
@@ -467,7 +464,7 @@ function AppSecurity() {
         );
     }
 
-    // --- Render: Practice Test Mode ---
+    //Render: Practice Test Mode
     if (view === 'practiceTest') {
         const currentPtQuestion = practiceTestQuestions[ptCurrentIndex];
         
