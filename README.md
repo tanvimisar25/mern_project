@@ -1,3 +1,55 @@
+# PrepDeck 🎯
+
+**PrepDeck** is a modern, full-featured web application designed to make **interview preparation** structured, engaging, and insightful.
+Built with the **MERN stack (MongoDB, Express, React, Node.js)**, it allows users to practice through **flashcards** or **MCQ tests**, track their progress, and visualize performance with dynamic analytics — all in one place.
+
+---
+
+## ✨ Features
+
+This project blends interactive learning with data visualization and smooth UI design to create a complete preparation experience.
+
+### **Frontend (React)**
+
+* **Responsive Design:** A clean, accessible UI built with React and Tailwind CSS for all devices.
+* **Interactive Practice Modes:** Users can switch between *Flashcards* for conceptual learning and *MCQ Tests* for evaluation.
+* **Dashboard Overview:** Displays total accuracy, completed decks %, and mastered decks % with live visual feedback.
+* **Dynamic Pie Chart:** Built using the **Recharts** library to show progress across four categories — *Completed Tests*, *Completed Flashcards*, *Mastered Flashcards*, and *Mastered Tests.*
+* **Progress Overview Section:**
+
+  * *Favorites* – decks marked by the user for easy access
+  * *Completed* – decks with scores below 90%
+  * *Mastered* – decks with scores of 90% and above
+* **Integrated To-Do List:** Helps users organize preparation tasks directly within the platform.
+* **Smooth Animations:** Powered by Framer Motion for clean transitions and an engaging interface.
+
+---
+
+### **Backend (Node.js & Express)**
+
+* **User Authentication:** Secure registration and login implemented with JWT (JSON Web Tokens).
+* **RESTful API:** Manages user data, test results, and deck progress seamlessly.
+* **Database Integration:** MongoDB with Mongoose schemas for users, decks, and results.
+* **Data Tracking:** Stores and updates user accuracy, completion, and mastery metrics in real time.
+
+---
+
+## 🛠️ Tech Stack
+
+**Frontend:** React, Vite, Tailwind CSS, Framer Motion, Axios, Recharts
+
+**Backend:** Node.js, Express.js
+
+**Database:** MongoDB (Mongoose)
+
+---
+
+
+## 💡 Summary
+
+**PrepDeck** transforms interview preparation into a focused, measurable, and visually engaging experience — helping users progress from practice to mastery with every session.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
