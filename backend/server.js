@@ -1,4 +1,3 @@
-// Dependencies 
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors'); 
@@ -73,7 +72,7 @@ async function run() {
        
         app.post('/api/user/:email/reset', async (req, res) => {
             try {
-                const email = req.params.email;
+                const email = req.params.email; /*placeholder for reusabilty*/
 
                 const result = await usersCollection.updateOne(
                     { email: email },

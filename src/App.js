@@ -73,14 +73,14 @@ function App() {
           <Routes>
             <Route element={<SidebarLayout />}>
               
-              {/* --- Public Routes --- */}
+              {/*Public Routes */}
               <Route element={<PublicRoute />}>
                 <Route path="/" element={<Homepage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
               </Route>
 
-              {/* --- Protected Routes --- */}
+              {/* Protected Routes */}
               <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard" element={<Homepage2 />} />
                 <Route path="/mydecks" element={<MyDeck />} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import './StatusModal.css';
-
+// for popup after signup login
 // A reusable SVG icon component to indicate success.
 const SuccessIcon = () => (
   <svg className="status-icon success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

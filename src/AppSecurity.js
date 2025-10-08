@@ -72,7 +72,7 @@ function AppSecurity() {
     useEffect(() => {
         setIsLoading(true);
 
-        // Always start by resetting to the default questions. This handles user logout.
+        // Copy bana of main question set to be safe. map questions ko separate kar raha hai
         let questionsToLoad = initialFlashcardQuestions.map(q => ({ ...q }));
 
         // If a user is logged in, check for their saved edits and apply them.
